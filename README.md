@@ -17,7 +17,7 @@ Un ecosistema que transforma la adquisición de vehículos en subastas en un **L
 
 ---
 
-## 🚀 **¿Cómo Funciona?**
+## **¿Cómo Funciona?**
 
 1. **Adquisición**: Compra de vehículos en subastas (ej. AXA México, Banorte) con costo depreciado.
 2. **Instrumentación**: Instalación de telemetría OBD-II, sensores de vibración, GPS y cámaras 360°.
@@ -91,7 +91,7 @@ KCo/
 
 ---
 
-## 🤝 **Socios Estratégicos**
+## **Socios Estratégicos**
 
 | **Sector**          | **Empresas**                          |
 |---------------------|---------------------------------------|
@@ -105,15 +105,6 @@ KCo/
 ## 📜 **Licencia**
 
 Este proyecto es propiedad de **Cilia Tecnología** y está sujeto a acuerdos de confidencialidad. Su distribución no autorizada está prohibida.
-
----
-
-## 📞 **Contacto**
-
-Para más información:
-- **Email**: [contacto@hpmeshare.mx](mailto:contacto@hpmeshare.mx)
-- **Teléfono**: +52 (55) 1234 5678
-- **Dirección**: Av. Paseo de la Reforma 250, Juarez, Ciudad de México
 
 ---
 
