@@ -71,8 +71,6 @@ KCo/
 ## 🌐 **Acceso al Producto**
 
 - **Landing Page**: [Abrir `index.html` en navegador](https://kauecodify.github.io/KCo/) *(después de deploy)*
-- **Contacto**: contacto@hpmeshare.mx
-- **Teléfono**: +52 (55) 1234 5678
 
 ---
 
