@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>KCo ML - Image Processing</title>
+<style>
+:root {
+--blue: #00d4ff; --dark: #0a0a0f; --card: #0d0d15; --text: #a0a0b0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #0a0a0f; color: #fff; }
+header { background: rgba(10,10,15,0.95); padding: 1rem; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,212,255,0.3); }
+.header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+.logo { font-weight: bold; color: #00d4ff; font-size: 1.5rem; }
+.nav-toggle { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+.nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(10,10,15,0.98); padding: 1rem; border-bottom: 1px solid rgba(0,212,255,0.3); }
+.nav-menu.active { display: block; }
+.nav-menu a { display: block; color: #a0a0b0; text-decoration: none; padding: 0.75rem 1rem; }
+.nav-menu a:hover { color: #00d4ff; }
+.container { max-width: 1400px; margin: 0 auto; padding: 1rem; }
+section { padding: 1rem 0; }
+h1, h2 { color: #fff; }
+h1 { text-align: center; font-size: 1.8rem; }
+h2 { font-size: 1.4rem; border-bottom: 2px solid #00d4ff; padding-bottom: 0.5rem; }
+p { color: #a0a0b0; font-size: 0.95rem; }
+.card { background: #0d0d15; border: 1px solid rgba(0,212,255,0.3); border-radius: 12px; padding: 1rem; margin: 0.5rem 0; }
+.btn { display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #00d4ff, #9d4edd); border: none; border-radius: 20px; color: #0a0a0f; font-weight: bold; cursor: pointer; text-decoration: none; width: 100%; margin: 0.5rem 0; }
+.btn:hover { transform: translateY(-2px); }
+.upload-section { background: #0d0d15; border: 2px dashed rgba(0,212,255,0.3); border-radius: 12px; padding: 2rem; text-align: center; cursor: pointer; }
+.upload-section:hover { border-color: #00d4ff; }
+.file-input { display: none; }
+.preview-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+.preview-card { position: relative; width: calc(50% - 0.25rem); background: #0d0d15; border: 1px solid rgba(0,212,255,0.3); border-radius: 8px; overflow: hidden; }
+.preview-card img { width: 100%; height: 100px; object-fit: cover; }
+.preview-info { padding: 0.5rem; }
+.preview-name { font-size: 0.75rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.remove-preview { position: absolute; top: 0.25rem; right: 0.25rem; width: 20px; height: 20px; background: #00d4ff; border: none; border-radius: 50%; color: #0a0a0f; cursor: pointer; font-size: 0.7rem; }
+.result-card { background: #0d0d15; border: 1px solid rgba(0,212,255,0.3); border-radius: 12px; padding: 1rem; margin: 0.5rem 0; }
+.result-header { display: flex; justify-content: space-between; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(0,212,255,0.2); margin-bottom: 0.5rem; }
+.result-title { font-weight: bold; color: #00d4ff; }
+.result-status { padding: 0.2rem 0.5rem; border-radius: 8px; font-size: 0.7rem; }
+.result-status.success { background: rgba(0,255,0,0.2); color: #0f0; }
+.result-status.processing { background: rgba(0,212,255,0.2); color: #00d4ff; }
+.result-status.error { background: rgba(255,0,0,0.2); color: #f00; }
+.result-content { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin: 0.5rem 0; }
+.result-item { }
+.result-label { font-size: 0.7rem; color: #606070; }
+.result-value { font-size: 0.85rem; color: #fff; }
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+.stat-card { background: #0d0d15; border: 1px solid rgba(0,212,255,0.3); border-radius: 8px; padding: 1rem; text-align: center; }
+.stat-value { font-size: 1.3rem; color: #00d4ff; font-weight: bold; }
+.stat-label { font-size: 0.7rem; color: #a0a0b0; }
+.tabs { display: flex; gap: 0.5rem; margin: 1rem 0; overflow-x: auto; }
+.tab { padding: 0.5rem 1rem; background: transparent; border: 1px solid rgba(0,212,255,0.3); border-radius: 15px; color: #a0a0b0; cursor: pointer; white-space: nowrap; }
+.tab.active { background: linear-gradient(135deg, #00d4ff, #9d4edd); color: #0a0a0f; border-color: transparent; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.list-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(0,212,255,0.1); }
+.list-item:last-child { border-bottom: none; }
+.list-icon { width: 24px; height: 24px; background: rgba(0,212,255,0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #00d4ff; }
+.list-content { flex: 1; }
+.list-title { font-size: 0.85rem; color: #fff; }
+.list-subtitle { font-size: 0.75rem; color: #a0a0b0; }
+.form-group { margin: 0.5rem 0; }
+.form-label { display: block; margin-bottom: 0.25rem; color: #a0a0b0; font-size: 0.8rem; }
+.form-input, .form-select { width: 100%; padding: 0.6rem; border: 1px solid rgba(0,212,255,0.3); border-radius: 8px; background: #050508; color: #fff; font-size: 0.85rem; }
+.form-input:focus, .form-select:focus { outline: none; border-color: #00d4ff; }
+.spinner { width: 30px; height: 30px; border: 3px solid rgba(0,212,255,0.2); border-top-color: #00d4ff; border-radius: 50%; animation: spin 1s linear infinite; margin: 1rem auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.progress-container { width: 100%; height: 4px; background: rgba(0,212,255,0.2); border-radius: 2px; overflow: hidden; margin: 0.5rem 0; }
+.progress-bar { height: 100%; background: linear-gradient(135deg, #00d4ff, #9d4edd); border-radius: 2px; width: 0%; transition: width 0.3s; }
+footer { background: #050508; border-top: 1px solid rgba(0,212,255,0.3); padding: 1rem; text-align: center; margin-top: 1rem; }
+.footer-logo { font-size: 1.2rem; color: #00d4ff; font-weight: bold; }
+.footer-text { color: #606070; font-size: 0.75rem; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #050508; }
+::-webkit-scrollbar-thumb { background: #0099cc; border-radius: 2px; }
+@media (min-width: 600px) { .preview-card { width: calc(33.33% - 0.33rem); } .result-content { grid-template-columns: repeat(3, 1fr); } .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px) { .container { padding: 1rem 2rem; } .nav-toggle { display: none; } .nav-menu { display: flex; position: static; background: transparent; border: none; padding: 0; gap: 1rem; } .nav-menu a { padding: 0.5rem 0; } .preview-card { width: calc(25% - 0.5rem); } .result-content { grid-template-columns: repeat(4, 1fr); } .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+</style>
+</head>
+<body>
+<header>
+<div class="header-content">
+<a href="/" class="logo">KCo ML</a>
+<button class="nav-toggle" onclick="toggleNav()">☰</button>
+<nav class="nav-menu" id="navMenu">
+<a href="#upload">Upload</a>
+<a href="#results">Resultados</a>
+<a href="#history">Historico</a>
+<a href="#settings">Configuracoes</a>
+</nav>
+<div class="language-toggle">
+<button class="language-btn active" onclick="changeLanguage('pt')">PT</button>
+<button class="language-btn" onclick="changeLanguage('es')">ES</button>
+</div>
+</div>
+</header>
+<main>
+<section class="container">
+<h1>Processamento de Imagens ML</h1>
+<p style="text-align: center; color: #a0a0b0;">Analise de veiculos com inteligencia artificial em tempo real</p>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-value" id="totalImages">0</div><div class="stat-label">Imagens Analisadas</div></div>
+<div class="stat-card"><div class="stat-value" id="totalVehicles">0</div><div class="stat-label">Veiculos Processados</div></div>
+<div class="stat-card"><div class="stat-value" id="avgConfidence">0%</div><div class="stat-label">Precisao Media</div></div>
+<div class="stat-card"><div class="stat-value" id="avgTime">0ms</div><div class="stat-label">Tempo Medio</div></div>
+</div>
+</section>
+<section class="container" id="upload">
+<h2>Upload de Imagens</h2>
+<div class="tabs">
+<button class="tab active" onclick="switchTab('camera')">Camera</button>
+<button class="tab" onclick="switchTab('gallery')">Galeria</button>
+<button class="tab" onclick="switchTab('url')">URL</button>
+</div>
+<div class="tab-content active" id="cameraTab">
+<div class="upload-section" onclick="openCamera()">
+<div style="font-size: 2.5rem; color: #00d4ff; margin-bottom: 0.5rem;">📷</div>
+<div>Tirar Foto</div>
+<div style="color: #606070; font-size: 0.8rem;">Use a camera do dispositivo</div>
+</div>
+</div>
+<div class="tab-content" id="galleryTab">
+<div class="upload-section">
+<input type="file" id="fileInput" class="file-input" accept="image/*" multiple onchange="handleFileSelect(event)">
+<div style="font-size: 2.5rem; color: #00d4ff; margin-bottom: 0.5rem;">📁</div>
+<div>Selecionar Imagens</div>
+<div style="color: #606070; font-size: 0.8rem;">PNG, JPG, WEBP ate 10MB</div>
+</div>
+</div>
+<div class="tab-content" id="urlTab">
+<div class="form-group">
+<label class="form-label">URL da Imagem</label>
+<input type="url" id="imageUrl" class="form-input" placeholder="https://exemplo.com/imagem.jpg">
+</div>
+<button class="btn" onclick="loadFromUrl()">Carregar Imagem</button>
+</div>
+<div class="preview-container" id="previewContainer"></div>
+<button class="btn" onclick="processImages()" id="processBtn" disabled>Processar Imagens</button>
+</section>
+<section class="container" id="results">
+<h2>Resultados da Analise</h2>
+<div id="resultsContainer"></div>
+</section>
+<section class="container" id="history">
+<h2>Historico de Analises</h2>
+<div id="historyContainer"></div>
+</section>
+<section class="container" id="settings">
+<h2>Configuracoes</h2>
+<div class="card">
+<h3 style="color: #00d4ff; margin-bottom: 1rem;">Modelo de Analise</h3>
+<div class="form-group">
+<label class="form-label">Selecione o Modelo</label>
+<select class="form-select" id="modelSelect">
+<option value="full">Analise Completa</option>
+<option value="damage">Detectar Danos</option>
+<option value="parts">Identificar Pecas</option>
+<option value="exterior">Analise Externa</option>
+</select>
+</div>
+</div>
+<div class="card">
+<h3 style="color: #00d4ff; margin-bottom: 1rem;">Configuracoes de Qualidade</h3>
+<div class="form-group">
+<label class="form-label">Resolucao</label>
+<select class="form-select" id="resolutionSelect">
+<option value="high">Alta (4K)</option>
+<option value="medium" selected>Media (1080p)</option>
+<option value="low">Baixa (720p)</option>
+</select>
+</div>
+</div>
+<div class="card">
+<h3 style="color: #00d4ff; margin-bottom: 1rem;">Veiculo</h3>
+<div class="form-group">
+<label class="form-label">ID do Veiculo (Opcional)</label>
+<input type="text" class="form-input" id="vehicleId" placeholder="BR-001, MX-002, etc.">
+</div>
+</div>
+<button class="btn" onclick="saveSettings()">Salvar Configuracoes</button>
+</section>
+</main>
+<footer>
+<div class="footer-logo">KCo ML</div>
+<div class="footer-text">Old But Gold TR8 IVSTO | Pre-Seed: $30M+ USD</div>
+</footer>
+<script>
+let selectedFiles = [];
+let analysisHistory = JSON.parse(localStorage.getItem('mlHistory') || '[]');
+let stats = JSON.parse(localStorage.getItem('mlStats') || '{"totalImages":0,"totalVehicles":0,"avgConfidence":0,"avgTime":0}');
+const previewContainer = document.getElementById('previewContainer');
+const resultsContainer = document.getElementById('resultsContainer');
+const historyContainer = document.getElementById('historyContainer');
+const processBtn = document.getElementById('processBtn');
+const fileInput = document.getElementById('fileInput');
+
+updateStats();
+updateHistory();
+
+function switchTab(tabName) {
+document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+document.getElementById(tabName + 'Tab').classList.add('active');
+event.target.classList.add('active');
+if (tabName !== 'gallery') { selectedFiles = []; updatePreview(); }
+}
+
+function toggleNav() {
+document.getElementById('navMenu').classList.toggle('active');
+}
+
+function changeLanguage(lang) {
+document.querySelectorAll('.language-btn').forEach(btn => btn.classList.remove('active'));
+event.target.classList.add('active');
+localStorage.setItem('mlLanguage', lang);
+}
+
+const savedLang = localStorage.getItem('mlLanguage') || 'pt';
+document.querySelectorAll('.language-btn').forEach(btn => {
+if (btn.textContent === savedLang.toUpperCase()) btn.classList.add('active');
+});
+
+function handleFileSelect(event) {
+selectedFiles = [...selectedFiles, ...Array.from(event.target.files)];
+updatePreview();
+}
+
+function openCamera() {
+const input = document.createElement('input');
+input.type = 'file';
+input.accept = 'image/*';
+input.capture = 'environment';
+input.onchange = (e) => { selectedFiles = [...selectedFiles, ...Array.from(e.target.files)]; updatePreview(); };
+input.click();
+}
+
+function loadFromUrl() {
+const url = document.getElementById('imageUrl').value;
+if (!url) return;
+selectedFiles.push({ url, name: url.split('/').pop() });
+updatePreview();
+document.getElementById('imageUrl').value = '';
+}
+
+function updatePreview() {
+previewContainer.innerHTML = '';
+selectedFiles.forEach((file, index) => {
+const card = document.createElement('div');
+card.className = 'preview-card';
+const img = document.createElement('img');
+img.src = file instanceof File ? URL.createObjectURL(file) : file.url;
+const info = document.createElement('div');
+info.className = 'preview-info';
+const name = document.createElement('div');
+name.className = 'preview-name';
+name.textContent = file.name || file.url.split('/').pop();
+const remove = document.createElement('button');
+remove.className = 'remove-preview';
+remove.innerHTML = '×';
+remove.onclick = () => { selectedFiles.splice(index, 1); updatePreview(); };
+info.appendChild(name);
+card.appendChild(img);
+card.appendChild(info);
+card.appendChild(remove);
+previewContainer.appendChild(card);
+});
+processBtn.disabled = selectedFiles.length === 0;
+}
+
+async function processImages() {
+if (selectedFiles.length === 0) return;
+const originalText = processBtn.textContent;
+processBtn.disabled = true;
+processBtn.textContent = 'Processando...';
+resultsContainer.innerHTML = '<div class="result-card"><div class="result-header"><div class="result-title">Processando Imagens</div><div class="result-status processing">Aguarde...</div></div><div class="progress-container"><div class="progress-bar" id="progressBar"></div></div><div class="spinner"></div></div>';
+const results = [];
+for (const file of selectedFiles) {
+const progress = Math.round((results.length + 1) / selectedFiles.length * 100);
+document.getElementById('progressBar').style.width = progress + '%';
+await new Promise(resolve => setTimeout(resolve, 1000));
+results.push(generateMockResult(file));
+}
+displayResults(results);
+stats.totalImages += selectedFiles.length;
+stats.avgConfidence = ((stats.avgConfidence * (stats.totalImages - selectedFiles.length)) + results.reduce((sum, r) => sum + parseFloat(r.confidence), 0)) / stats.totalImages;
+stats.avgTime = ((stats.avgTime * (stats.totalImages - selectedFiles.length)) + results.reduce((sum, r) => sum + parseInt(r.processingTime), 0)) / stats.totalImages;
+results.forEach(result => {
+analysisHistory.unshift({ id: Date.now().toString(), timestamp: new Date().toISOString(), ...result });
+});
+localStorage.setItem('mlHistory', JSON.stringify(analysisHistory.slice(0, 50)));
+localStorage.setItem('mlStats', JSON.stringify(stats));
+updateStats();
+updateHistory();
+processBtn.disabled = false;
+processBtn.textContent = originalText;
+selectedFiles = [];
+updatePreview();
+}
+
+function generateMockResult(file) {
+const anomalies = ['Amassado', 'Arranhao', 'Ferrugem', 'Rachadura', 'Peca Faltando'];
+const severities = ['Baixo', 'Medio', 'Alto', 'Critico'];
+const parts = ['Porta', 'Capo', 'Porta-malas', 'Para-choque', 'Farois', 'Pneus', 'Espelhos'];
+return {
+id: Date.now().toString(),
+fileName: file.name || file.url.split('/').pop(),
+fileSize: file instanceof File ? file.size : 0,
+timestamp: new Date().toISOString(),
+vehicleId: document.getElementById('vehicleId').value || 'N/A',
+confidence: (Math.random() * 30 + 70).toFixed(2) + '%',
+processingTime: Math.floor(Math.random() * 200 + 50) + 'ms',
+anomalies: Array.from({ length: Math.floor(Math.random() * 3) + 1 }, () => ({
+type: anomalies[Math.floor(Math.random() * anomalies.length)],
+severity: severities[Math.floor(Math.random() * severities.length)],
+location: parts[Math.floor(Math.random() * parts.length)],
+repairCost: 'R$ ' + (Math.random() * 2000 + 500).toFixed(2)
+})),
+detectedObjects: Array.from({ length: Math.floor(Math.random() * 5) + 3 }, () => ({
+type: parts[Math.floor(Math.random() * parts.length)],
+confidence: (Math.random() * 30 + 70).toFixed(2) + '%'
+})),
+damageScore: (Math.random() * 100).toFixed(1) + '%',
+modelVersion: 'v2.1.0'
+};
+}
+
+function displayResults(results) {
+resultsContainer.innerHTML = '';
+results.forEach(result => {
+const severity = result.anomalies.reduce((max, a) => {
+const order = { 'Baixo': 1, 'Medio': 2, 'Alto': 3, 'Critico': 4 };
+return order[a.severity] > order[max] ? a.severity : max;
+}, 'Baixo');
+const statusClass = severity === 'Critico' ? 'error' : severity === 'Alto' ? 'warning' : 'success';
+const card = document.createElement('div');
+card.className = 'result-card';
+card.innerHTML = '<div class="result-header"><div class="result-title">' + result.fileName + '</div><div class="result-status ' + statusClass + '">' + severity + '</div></div>' +
+'<div class="result-content">' +
+'<div class="result-item"><div class="result-label">Confianca</div><div class="result-value">' + result.confidence + '</div></div>' +
+'<div class="result-item"><div class="result-label">Tempo</div><div class="result-value">' + result.processingTime + '</div></div>' +
+'<div class="result-item"><div class="result-label">Score de Dano</div><div class="result-value">' + result.damageScore + '</div></div>' +
+'<div class="result-item"><div class="result-label">Modelo</div><div class="result-value">' + result.modelVersion + '</div></div>' +
+'</div>' +
+'<div style="margin-top: 0.5rem;"><strong>Anomalias Detectadas:</strong>' +
+result.anomalies.map(a => '<div class="list-item"><div class="list-icon">⚠️</div><div class="list-content"><div class="list-title">' + a.type + ' - ' + a.severity + '</div><div class="list-subtitle">' + a.location + ' | ' + a.repairCost + '</div></div></div>').join('') +
+'</div>' +
+'<div style="margin-top: 0.5rem;"><strong>Objetos Detectados:</strong>' +
+result.detectedObjects.map(o => '<div class="list-item"><div class="list-icon">🔍</div><div class="list-content"><div class="list-title">' + o.type + '</div><div class="list-subtitle">Confianca: ' + o.confidence + '</div></div></div>').join('') +
+'</div>';
+resultsContainer.appendChild(card);
+});
+}
+
+function updateStats() {
+document.getElementById('totalImages').textContent = stats.totalImages;
+document.getElementById('totalVehicles').textContent = stats.totalVehicles;
+document.getElementById('avgConfidence').textContent = stats.avgConfidence.toFixed(1) + '%';
+document.getElementById('avgTime').textContent = stats.avgTime.toFixed(0) + 'ms';
+}
+
+function updateHistory() {
+historyContainer.innerHTML = '';
+if (analysisHistory.length === 0) {
+historyContainer.innerHTML = '<p style="text-align: center; color: #a0a0b0;">Nenhuma analise realizada ainda</p>';
+return;
+}
+analysisHistory.slice(0, 10).forEach(result => {
+const card = document.createElement('div');
+card.className = 'result-card';
+card.onclick = () => viewResult(result);
+const date = new Date(result.timestamp);
+const dateStr = date.toLocaleDateString('pt-BR') + ' ' + date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+card.innerHTML = '<div class="result-header"><div class="result-title">' + result.fileName + '</div><div class="result-status">' + dateStr + '</div></div>' +
+'<div class="result-content">' +
+'<div class="result-item"><div class="result-label">Confianca</div><div class="result-value">' + result.confidence + '</div></div>' +
+'<div class="result-item"><div class="result-label">Anomalias</div><div class="result-value">' + result.anomalies.length + '</div></div>' +
+'<div class="result-item"><div class="result-label">Dano</div><div class="result-value">' + result.damageScore + '</div></div>' +
+'<div class="result-item"><div class="result-label">Veiculo</div><div class="result-value">' + (result.vehicleId || 'N/A') + '</div></div>' +
+'</div>';
+historyContainer.appendChild(card);
+});
+}
+
+function viewResult(result) {
+resultsContainer.scrollIntoView({ behavior: 'smooth' });
+displayResults([result]);
+}
+
+function saveSettings() {
+const settings = {
+model: document.getElementById('modelSelect').value,
+resolution: document.getElementById('resolutionSelect').value,
+vehicleId: document.getElementById('vehicleId').value
+};
+localStorage.setItem('mlSettings', JSON.stringify(settings));
+alert('Configuracoes salvas com sucesso!');
+}
+
+const savedSettings = JSON.parse(localStorage.getItem('mlSettings') || '{}');
+if (savedSettings.model) document.getElementById('modelSelect').value = savedSettings.model;
+if (savedSettings.resolution) document.getElementById('resolutionSelect').value = savedSettings.resolution;
+if (savedSettings.vehicleId) document.getElementById('vehicleId').value = savedSettings.vehicleId;
+
+previewContainer.addEventListener('dragover', (e) => { e.preventDefault(); previewContainer.style.borderColor = '#00d4ff'; });
+previewContainer.addEventListener('dragleave', () => { previewContainer.style.borderColor = 'rgba(0, 212, 255, 0.3)'; });
+previewContainer.addEventListener('drop', (e) => { e.preventDefault(); previewContainer.style.borderColor = 'rgba(0, 212, 255, 0.3)'; const files = Array.from(e.dataTransfer.files); selectedFiles = [...selectedFiles, ...files]; updatePreview(); });
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+anchor.addEventListener('click', function(e) {
+e.preventDefault();
+const target = document.querySelector(this.getAttribute('href'));
+if (target) {
+target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+document.getElementById('navMenu').classList.remove('active');
+}
+});
+});
+</script>
+</body>
+</html>
