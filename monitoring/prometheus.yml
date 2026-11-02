@@ -1,0 +1,80 @@
+# KCo Prometheus Configuration
+# Old But Gold TR8 IVSTO Infrastructure Monitoring
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Rule files
+rule_files:
+  # - "alert.rules"
+  # - "recording.rules"
+
+# Scrape configurations
+scrape_configs:
+  # Monitor Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 5s
+
+  # Monitor KCo API
+  - job_name: 'kco-api'
+    static_configs:
+      - targets: ['api:8000']
+    metrics_path: '/api/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Monitor PostgreSQL
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    scrape_interval: 15s
+
+  # Monitor Redis
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+    scrape_interval: 15s
+
+  # Monitor RabbitMQ
+  - job_name: 'rabbitmq'
+    static_configs:
+      - targets: ['rabbitmq-exporter:9419']
+    scrape_interval: 15s
+
+  # Monitor Node Exporter (for system metrics)
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 10s
+
+  # Monitor ML Worker
+  - job_name: 'ml-worker'
+    static_configs:
+      - targets: ['ml-worker:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # Monitor Image Processor
+  - job_name: 'image-processor'
+    static_configs:
+      - targets: ['image-processor:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+# Remote write configuration (optional)
+# remote_write:
+#   - url: "https://remote-write-endpoint"
+#     basic_auth:
+#       username: "username"
+#       password: "password"

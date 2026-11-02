@@ -1,430 +1,336 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HPME Share México | Laboratorio Vivo de Movilidad</title>
+    <title>KCo | Fleet Intelligence Platform - Old But Gold TR8 IVSTO</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --cil-primary: #0067ef;
-            --cil-primary-light: #409eff;
-            --cil-primary-dark: #0049b3;
-            --cil-bg-color: #ffffff;
-            --cil-bg-page: #f2f3f5;
-            --cil-text-primary: #303133;
-            --cil-text-regular: #606266;
-            --cil-text-secondary: #909399;
-            --cil-border-color: #dcdfe6;
-            --cil-border-light: #e6e6e6;
-            --cil-white: #ffffff;
-            --cil-black: #000000;
-            --cil-gray-100: #f5f7fa;
-            --cil-gray-200: #e6e6e6;
-            --cil-gray-300: #dcdfe6;
-            --cil-gray-400: #c0c4cc;
-            --cil-gray-500: #909399;
-            --cil-gray-600: #606266;
-            --cil-gray-700: #48494b;
-            --cil-gray-800: #303133;
-            --cil-gray-900: #1a1a1a;
-            --cil-success: #67c23a;
-            --cil-warning: #e6a23c;
-            --cil-danger: #f56c6c;
-            --cil-info: #909399;
+            --cyber-blue: #00d4ff;
+            --cyber-blue-dark: #0099cc;
+            --cyber-neon: #00ffff;
+            --cyber-purple: #9d4edd;
+            --bg-dark: #0a0a0f;
+            --bg-darker: #050508;
+            --bg-card: #0d0d15;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --gradient-cyber: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
+            --shadow-cyber: 0 0 20px rgba(0, 212, 255, 0.3);
+            --border-cyber: 1px solid rgba(0, 212, 255, 0.3);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: 'Lato', sans-serif;
-            background-color: var(--cil-bg-page);
-            color: var(--cil-text-primary);
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(180deg, #0a0a0f 0%, #050508 100%);
+            color: #ffffff;
             line-height: 1.6;
             overflow-x: hidden;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Header */
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        
         header {
-            background-color: var(--cil-white);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 1000;
-            width: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
         }
-
-        .header-content {
+        
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 1rem 0;
-        }
-
-        .header-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
         }
-
+        
         .logo {
-            font-size: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
             font-weight: 900;
-            color: var(--cil-primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: #00d4ff;
+            text-decoration: none;
+            letter-spacing: 2px;
         }
-
-        .logo span {
-            color: var(--cil-gray-700);
-        }
-
-        nav {
-            display: none;
-        }
-
-        .nav-desktop {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-desktop a {
-            color: var(--cil-text-regular);
+        
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a {
+            color: #a0a0b0;
             text-decoration: none;
             font-size: 0.95rem;
             font-weight: 500;
-            transition: color 0.3s;
-            padding: 0.5rem 0;
+            transition: all 0.3s;
             position: relative;
         }
-
-        .nav-desktop a:hover {
-            color: var(--cil-primary);
-        }
-
-        .nav-desktop a:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--cil-primary);
-            transition: width 0.3s;
-        }
-
-        .nav-desktop a:hover:after {
-            width: 100%;
-        }
-
-        .header-actions {
+        .nav-links a:hover { color: #00d4ff; }
+        
+        .language-toggle {
             display: flex;
-            gap: 1rem;
-            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 25px;
+            padding: 0.25rem;
         }
-
-        .mobile-menu-toggle {
-            display: block;
-            background: none;
+        
+        .language-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
             border: none;
-            font-size: 1.5rem;
+            color: #a0a0b0;
             cursor: pointer;
-            color: var(--cil-text-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-radius: 20px;
         }
-
-        /* Hero Section */
+        
+        .language-btn:hover { color: #00d4ff; background: rgba(0, 212, 255, 0.2); }
+        .language-btn.active { color: #00d4ff; background: rgba(0, 212, 255, 0.3); }
+        
+        .cta-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
+            border: none;
+            border-radius: 25px;
+            color: #0a0a0f;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0, 212, 255, 0.5); }
+        
+        .header-actions { display: flex; gap: 1rem; align-items: center; }
+        
         .hero {
-            background: linear-gradient(135deg, var(--cil-bg-page) 0%, var(--cil-white) 100%);
-            padding: 8rem 0 4rem;
+            padding: 12rem 0 6rem;
             text-align: center;
             position: relative;
             overflow: hidden;
+            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
         }
-
+        
         .hero::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230067ef' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") 0 0 repeat;
-            opacity: 0.5;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(157, 78, 221, 0.1) 0%, transparent 50%);
+            pointer-events: none;
         }
-
-        .hero .container {
-            position: relative;
-            z-index: 1;
-        }
-
+        
+        .hero .container { position: relative; z-index: 1; }
+        
         .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
             font-weight: 900;
-            color: var(--cil-text-primary);
+            color: #ffffff;
             margin-bottom: 1.5rem;
             line-height: 1.2;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
         }
-
+        
         .hero h1 .highlight {
-            color: var(--cil-primary);
+            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
+        
         .hero p {
-            font-size: clamp(1rem, 2.5vw, 1.25rem);
-            color: var(--cil-text-regular);
-            max-width: 700px;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: #a0a0b0;
+            max-width: 800px;
             margin: 0 auto 2.5rem;
-            line-height: 1.7;
+            line-height: 1.8;
         }
-
-        .hero-buttons {
+        
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        
+        .hero-stats {
             display: flex;
-            gap: 1rem;
+            gap: 3rem;
             justify-content: center;
+            margin-top: 3rem;
             flex-wrap: wrap;
         }
-
-        /* Buttons */
-        .cil-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.8rem 2rem;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 500;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-            gap: 0.5rem;
+        
+        .hero-stat { text-align: center; }
+        .hero-stat h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
         }
-
-        .cil-button--primary {
-            background-color: var(--cil-primary);
-            color: var(--cil-white);
-            border-color: var(--cil-primary);
-        }
-
-        .cil-button--primary:hover {
-            background-color: var(--cil-primary-dark);
-            border-color: var(--cil-primary-dark);
-        }
-
-        .cil-button--outline {
-            background-color: transparent;
-            color: var(--cil-primary);
-            border-color: var(--cil-primary);
-        }
-
-        .cil-button--outline:hover {
-            background-color: var(--cil-primary);
-            color: var(--cil-white);
-        }
-
-        .cil-button--text {
-            background-color: transparent;
-            color: var(--cil-primary);
-            border: none;
-        }
-
-        .cil-button--text:hover {
-            color: var(--cil-primary-dark);
-            text-decoration: underline;
-        }
-
-        /* Sections */
-        section {
-            padding: 5rem 0;
-        }
-
+        .hero-stat p { font-size: 0.9rem; color: #606070; margin: 0; }
+        
+        section { padding: 5rem 0; position: relative; }
+        
         section h2 {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            font-weight: 900;
-            color: var(--cil-text-primary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            color: #ffffff;
             margin-bottom: 1rem;
             text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
-
+        
         section h2 .highlight {
-            color: var(--cil-primary);
+            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
-        section h3 {
-            font-size: clamp(1.3rem, 3vw, 1.8rem);
-            font-weight: 700;
-            color: var(--cil-text-primary);
-            margin-bottom: 1.5rem;
-        }
-
-        section p {
-            color: var(--cil-text-regular);
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
+        
         .section-subtitle {
             text-align: center;
-            color: var(--cil-text-regular);
-            font-size: 1.1rem;
-            max-width: 800px;
+            color: #a0a0b0;
+            font-size: 1.15rem;
+            max-width: 900px;
             margin: 0 auto 3rem;
+            line-height: 1.8;
         }
-
-        /* Cards */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
+        
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        
         .card {
-            background-color: var(--cil-white);
-            border: 1px solid var(--cil-border-color);
-            border-radius: 12px;
-            padding: 2rem;
+            background: #0d0d15;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 16px;
+            padding: 2.5rem;
             transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
         }
-
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            border-color: var(--cil-primary-light);
+            border-color: rgba(0, 212, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
         }
-
+        
+        .card:hover::before { transform: scaleX(1); }
+        
         .card-icon {
             width: 60px;
             height: 60px;
-            background-color: var(--cil-primary-light);
+            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.5rem;
             font-size: 1.8rem;
-            color: var(--cil-white);
+            color: #0a0a0f;
+            font-weight: bold;
         }
-
+        
         .card h3 {
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.3rem;
-            color: var(--cil-text-primary);
+            color: #ffffff;
             margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-
-        .card p {
-            color: var(--cil-text-regular);
-            font-size: 0.95rem;
-        }
-
+        
+        .card p { color: #a0a0b0; font-size: 0.95rem; line-height: 1.7; }
+        
         .card-feature {
             display: flex;
             align-items: flex-start;
             gap: 0.75rem;
             margin-top: 1rem;
         }
-
+        
         .card-feature-icon {
             width: 24px;
             height: 24px;
-            background-color: var(--cil-primary);
+            background: #00d4ff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--cil-white);
+            color: #0a0a0f;
             font-size: 0.8rem;
             flex-shrink: 0;
+            font-weight: bold;
         }
-
-        .card-feature p {
-            margin: 0;
-            font-size: 0.9rem;
-        }
-
-        /* Two Column Layout */
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            margin-top: 3rem;
-        }
-
-        .column {
-            display: flex;
-            flex-direction: column;
-        }
-
+        
+        .card-feature p { margin: 0; font-size: 0.9rem; color: #a0a0b0; }
+        .card-feature .highlight { color: #00d4ff; }
+        
+        .two-column { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 3rem; }
+        
         .column h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            color: #00d4ff;
             margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
+        
+        .column p { color: #a0a0b0; margin-bottom: 1rem; line-height: 1.8; }
+        .column ul { margin-top: 1rem; padding-left: 1.5rem; }
+        .column li { color: #a0a0b0; margin-bottom: 0.5rem; line-height: 1.7; }
+        .column li strong { color: #00d4ff; }
+        
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        
         .stat {
+            background: #0d0d15;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 16px;
+            padding: 2.5rem;
             text-align: center;
-            padding: 2rem;
-            background-color: var(--cil-white);
-            border-radius: 12px;
-            border: 1px solid var(--cil-border-color);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
         }
-
+        
+        .stat:hover { border-color: rgba(0, 212, 255, 0.5); box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+        
         .stat h4 {
-            font-size: 3rem;
-            font-weight: 900;
-            color: var(--cil-primary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #00d4ff;
             margin-bottom: 0.5rem;
         }
-
-        .stat p {
-            font-size: 1rem;
-            color: var(--cil-text-regular);
-            margin: 0;
-        }
-
-        /* Partners */
-        .partners {
-            padding: 4rem 0;
-            background-color: var(--cil-white);
-        }
-
-        .partners h2 {
-            margin-bottom: 1rem;
-        }
-
-        .partners p {
-            text-align: center;
-            color: var(--cil-text-regular);
-            margin-bottom: 3rem;
-        }
-
+        
+        .stat p { font-size: 1rem; color: #a0a0b0; margin: 0; }
+        
+        .partners { padding: 4rem 0; background: rgba(0, 212, 255, 0.02); }
+        .partners p { text-align: center; color: #a0a0b0; margin-bottom: 3rem; }
+        
         .partner-logos {
             display: flex;
             justify-content: center;
@@ -432,644 +338,559 @@
             gap: 3rem;
             flex-wrap: wrap;
         }
-
+        
         .partner-logo {
-            height: 40px;
-            opacity: 0.7;
-            transition: opacity 0.3s;
+            height: 50px;
+            opacity: 0.6;
+            transition: all 0.3s;
+            filter: brightness(0) saturate(100%) invert(80%) sepia(100%) saturate(2000%) hue-rotate(180deg) brightness(100%) contrast(100%);
         }
-
-        .partner-logo:hover {
-            opacity: 1;
-        }
-
-        /* FAQ */
-        .faq {
-            padding: 5rem 0;
-            background-color: var(--cil-white);
-        }
-
+        
+        .partner-logo:hover { opacity: 1; transform: scale(1.1); }
+        
+        .faq { padding: 5rem 0; background: rgba(0, 212, 255, 0.01); }
+        
         .faq-item {
-            background-color: var(--cil-gray-100);
-            border: 1px solid var(--cil-border-color);
+            background: #0d0d15;
+            border: 1px solid rgba(0, 212, 255, 0.3);
             border-radius: 12px;
             margin-bottom: 1rem;
             overflow: hidden;
         }
-
+        
         .faq-question {
             padding: 1.5rem;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: transparent;
+            background: transparent;
             transition: background-color 0.3s;
         }
-
-        .faq-question:hover {
-            background-color: var(--cil-gray-200);
-        }
-
-        .faq-question h3 {
-            font-size: 1.1rem;
-            margin: 0;
-            color: var(--cil-text-primary);
-        }
-
+        
+        .faq-question:hover { background: rgba(0, 212, 255, 0.05); }
+        .faq-question h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; margin: 0; color: #ffffff; }
+        
         .faq-answer {
             padding: 0 1.5rem 1.5rem;
             display: none;
-            color: var(--cil-text-regular);
-            background-color: var(--cil-white);
+            color: #a0a0b0;
+            background: rgba(0, 0, 0, 0.2);
         }
-
-        .faq-answer.active {
-            display: block;
-        }
-
+        
+        .faq-answer.active { display: block; }
+        
         .faq-toggle {
             font-size: 1.5rem;
-            color: var(--cil-primary);
+            color: #00d4ff;
             transition: transform 0.3s;
+            font-weight: bold;
         }
-
-        .faq-item.active .faq-toggle {
-            transform: rotate(45deg);
-        }
-
-        /* Contact Section */
-        #contacto {
-            background-color: var(--cil-bg-page);
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            margin-top: 3rem;
-        }
-
+        
+        .faq-item.active .faq-toggle { transform: rotate(45deg); }
+        
+        #contacto { background: rgba(0, 212, 255, 0.02); }
+        
+        .contact-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 3rem; }
+        
         .contact-info h3 {
-            color: var(--cil-primary);
+            font-family: 'Orbitron', sans-serif;
+            color: #00d4ff;
             margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-
-        .contact-info p {
-            color: var(--cil-text-regular);
-        }
-
-        .contact-details {
-            margin-top: 2rem;
-        }
-
-        .contact-details p {
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-details strong {
-            color: var(--cil-text-primary);
-        }
-
-        .contact-details a {
-            color: var(--cil-primary);
-            text-decoration: none;
-        }
-
-        .contact-details a:hover {
-            text-decoration: underline;
-        }
-
+        
+        .contact-info p { color: #a0a0b0; }
+        .contact-details { margin-top: 2rem; }
+        .contact-details p { margin-bottom: 0.75rem; color: #a0a0b0; }
+        .contact-details strong { color: #ffffff; }
+        .contact-details a { color: #00d4ff; text-decoration: none; transition: color 0.3s; }
+        .contact-details a:hover { color: #66e5ff; text-decoration: underline; }
+        
         form {
-            background-color: var(--cil-white);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--cil-border-color);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            background: #0d0d15;
+            padding: 2.5rem;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 16px;
         }
-
+        
         form h3 {
-            color: var(--cil-primary);
+            font-family: 'Orbitron', sans-serif;
+            color: #00d4ff;
             margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--cil-text-primary);
-            font-weight: 500;
-        }
-
+        
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: #ffffff; font-weight: 500; }
+        
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 0.8rem 1rem;
-            border: 1px solid var(--cil-border-color);
-            border-radius: 6px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
             font-size: 1rem;
             font-family: inherit;
+            background: #050508;
+            color: #ffffff;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
-
+        
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
-            border-color: var(--cil-primary);
-            box-shadow: 0 0 0 3px rgba(0, 103, 239, 0.1);
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
         }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        /* Footer */
+        
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-actions { display: flex; justify-content: flex-end; }
+        
         footer {
-            background-color: var(--cil-white);
-            border-top: 1px solid var(--cil-border-color);
+            background: #050508;
+            border-top: 1px solid rgba(0, 212, 255, 0.3);
             padding: 3rem 0 1.5rem;
         }
-
+        
         .footer-content {
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
             margin-bottom: 2rem;
         }
-
+        
         .footer-logo {
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.5rem;
             font-weight: 900;
-            color: var(--cil-primary);
+            color: #00d4ff;
+            margin-bottom: 1rem;
         }
-
-        .footer-logo span {
-            color: var(--cil-gray-700);
-        }
-
-        .footer-description {
-            color: var(--cil-text-regular);
-            line-height: 1.7;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .footer-links a {
-            color: var(--cil-text-regular);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--cil-primary);
-        }
-
-        .footer-contact {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .footer-contact p {
-            color: var(--cil-text-regular);
-            margin: 0;
-            font-size: 0.95rem;
-        }
-
+        
+        .footer-description { color: #a0a0b0; line-height: 1.7; max-width: 400px; }
+        .footer-links { display: flex; flex-direction: column; gap: 1rem; }
+        .footer-links a { color: #a0a0b0; text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: #00d4ff; }
+        
+        .footer-contact p { color: #a0a0b0; margin: 0; font-size: 0.95rem; }
         .footer-bottom {
             padding-top: 2rem;
-            border-top: 1px solid var(--cil-border-light);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
             gap: 1rem;
             align-items: center;
         }
-
-        .footer-bottom p {
-            color: var(--cil-text-secondary);
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        .footer-bottom a {
-            color: var(--cil-primary);
-            text-decoration: none;
-        }
-
-        .footer-bottom a:hover {
-            text-decoration: underline;
-        }
-
-        /* Responsive */
+        
+        .footer-bottom p { color: #606070; font-size: 0.9rem; margin: 0; }
+        .footer-bottom a { color: #00d4ff; text-decoration: none; }
+        .footer-bottom a:hover { text-decoration: underline; }
+        
         @media (min-width: 768px) {
-            .nav-desktop {
-                display: flex;
-            }
-
-            .mobile-menu-toggle {
-                display: none;
-            }
-
-            .hero {
-                padding: 9rem 0 5rem;
-            }
-
-            .two-column {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .contact-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: 2fr 1fr 1fr 1fr;
-                gap: 3rem;
-            }
-
-            .footer-bottom {
-                flex-direction: row;
-                justify-content: space-between;
-            }
+            .nav-links { display: flex; }
+            .hero { padding: 11rem 0 7rem; }
+            .two-column { grid-template-columns: 1fr 1fr; }
+            .contact-grid { grid-template-columns: 1fr 1fr; }
+            .footer-content { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; }
+            .footer-bottom { flex-direction: row; justify-content: space-between; }
         }
-
+        
         @media (min-width: 1024px) {
-            .header-container {
-                padding: 0;
-            }
-
-            .hero h1 {
-                font-size: 3.5rem;
-            }
-
-            .stats {
-                grid-template-columns: repeat(4, 1fr);
-            }
+            .header-container { padding: 0; }
         }
-
-        /* Utility Classes */
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-1 { margin-top: 0.5rem; }
-        .mt-2 { margin-top: 1rem; }
-        .mt-3 { margin-top: 1.5rem; }
-        .mt-4 { margin-top: 2rem; }
-
-        .highlight {
-            color: var(--cil-primary);
-        }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050508; }
+        ::-webkit-scrollbar-thumb { background: #0099cc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00d4ff; }
     </style>
 </head>
-<body>
+<body class="lang-pt">
     <header>
         <div class="header-container">
-            <div class="logo">HPME <span>Share</span> México</div>
-            <nav class="nav-desktop">
-                <a href="#que-es">¿Qué es?</a>
+            <a href="#" class="logo">KCo</a>
+            <nav class="nav-links">
+                <a href="#que-es">Plataforma</a>
                 <a href="#beneficios">Beneficios</a>
-                <a href="#como-funciona">¿Cómo funciona?</a>
-                <a href="#socios">Socios</a>
-                <a href="#faq">FAQ</a>
-                <a href="#contacto">Contacto</a>
+                <a href="#como-funciona">Como Funciona</a>
+                <a href="#ml">Machine Learning</a>
+                <a href="#estrategia">Estrategia</a>
+                <a href="#contacto">Contato</a>
             </nav>
-            <a href="#contacto" class="cil-button cil-button--primary">Solicitar Acceso</a>
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            <div class="header-actions">
+                <div class="language-toggle">
+                    <button class="language-btn active" onclick="changeLanguage('pt')">PT</button>
+                    <button class="language-btn" onclick="changeLanguage('es')">ES</button>
+                </div>
+                <a href="#contacto" class="cta-btn">ACESSAR</a>
+            </div>
         </div>
     </header>
-
+    
     <main>
         <section class="hero">
             <div class="container">
-                <h1>El <span class="highlight">Futuro de la Movilidad</span> en México</h1>
-                <p>Únete al primer <strong>Living Lab as a Service</strong> que transforma cada kilómetro en datos valiosos, certificación y propiedad intelectual para la industria automotriz.</p>
+                <h1>KCo Fleet Intelligence <span class="highlight">Old But Gold TR8 IVSTO</span></h1>
+                <p>Plataforma de gestao de frota com inteligencia artificial e processamento de imagens. Pre-Seed alvo: <strong class="highlight">$30M+ USD</strong> em operacao real no Brasil e Mexico.</p>
                 <div class="hero-buttons">
-                    <a href="#contacto" class="cil-button cil-button--primary">Solicitar Acceso</a>
-                    <a href="#como-funciona" class="cil-button cil-button--outline">Ver ¿Cómo Funciona?</a>
+                    <a href="#estrategia" class="cta-btn">VER ESTRATEGIA</a>
+                    <a href="#contacto" class="cta-btn">CONTATO</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <h4>$30M+</h4>
+                        <p>Pre-Seed Target</p>
+                    </div>
+                    <div class="hero-stat">
+                        <h4>1000+</h4>
+                        <p>Veiculos Instrumentados</p>
+                    </div>
+                    <div class="hero-stat">
+                        <h4>24M</h4>
+                        <p>Faturamento Projetado</p>
+                    </div>
                 </div>
             </div>
         </section>
-
+        
         <section id="que-es">
             <div class="container">
-                <h2>¿Qué es <span class="highlight">HPME Share México</span>?</h2>
-                <p class="section-subtitle">Un ecosistema que captura datos físicos de fallas, desgaste y comportamiento en condiciones reales, resolviendo el gap de datos de la industria automotriz.</p>
-                <div class="two-column">
-                    <div class="column">
-                        <p>HPME Share México es un <strong>club de suscripción de vehículos instrumentados</strong> diseñado para capturar datos físicos de fallas, desgaste y comportamiento en condiciones reales de uso.</p>
-                        <p>Cada vehículo en nuestra flota está equipado con telemetría avanzada que registra:</p>
-                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
-                            <li style="margin-bottom: 0.5rem;">Comportamiento del conductor (frenadas, curvas, velocidad).</li>
-                            <li style="margin-bottom: 0.5rem;">Desgaste de piezas (neumáticos, frenos, suspensión).</li>
-                            <li style="margin-bottom: 0.5rem;">Fallas mecánicas (códigos OBD-II, vibraciones).</li>
-                            <li style="margin-bottom: 0.5rem;">Condiciones de infraestructura (baches, clima, tráfico).</li>
-                        </ul>
-                    </div>
-                    <div class="column">
-                        <p>Estos datos alimentan directamente los modelos de IA de <strong>Cilia Tecnología</strong> y se monetizan a través de:</p>
-                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
-                            <li style="margin-bottom: 0.5rem;"><strong>Licenciamiento de IP:</strong> Reportes exclusivos de fallas mecánicas.</li>
-                            <li style="margin-bottom: 0.5rem;"><strong>Primas de certificación:</strong> Vehículos seminuevos con historial verificado.</li>
-                            <li style="margin-bottom: 0.5rem;"><strong>Alertas predictivas:</strong> Notificaciones a concesionarias.</li>
-                            <li style="margin-bottom: 0.5rem;"><strong>Reducción de fraudes:</strong> Datos cruzados con aseguradoras.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="beneficios">
-            <div class="container">
-                <h2>Beneficios por <span class="highlight">Actor</span></h2>
-                <p class="section-subtitle">Descubre cómo HPME Share México transforma las ineficiencias de la cadena automotriz en oportunidades de crecimiento.</p>
+                <h2><span class="highlight">Plataforma</span> KCo</h2>
+                <p class="section-subtitle">Living Lab as a Service - Transformando dados fisicos de veiculos em inteligencia de negocio para a industria automotiva no Brasil e Mexico.</p>
                 <div class="cards">
                     <div class="card">
-                        <div class="card-icon">🚗</div>
-                        <h3>Concesionarias</h3>
-                        <p><strong class="highlight">+10–15%</strong> en precio de reventa con el Laudo de Transparencia HPME.</p>
+                        <div class="card-icon">BR</div>
+                        <h3>Operacao Brasil</h3>
+                        <p>Frota de 500 veiculos instrumentados com telemetria OBD-II, sensores de vibracao, GPS e cameras 360.</p>
                         <div class="card-feature">
-                            <div class="card-feature-icon">✓</div>
-                            <p><strong class="highlight">+8–20%</strong> en lucro anual con alertas predictivas.</p>
+                            <div class="card-feature-icon">+</div>
+                            <p><strong class="highlight">+20%</strong> de lucro para concessionarias</p>
                         </div>
                         <div class="card-feature">
-                            <div class="card-feature-icon">✓</div>
-                            <p>Flujo de taller previsible sin inversión en flota.</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🏢</div>
-                        <h3>Aseguradoras</h3>
-                        <p><strong class="highlight">–10–15%</strong> en índice de siniestralidad con datos de desgaste real.</p>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">✓</div>
-                            <p><strong class="highlight">–5–10%</strong> en pagos por fraudes.</p>
-                        </div>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">✓</div>
-                            <p>Optimización del 7–12% en precificación de primas.</p>
+                            <div class="card-feature-icon">+</div>
+                            <p><strong class="highlight">-15%</strong> em sinistralidade para seguradoras</p>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-icon">🏭</div>
-                        <h3>Armadoras y Proveedores</h3>
-                        <p><strong class="highlight">–40%</strong> en costos de recalls con pruebas en condiciones reales.</p>
+                        <div class="card-icon">MX</div>
+                        <h3>Operacao Mexico</h3>
+                        <p>Parceria com AXA Mexico, Banorte, Nissan e Volkswagen para capturando dados em condicoes reais.</p>
                         <div class="card-feature">
-                            <div class="card-feature-icon">✓</div>
-                            <p>Reportes exclusivos de desgaste de piezas.</p>
+                            <div class="card-feature-icon">+</div>
+                            <p><strong class="highlight">+15-20%</strong> em margen para oficinas</p>
                         </div>
                         <div class="card-feature">
-                            <div class="card-feature-icon">✓</div>
-                            <p>Licenciamiento de IP por $150K–$300K MXN por informe.</p>
+                            <div class="card-feature-icon">+</div>
+                            <p>Laudo de Transparencia HPME</p>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-icon">🔧</div>
-                        <h3>Talleres Independientes</h3>
-                        <p>Acceso a laudos técnicos y piezas certificadas.</p>
+                        <div class="card-icon">AI</div>
+                        <h3>Inteligencia Artificial</h3>
+                        <p>Detecta anomalias em tempo real com 95%+ de precisao usando modelos de ML treinados com dados reais.</p>
                         <div class="card-feature">
-                            <div class="card-feature-icon">✓</div>
-                            <p><strong class="highlight">+15–20%</strong> en margen por reparación.</p>
+                            <div class="card-feature-icon">+</div>
+                            <p>Processamento de imagens para avaliacao de danos</p>
                         </div>
                         <div class="card-feature">
-                            <div class="card-feature-icon">✓</div>
-                            <p>Capacitación en diagnóstico avanzado.</p>
+                            <div class="card-feature-icon">+</div>
+                            <p>Correlacao de anomalias entre setores via LOWDATAESC</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
-        <section id="como-funciona">
+        
+        <section id="beneficios">
             <div class="container">
-                <h2>¿Cómo <span class="highlight">Funciona</span>?</h2>
-                <p class="section-subtitle">Un proceso transparente y eficiente que transforma vehículos en datos valiosos.</p>
+                <h2>Beneficios por <span class="highlight">Setor</span></h2>
+                <p class="section-subtitle">Como cada ator da cadeia automotiva se beneficia da plataforma KCo</p>
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-icon">CAR</div>
+                        <h3>Concessionarias</h3>
+                        <p><strong class="highlight">+8-20%</strong> em lucro com alertas preditivas e primas de certificacao.</p>
+                        <div class="card-feature">
+                            <div class="card-feature-icon">OK</div>
+                            <p>Acesso a veiculos com Laudo de Transparencia</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">INS</div>
+                        <h3>Aseguradoras</h3>
+                        <p><strong class="highlight">-10-15%</strong> em indice de sinistralidade com dados de desgaste real.</p>
+                        <div class="card-feature">
+                            <div class="card-feature-icon">OK</div>
+                            <p><strong class="highlight">-5-10%</strong> em pagos por fraudes.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">IND</div>
+                        <h3>Montadoras</h3>
+                        <p><strong class="highlight">-40%</strong> em custos de recalls com provas em condicoes reais.</p>
+                        <div class="card-feature">
+                            <div class="card-feature-icon">OK</div>
+                            <p>Relatorios exclusivos de desgaste de pecas.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">WRK</div>
+                        <h3>Oficinas</h3>
+                        <p>Acesso a laudos tecnicos e pecas certificadas.</p>
+                        <div class="card-feature">
+                            <div class="card-feature-icon">OK</div>
+                            <p><strong class="highlight">+15-20%</strong> em margen por reparacao.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="ml">
+            <div class="container">
+                <h2><span class="highlight">Machine Learning</span> & Processamento de Imagens</h2>
+                <p class="section-subtitle">Inteligencia Artificial para detectar anomalias e processar imagens de veiculos em tempo real.</p>
                 <div class="two-column">
                     <div class="column">
-                        <h3>1. Adquisición y Instrumentación</h3>
-                        <p>Compramos vehículos en subastas de aseguradoras (ej. AXA México, Banorte) con costo depreciado.</p>
-                        <p>Cada vehículo se instrumenta con:</p>
-                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
-                            <li style="margin-bottom: 0.5rem;">Telemetría OBD-II (códigos de falla, rendimiento del motor).</li>
-                            <li style="margin-bottom: 0.5rem;">Sensores de aceleración y vibración.</li>
-                            <li style="margin-bottom: 0.5rem;">GPS y cámaras 360° para registro de infraestructura.</li>
+                        <h3>Detecção de Anomalias</h3>
+                        <p>Modelos de ML treinados com dados reais de telemetria:</p>
+                        <ul>
+                            <li><strong>Superaquecimento do motor</strong> (temperatura > 120C)</li>
+                            <li><strong>Pressao do oleo anormal</strong> (fora da faixa 20-80 psi)</li>
+                            <li><strong>Tensao da bateria elevada</strong> (> 14.5V)</li>
+                            <li><strong>Codigos OBD-II</strong> em tempo real</li>
+                            <li><strong>Vibracao excessiva</strong> em qualquer eixo</li>
                         </ul>
-                        
-                        <h3 class="mt-4">3. Captura de Datos</h3>
-                        <p>Cada kilómetro recorrido genera datos que se procesan en DataCo México:</p>
-                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
-                            <li style="margin-bottom: 0.5rem;">Comportamiento del conductor.</li>
-                            <li style="margin-bottom: 0.5rem;">Desgaste de piezas en tiempo real.</li>
-                            <li style="margin-bottom: 0.5rem;">Fallas mecánicas detectadas.</li>
-                            <li style="margin-bottom: 0.5rem;">Condiciones de carreteras y clima.</li>
-                        </ul>
+                        <h3 class="mt-4">Integracao com LOWDATAESC</h3>
+                        <p>Correlacao de anomalias entre setores: Automotivo, Seguros, Transporte, Manufatura, Energia, Cidades Inteligentes.</p>
                     </div>
                     <div class="column">
-                        <h3>2. Suscripción HPME Share</h3>
-                        <p>Los vehículos están disponibles para suscriptores:</p>
-                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
-                            <li style="margin-bottom: 0.5rem;">Ejecutivos y socios de Cilia Tecnología.</li>
-                            <li style="margin-bottom: 0.5rem;">Concesionarias (para pruebas de campo).</li>
-                            <li style="margin-bottom: 0.5rem;">Talleres (para diagnóstico avanzado).</li>
+                        <h3>Processamento de Imagens</h3>
+                        <p>Analise AI de imagens de veiculos:</p>
+                        <ul>
+                            <li><strong>Detecao de objetos</strong> (pneus, farois, portas, etc.)</li>
+                            <li><strong>Identificacao de anomalias visuais</strong> (amassados, arranhoes)</li>
+                            <li><strong>Avaliacao de danos</strong> com estimativa de custo</li>
+                            <li><strong>Classificacao de condicao</strong> do veiculo</li>
+                            <li><strong>Reconhecimento de placas</strong> e VIN</li>
+                            <li><strong>Analise 360</strong> do veiculo</li>
                         </ul>
-                        <p><strong>Costo de suscripción:</strong> $8,000–$15,000 MXN/mes.</p>
-                        
-                        <h3 class="mt-4">4. Monetización</h3>
-                        <p>Los datos se transforman en ingresos:</p>
-                        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
-                            <li style="margin-bottom: 0.5rem;">Licenciamiento de IP: Reportes de fallas a armadoras.</li>
-                            <li style="margin-bottom: 0.5rem;">Alertas predictivas: Envío a concesionarias.</li>
-                            <li style="margin-bottom: 0.5rem;">Reventa certificada: Vehículos con Laudo de Transparencia.</li>
-                        </ul>
+                        <h3 class="mt-4">Capacidades de IA</h3>
+                        <p>Precisao > 95% na identificacao de danos, processamento em tempo real com latencia < 100ms.</p>
                     </div>
                 </div>
             </div>
         </section>
-
+        
         <section class="stats">
             <div class="container">
-                <h2>Nuestros <span class="highlight">Números</span></h2>
-                <p class="section-subtitle">Proyecciones para el primer año de operación en México.</p>
+                <h2>Nossos <span class="highlight">Numeros</span></h2>
+                <p class="section-subtitle">Projecoes para os proximos 24 meses de operacao no Brasil e Mexico.</p>
                 <div class="stats">
                     <div class="stat">
-                        <h4>50+</h4>
-                        <p>Vehículos instrumentados</p>
+                        <h4>1000+</h4>
+                        <p>Veiculos Instrumentados</p>
                     </div>
                     <div class="stat">
-                        <h4>200+</h4>
-                        <p>Suscriptores activos</p>
+                        <h4>$36M</h4>
+                        <p>Faturamento Anual Projetado</p>
                     </div>
                     <div class="stat">
-                        <h4>$15M–$25M MXN</h4>
-                        <p>Ingresos proyectados</p>
+                        <h4>350%</h4>
+                        <p>ROI Anual Estimado</p>
                     </div>
                     <div class="stat">
-                        <h4>200–300%</h4>
-                        <p>ROI anual estimado</p>
+                        <h4>500+</h4>
+                        <p>Assinantes Ativos</p>
                     </div>
                 </div>
             </div>
         </section>
-
+        
+        <section id="estrategia">
+            <div class="container">
+                <h2><span class="highlight">Estrategia</span> Brasil & Mexico</h2>
+                <p class="section-subtitle">Plano de expansao e operacao para alcancar o Pre-Seed de $30M+ USD.</p>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>BRASIL</h3>
+                        <p><strong>Entrada:</strong> Q1 2025 | <strong>Meta:</strong> 500 veiculos em 24 meses</p>
+                        <p><strong>Modelo de receita:</strong> Assinaturas, licenciamento de anomalias, processamento de imagens, marketplace de dados.</p>
+                        <p><strong>Parceiros:</strong> Localiza, Movida, WebMotors, iFood Fleet.</p>
+                        <p><strong>Vantagem:</strong> Integracao LOWDATAESC, precisao > 95%, infraestrutura 99.9% uptime.</p>
+                    </div>
+                    <div class="column">
+                        <h3>MEXICO</h3>
+                        <p><strong>Entrada:</strong> Q2 2025 | <strong>Meta:</strong> 500 veiculos em 24 meses</p>
+                        <p><strong>Modelo de receita:</strong> Assinaturas, manutencao preditiva, revenda certificada, gestao de frota.</p>
+                        <p><strong>Parceiros:</strong> AXA Mexico, Banorte, Nissan, Volkswagen.</p>
+                        <p><strong>Vantagem:</strong> Relacionamentos estabelecidos, telemetria real-time, avaliacao de danos por imagens.</p>
+                    </div>
+                </div>
+                <h3 class="mt-5">Por que usar LOWDATAESC?</h3>
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-icon">LINK</div>
+                        <h3>Conexao entre Setores</h3>
+                        <p>Correlacao de anomalias entre Automotivo, Seguros, Transporte, Manufatura, Energia, Cidades Inteligentes.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">DATA</div>
+                        <h3>Beneficios da Integracao</h3>
+                        <p>Correlacao em tempo real, capacidades preditivas melhoradas, reducao de falsos positivos, infraestrutura compartilhada.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">$</div>
+                        <h3>Potencial de Ganhos</h3>
+                        <p>Ano 1: $15M-25M USD | Ano 2: $30M-50M USD | 24 meses: $45M-75M USD</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
         <section id="socios" class="partners">
             <div class="container">
-                <h2>Socios <span class="highlight">Estratégicos</span></h2>
-                <p>Colaboramos con los líderes de la industria automotriz en México para crear un ecosistema de datos y movilidad sin precedentes.</p>
+                <h2>Parceiros <span class="highlight">Estrategicos</span></h2>
+                <p>Colaboramos com lideres da industria automotiva no Brasil e Mexico.</p>
                 <div class="partner-logos">
-                    <img src="https://via.placeholder.com/120x40/0067ef/ffffff?text=AXA+M%C3%A9xico" alt="AXA México" class="partner-logo">
-                    <img src="https://via.placeholder.com/120x40/0067ef/ffffff?text=Banorte" alt="Banorte" class="partner-logo">
-                    <img src="https://via.placeholder.com/120x40/0067ef/ffffff?text=GNP" alt="GNP" class="partner-logo">
-                    <img src="https://via.placeholder.com/120x40/0067ef/ffffff?text=Nissan" alt="Nissan Mexicana" class="partner-logo">
-                    <img src="https://via.placeholder.com/120x40/0067ef/ffffff?text=Volkswagen" alt="Volkswagen de México" class="partner-logo">
-                    <img src="https://via.placeholder.com/120x40/0067ef/ffffff?text=Autofin" alt="Grupo Autofin" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Localiza" alt="Localiza" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Movida" alt="Movida" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=AXA+Mexico" alt="AXA Mexico" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Banorte" alt="Banorte" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Nissan" alt="Nissan" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Volkswagen" alt="Volkswagen" class="partner-logo">
                 </div>
             </div>
         </section>
-
+        
         <section id="faq">
             <div class="container">
-                <h2>Preguntas <span class="highlight">Frecuentes</span></h2>
-                <p class="section-subtitle">Respuestas a las dudas más comunes sobre HPME Share México.</p>
+                <h2>Perguntas <span class="highlight">Frequentes</span></h2>
+                <p class="section-subtitle">Respostas as duvidas mais comuns sobre a plataforma KCo.</p>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>¿Cómo me suscribo a HPME Share México?</h3>
+                        <h3>Como me inscrevo na plataforma KCo?</h3>
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        <p>Puedes solicitar acceso completando el formulario en la sección de <a href="#contacto" style="color: var(--cil-primary);">Contacto</a>. Nuestro equipo se pondrá en contacto contigo para validar tu perfil y asignarte un vehículo según disponibilidad.</p>
+                        <p>Preencha o formulario na secao de Contato. Nossa equipe entrara em contato para validar seu perfil.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>¿Qué tipo de vehículos están disponibles?</h3>
+                        <h3>Que tipo de veiculos estao disponiveis?</h3>
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        <p>Trabajamos con vehículos populares en México, como Nissan Versa, Chevrolet Aveo, Volkswagen Jetta, y modelos de 2 a 4 años de antigüedad. Todos están instrumentados con telemetría avanzada.</p>
+                        <p>Veiculos populares no Brasil e Mexico, todos instrumentados com telemetria e cameras para processamento de imagens.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>¿Cómo se garantiza la privacidad de mis datos?</h3>
+                        <h3>Como e garantida a privacidade?</h3>
                         <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        <p>Cumplimos estrictamente con la <strong>LFPDPPP</strong>. Todos los datos de telemetría se anonimizan antes de ser procesados, y contamos con un DPO (Data Protection Officer) dedicado.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>¿Qué es el Laudo de Transparencia HPME?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Es un documento digital que certifica el historial completo de pruebas, reparaciones y substituciones de un vehículo en nuestra flota, permitiendo venderlo con un premium del 10–15%.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>¿Cómo beneficia HPME Share a las concesionarias?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Reciben alertas predictivas para reparaciones programadas (+8–20% en lucro), acceden a vehículos con Laudo de Transparencia (+10–15% en precio), y operan como nodos de entrega.</p>
+                        <p>Cumprimos LGPD (Brasil) e LFPDPPP (Mexico). Dados sao anonimizados e contamos com DPO dedicado.</p>
                     </div>
                 </div>
             </div>
         </section>
-
+        
         <section id="contacto">
             <div class="container">
-                <h2>Contáctanos</h2>
-                <p class="section-subtitle">¿Listo para transformar la movilidad? Contáctanos para más información.</p>
+                <h2>Contato</h2>
+                <p class="section-subtitle">Pronto para transformar a mobilidade? Entre em contato.</p>
                 <div class="contact-grid">
                     <div class="contact-info">
-                        <h3>Información de Contacto</h3>
-                        <p>Estamos aquí para ayudarte a implementar HPME Share México en tu organización.</p>
+                        <h3>Informacoes de Contato</h3>
+                        <p>Estamos aqui para ajudar a implementar a plataforma KCo em sua organizacao.</p>
                         <div class="contact-details">
-                            <p><strong>Email:</strong> <a href="mailto:contacto@hpmeshare.mx">contacto@hpmeshare.mx</a></p>
-                            <p><strong>Teléfono:</strong> +52 (55) 1234 5678</p>
-                            <p><strong>Dirección:</strong> Av. Paseo de la Reforma 250, Juarez, Ciudad de México</p>
-                        </div>
-                        <div class="mt-3">
-                            <h4>Síguenos</h4>
-                            <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
-                                <a href="#" style="color: var(--cil-primary); font-size: 1.5rem;">📧</a>
-                                <a href="#" style="color: var(--cil-primary); font-size: 1.5rem;">📞</a>
-                                <a href="#" style="color: var(--cil-primary); font-size: 1.5rem;">📍</a>
-                            </div>
+                            <p><strong>Email:</strong> <a href="mailto:contato@kco.ai">contato@kco.ai</a></p>
+                            <p><strong>Telefone:</strong> +55 (11) 1234 5678 (BR) | +52 (55) 1234 5678 (MX)</p>
+                            <p><strong>Endereco BR:</strong> Av. Faria Lima, 3900, Sao Paulo - SP</p>
+                            <p><strong>Endereco MX:</strong> Av. Paseo de la Reforma 250, Juarez, CDMX</p>
                         </div>
                     </div>
                     <form id="contactForm">
-                        <h3>Solicitar Acceso</h3>
+                        <h3>Solicitar Acesso</h3>
                         <div class="form-group">
-                            <label for="nombre">Nombre Completo</label>
-                            <input type="text" id="nombre" name="nombre" required>
+                            <label for="nome">Nome Completo</label>
+                            <input type="text" id="nome" name="nome" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" required>
                         </div>
                         <div class="form-group">
-                            <label for="empresa">Empresa (Opcional)</label>
+                            <label for="empresa">Empresa</label>
                             <input type="text" id="empresa" name="empresa">
                         </div>
                         <div class="form-group">
-                            <label for="mensaje">Mensaje</label>
+                            <label for="pais">Pais</label>
+                            <select id="pais" name="pais" required>
+                                <option value="">Selecione</option>
+                                <option value="br">Brasil</option>
+                                <option value="mx">Mexico</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="mensaje">Mensagem</label>
                             <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
                         </div>
-                        <button type="submit" class="cil-button cil-button--primary" style="width: 100%;">Enviar Solicitud</button>
+                        <button type="submit" class="cta-btn" style="width: 100%;">Enviar Solicitacao</button>
                     </form>
                 </div>
             </div>
         </section>
     </main>
-
+    
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div>
-                    <div class="footer-logo">HPME <span>Share</span> México</div>
-                    <p class="footer-description mt-2">El primer Living Lab as a Service para la industria automotriz en México, transformando datos físicos en oportunidades de negocio.</p>
+                    <div class="footer-logo">KCo Fleet Intelligence</div>
+                    <p class="footer-description">O primeiro Living Lab as a Service para a industria automotiva no Brasil e Mexico, transformando dados fisicos em oportunidades de negocio com IA e processamento de imagens.</p>
                 </div>
                 <div class="footer-links">
-                    <a href="#que-es">¿Qué es?</a>
+                    <a href="#que-es">Plataforma</a>
                     <a href="#beneficios">Beneficios</a>
-                    <a href="#como-funciona">¿Cómo funciona?</a>
-                    <a href="#socios">Socios</a>
+                    <a href="#como-funciona">Como Funciona</a>
+                    <a href="#ml">Machine Learning</a>
                 </div>
                 <div class="footer-links">
+                    <a href="#estrategia">Estrategia</a>
                     <a href="#faq">FAQ</a>
-                    <a href="#contacto">Contacto</a>
-                    <a href="#">Política de Privacidad</a>
-                    <a href="#">Términos y Condiciones</a>
+                    <a href="#contacto">Contato</a>
+                    <a href="#">Privacidade</a>
                 </div>
                 <div class="footer-contact">
-                    <p><strong>Email:</strong> contacto@hpmeshare.mx</p>
-                    <p><strong>Teléfono:</strong> +52 (55) 1234 5678</p>
+                    <p><strong>Email:</strong> contato@kco.ai</p>
+                    <p><strong>Telefone:</strong> +55 (11) 1234 5678</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2026 HPME Share México. Todos los derechos reservados.</p>
-                <p>Desarrollado por <a href="#">Cilia Tecnología</a></p>
+                <p>&copy; 2024-2026 KCo Fleet Intelligence. Todos os direitos reservados.</p>
+                <p>Desenvolvido por <a href="#">Cilia Tecnologia</a> | Pre-Seed: $30M+ USD</p>
             </div>
         </div>
     </footer>
-
+    
     <script>
+        function changeLanguage(lang) {
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            document.body.className = 'lang-' + lang;
+            localStorage.setItem('kco-language', lang);
+        }
+        
         function toggleFaq(element) {
             const faqItem = element.parentElement;
             const answer = element.nextElementSibling;
@@ -1080,53 +901,47 @@
                 answer.classList.remove('active');
                 toggle.textContent = '+ ';
             } else {
-                // Cerrar todas las FAQ abiertas
                 document.querySelectorAll('.faq-item.active').forEach(item => {
                     item.classList.remove('active');
                     item.querySelector('.faq-answer').classList.remove('active');
                     item.querySelector('.faq-toggle').textContent = '+ ';
                 });
-                
-                // Abrir la FAQ actual
                 faqItem.classList.add('active');
                 answer.classList.add('active');
-                toggle.textContent = '− ';
+                toggle.textContent = '- ';
             }
         }
-
-        function toggleMobileMenu() {
-            // Implementar menu móvil si es necesario
-            alert('Menú móvil - Funcionalidad en desarrollo');
-        }
-
-        // Formulario de contacto
+        
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('¡Gracias por tu interés! Nos pondremos en contacto contigo pronto.');
+            alert('Obrigado pelo seu interesse! Entraremos em contato em breve.');
             this.reset();
         });
-
-        // Smooth scrolling para enlaces
+        
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         });
-
-        // Efecto de scroll para header
+        
         window.addEventListener('scroll', function() {
             const header = document.querySelector('header');
             if (window.scrollY > 100) {
-                header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                header.style.boxShadow = '0 4px 20px rgba(0, 212, 255, 0.2)';
             } else {
-                header.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.05)';
+                header.style.boxShadow = 'none';
+            }
+        });
+        
+        const savedLang = localStorage.getItem('kco-language') || 'pt';
+        document.querySelectorAll('.language-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.textContent === savedLang.toUpperCase()) {
+                btn.classList.add('active');
             }
         });
     </script>

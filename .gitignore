@@ -1,0 +1,105 @@
+# KCo Git Ignore
+# Old But Gold TR8 IVSTO
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# Testing
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# Database
+*.sqlite3
+*.db
+*.sqlite
+
+# Logs
+*.log
+logs/
+.log/
+
+# Docker
+.docker/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local configuration
+*.local
+*.config
+
+# ML Models (large files)
+# Note: Consider using git-lfs for models
+ML/models/*.pkl
+ML/models/*.pt
+ML/models/*.pth
+ML/models/*.h5
+ML/models/*.onnx
+ML/models/*.bin
+
+# Data files
+data/
+*.csv
+*.json
+*.parquet
+
+# Build artifacts
+backend/*.pyc
+backend/__pycache__/
+
+# SSL certificates (keep .example files)
+ssl/*.crt
+ssl/*.key
+ssl/*.pem
+!ssl/*.example.crt
+!ssl/*.example.key
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
