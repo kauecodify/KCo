@@ -6,78 +6,162 @@
 <title>KCo ML - Image Processing</title>
 <style>
 :root {
---blue: #00d4ff; --dark: #0a0a0f; --card: #0d0d15; --text: #a0a0b0;
+--primary: #00d4ff; --primary-dark: #0099cc; --secondary: #9d4edd;
+--bg-dark: #0a0a0f; --bg-darker: #050508; --bg-card: #0d0d15;
+--text: #ffffff; --text-muted: #a0a0b0; --text-dim: #606070;
+--success: #00ff00; --warning: #ffcc00; --error: #ff0000;
+--border: 1px solid rgba(0, 212, 255, 0.3);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: Arial, sans-serif; background: #0a0a0f; color: #fff; }
-header { background: rgba(10,10,15,0.95); padding: 1rem; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,212,255,0.3); }
-.header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
-.logo { font-weight: bold; color: #00d4ff; font-size: 1.5rem; }
-.nav-toggle { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
-.nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(10,10,15,0.98); padding: 1rem; border-bottom: 1px solid rgba(0,212,255,0.3); }
-.nav-menu.active { display: block; }
-.nav-menu a { display: block; color: #a0a0b0; text-decoration: none; padding: 0.75rem 1rem; }
-.nav-menu a:hover { color: #00d4ff; }
-.container { max-width: 1400px; margin: 0 auto; padding: 1rem; }
-section { padding: 1rem 0; }
-h1, h2 { color: #fff; }
-h1 { text-align: center; font-size: 1.8rem; }
-h2 { font-size: 1.4rem; border-bottom: 2px solid #00d4ff; padding-bottom: 0.5rem; }
-p { color: #a0a0b0; font-size: 0.95rem; }
-.card { background: #0d0d15; border: 1px solid rgba(0,212,255,0.3); border-radius: 12px; padding: 1rem; margin: 0.5rem 0; }
-.btn { display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #00d4ff, #9d4edd); border: none; border-radius: 20px; color: #0a0a0f; font-weight: bold; cursor: pointer; text-decoration: none; width: 100%; margin: 0.5rem 0; }
-.btn:hover { transform: translateY(-2px); }
-.upload-section { background: #0d0d15; border: 2px dashed rgba(0,212,255,0.3); border-radius: 12px; padding: 2rem; text-align: center; cursor: pointer; }
-.upload-section:hover { border-color: #00d4ff; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #fff; min-height: 100vh; }
+header { position: sticky; top: 0; z-index: 1000; background: rgba(10, 10, 15, 0.98); backdrop-filter: blur(10px); border-bottom: var(--border); padding: 0.75rem 0; }
+.header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 1rem; }
+.logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
+.nav-links { display: none; gap: 1.5rem; }
+.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; padding: 0.5rem 0; }
+.nav-links a:hover { color: var(--primary); }
+.auth-buttons { display: flex; gap: 0.75rem; align-items: center; }
+.auth-btn { padding: 0.5rem 1rem; background: transparent; border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 20px; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; font-weight: 500; text-decoration: none; }
+.auth-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(0, 212, 255, 0.1); }
+.auth-btn.login { background: rgba(0, 212, 255, 0.1); border-color: var(--primary); color: var(--primary); }
+.user-menu { position: relative; display: flex; align-items: center; gap: 0.5rem; }
+.user-avatar { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0a0a0f; font-weight: bold; cursor: pointer; }
+.user-dropdown { display: none; position: absolute; top: 100%; right: 0; background: var(--bg-card); border: var(--border); border-radius: 8px; padding: 0.5rem 0; min-width: 180px; z-index: 1000; }
+.user-dropdown.active { display: block; }
+.user-dropdown a { display: block; padding: 0.75rem 1rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; }
+.user-dropdown a:hover { background: rgba(0, 212, 255, 0.1); color: var(--primary); }
+.language-toggle { display: flex; gap: 0.25rem; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 20px; padding: 0.2rem; }
+.language-btn { padding: 0.4rem 0.75rem; background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.8rem; font-weight: 500; border-radius: 15px; }
+.language-btn:hover { color: var(--primary); }
+.language-btn.active { background: rgba(0, 212, 255, 0.3); color: var(--primary); }
+.nav-toggle { display: block; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; }
+.nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(10, 10, 15, 0.98); padding: 1rem; border-bottom: var(--border); flex-direction: column; gap: 0.5rem; }
+.nav-menu.active { display: flex; }
+.nav-menu a { display: block; color: var(--text-muted); text-decoration: none; padding: 0.75rem 1rem; border-radius: 8px; }
+.nav-menu a:hover { background: rgba(0, 212, 255, 0.1); color: var(--primary); }
+main { padding: 4rem 0 2rem; }
+.container { max-width: 1400px; margin: 0 auto; padding: 0 1rem; }
+section { padding: 1.5rem 0; }
+section:first-child { padding-top: 0; }
+.page-header { text-align: center; margin-bottom: 2rem; }
+.page-title { font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+.page-subtitle { color: var(--text-muted); font-size: 0.95rem; }
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 1rem 0; }
+.stat-card { background: var(--bg-card); border: var(--border); border-radius: 12px; padding: 1rem; text-align: center; }
+.stat-value { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+.stat-label { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.25rem; }
+.card { background: var(--bg-card); border: var(--border); border-radius: 12px; padding: 1.25rem; margin: 0.75rem 0; }
+.card-title { font-size: 1rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(0, 212, 255, 0.2); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; border-radius: 8px; color: #0a0a0f; font-weight: 600; cursor: pointer; text-decoration: none; font-size: 0.9rem; transition: all 0.2s; width: 100%; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(0, 212, 255, 0.1); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:disabled:hover { transform: none; }
+.btn-secondary { background: transparent; border: 1px solid rgba(0, 212, 255, 0.3); color: var(--primary); }
+.btn-secondary:hover { background: rgba(0, 212, 255, 0.1); border-color: var(--primary); }
+.btn-sm { padding: 0.5rem 1rem; font-size: 0.8rem; }
+.btn-group { display: flex; gap: 0.75rem; }
+.btn-group .btn { width: auto; }
+.tabs { display: flex; gap: 0.5rem; margin: 1rem 0; overflow-x: auto; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(0, 212, 255, 0.2); }
+.tab { padding: 0.6rem 1rem; background: transparent; border: 1px solid transparent; border-radius: 8px; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; font-weight: 500; white-space: nowrap; transition: all 0.2s; }
+.tab:hover { color: var(--primary); border-color: rgba(0, 212, 255, 0.3); }
+.tab.active { background: rgba(0, 212, 255, 0.1); color: var(--primary); border-color: var(--primary); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.form-group { margin: 1rem 0; }
+.form-label { display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.85rem; font-weight: 500; }
+.form-input, .form-select { width: 100%; padding: 0.75rem; border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 8px; background: #050508; color: #fff; font-size: 0.9rem; transition: all 0.2s; }
+.form-input:focus, .form-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2); }
+.form-row { display: flex; gap: 0.75rem; }
+.form-row .form-group { flex: 1; margin: 0; }
+.upload-section { background: var(--bg-card); border: 2px dashed rgba(0, 212, 255, 0.3); border-radius: 12px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.2s; }
+.upload-section:hover { border-color: var(--primary); background: rgba(0, 212, 255, 0.05); }
+.upload-section.dragover { border-color: var(--primary); background: rgba(0, 212, 255, 0.1); }
 .file-input { display: none; }
-.preview-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
-.preview-card { position: relative; width: calc(50% - 0.25rem); background: #0d0d15; border: 1px solid rgba(0,212,255,0.3); border-radius: 8px; overflow: hidden; }
+.upload-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 0.5rem; }
+.upload-text { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.25rem; }
+.upload-hint { color: var(--text-dim); font-size: 0.75rem; }
+.preview-container { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
+.preview-card { position: relative; width: calc(50% - 0.375rem); background: var(--bg-card); border: var(--border); border-radius: 8px; overflow: hidden; }
 .preview-card img { width: 100%; height: 100px; object-fit: cover; }
 .preview-info { padding: 0.5rem; }
 .preview-name { font-size: 0.75rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.remove-preview { position: absolute; top: 0.25rem; right: 0.25rem; width: 20px; height: 20px; background: #00d4ff; border: none; border-radius: 50%; color: #0a0a0f; cursor: pointer; font-size: 0.7rem; }
-.result-card { background: #0d0d15; border: 1px solid rgba(0,212,255,0.3); border-radius: 12px; padding: 1rem; margin: 0.5rem 0; }
-.result-header { display: flex; justify-content: space-between; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(0,212,255,0.2); margin-bottom: 0.5rem; }
-.result-title { font-weight: bold; color: #00d4ff; }
-.result-status { padding: 0.2rem 0.5rem; border-radius: 8px; font-size: 0.7rem; }
-.result-status.success { background: rgba(0,255,0,0.2); color: #0f0; }
-.result-status.processing { background: rgba(0,212,255,0.2); color: #00d4ff; }
-.result-status.error { background: rgba(255,0,0,0.2); color: #f00; }
-.result-content { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin: 0.5rem 0; }
+.remove-preview { position: absolute; top: 0.25rem; right: 0.25rem; width: 24px; height: 24px; background: var(--primary); border: none; border-radius: 50%; color: #0a0a0f; cursor: pointer; font-size: 1rem; font-weight: bold; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.remove-preview:hover { background: var(--secondary); }
+.result-card { background: var(--bg-card); border: var(--border); border-radius: 12px; padding: 1rem; margin: 0.75rem 0; }
+.result-header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(0, 212, 255, 0.2); margin-bottom: 0.75rem; }
+.result-title { font-weight: 600; color: var(--primary); font-size: 0.95rem; }
+.result-status { padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.7rem; font-weight: 600; }
+.result-status.success { background: rgba(0, 255, 0, 0.2); color: var(--success); }
+.result-status.processing { background: rgba(0, 212, 255, 0.2); color: var(--primary); }
+.result-status.warning { background: rgba(255, 153, 0, 0.2); color: var(--warning); }
+.result-status.error { background: rgba(255, 0, 0, 0.2); color: var(--error); }
+.result-content { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
 .result-item { }
-.result-label { font-size: 0.7rem; color: #606070; }
-.result-value { font-size: 0.85rem; color: #fff; }
-.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
-.stat-card { background: #0d0d15; border: 1px solid rgba(0,212,255,0.3); border-radius: 8px; padding: 1rem; text-align: center; }
-.stat-value { font-size: 1.3rem; color: #00d4ff; font-weight: bold; }
-.stat-label { font-size: 0.7rem; color: #a0a0b0; }
-.tabs { display: flex; gap: 0.5rem; margin: 1rem 0; overflow-x: auto; }
-.tab { padding: 0.5rem 1rem; background: transparent; border: 1px solid rgba(0,212,255,0.3); border-radius: 15px; color: #a0a0b0; cursor: pointer; white-space: nowrap; }
-.tab.active { background: linear-gradient(135deg, #00d4ff, #9d4edd); color: #0a0a0f; border-color: transparent; }
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-.list-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(0,212,255,0.1); }
+.result-label { font-size: 0.75rem; color: var(--text-dim); }
+.result-value { font-size: 0.85rem; color: #fff; font-weight: 500; }
+.list-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(0, 212, 255, 0.1); }
 .list-item:last-child { border-bottom: none; }
-.list-icon { width: 24px; height: 24px; background: rgba(0,212,255,0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #00d4ff; }
+.list-icon { width: 28px; height: 28px; background: rgba(0, 212, 255, 0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 0.8rem; }
 .list-content { flex: 1; }
-.list-title { font-size: 0.85rem; color: #fff; }
-.list-subtitle { font-size: 0.75rem; color: #a0a0b0; }
-.form-group { margin: 0.5rem 0; }
-.form-label { display: block; margin-bottom: 0.25rem; color: #a0a0b0; font-size: 0.8rem; }
-.form-input, .form-select { width: 100%; padding: 0.6rem; border: 1px solid rgba(0,212,255,0.3); border-radius: 8px; background: #050508; color: #fff; font-size: 0.85rem; }
-.form-input:focus, .form-select:focus { outline: none; border-color: #00d4ff; }
-.spinner { width: 30px; height: 30px; border: 3px solid rgba(0,212,255,0.2); border-top-color: #00d4ff; border-radius: 50%; animation: spin 1s linear infinite; margin: 1rem auto; }
+.list-title { font-size: 0.85rem; color: #fff; font-weight: 500; }
+.list-subtitle { font-size: 0.75rem; color: var(--text-dim); }
+.history-item { cursor: pointer; transition: all 0.2s; }
+.history-item:hover { background: rgba(0, 212, 255, 0.05); border-color: var(--primary); }
+.progress-container { width: 100%; height: 4px; background: rgba(0, 212, 255, 0.2); border-radius: 2px; overflow: hidden; margin: 0.75rem 0; }
+.progress-bar { height: 100%; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 2px; width: 0%; transition: width 0.3s; }
+.spinner { width: 30px; height: 30px; border: 3px solid rgba(0, 212, 255, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 1rem auto; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.progress-container { width: 100%; height: 4px; background: rgba(0,212,255,0.2); border-radius: 2px; overflow: hidden; margin: 0.5rem 0; }
-.progress-bar { height: 100%; background: linear-gradient(135deg, #00d4ff, #9d4edd); border-radius: 2px; width: 0%; transition: width 0.3s; }
-footer { background: #050508; border-top: 1px solid rgba(0,212,255,0.3); padding: 1rem; text-align: center; margin-top: 1rem; }
-.footer-logo { font-size: 1.2rem; color: #00d4ff; font-weight: bold; }
-.footer-text { color: #606070; font-size: 0.75rem; }
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #050508; }
-::-webkit-scrollbar-thumb { background: #0099cc; border-radius: 2px; }
-@media (min-width: 600px) { .preview-card { width: calc(33.33% - 0.33rem); } .result-content { grid-template-columns: repeat(3, 1fr); } .stats-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 768px) { .container { padding: 1rem 2rem; } .nav-toggle { display: none; } .nav-menu { display: flex; position: static; background: transparent; border: none; padding: 0; gap: 1rem; } .nav-menu a { padding: 0.5rem 0; } .preview-card { width: calc(25% - 0.5rem); } .result-content { grid-template-columns: repeat(4, 1fr); } .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+.alert { padding: 1rem; border-radius: 8px; margin: 0.75rem 0; display: flex; align-items: flex-start; gap: 0.75rem; }
+.alert-icon { font-size: 1.25rem; flex-shrink: 0; }
+.alert-content { flex: 1; }
+.alert-title { font-weight: 600; font-size: 0.9rem; }
+.alert-message { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+.alert-success { background: rgba(0, 255, 0, 0.1); border: 1px solid rgba(0, 255, 0, 0.3); color: var(--success); }
+.alert-warning { background: rgba(255, 153, 0, 0.1); border: 1px solid rgba(255, 153, 0, 0.3); color: var(--warning); }
+.alert-error { background: rgba(255, 0, 0, 0.1); border: 1px solid rgba(255, 0, 0, 0.3); color: var(--error); }
+.alert-info { background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); color: var(--primary); }
+.strategy-section { background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(157, 78, 221, 0.05) 100%); border: var(--border); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+.strategy-title { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary); }
+.strategy-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.strategy-card { background: var(--bg-card); border: var(--border); border-radius: 8px; padding: 1rem; }
+.strategy-card-title { font-size: 0.85rem; font-weight: 600; color: var(--primary); margin-bottom: 0.5rem; }
+.strategy-card-value { font-size: 1.25rem; font-weight: 700; color: #fff; }
+.strategy-card-label { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.25rem; }
+footer { background: var(--bg-darker); border-top: var(--border); padding: 1.5rem; text-align: center; margin-top: 2rem; }
+.footer-content { max-width: 1400px; margin: 0 auto; }
+.footer-logo { font-size: 1.2rem; color: var(--primary); font-weight: bold; }
+.footer-text { color: var(--text-dim); font-size: 0.8rem; margin-top: 0.5rem; }
+.footer-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; }
+.footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; }
+.footer-links a:hover { color: var(--primary); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-darker); }
+::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 3px; }
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); z-index: 2000; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.active { display: flex; }
+.modal { background: var(--bg-card); border: var(--border); border-radius: 12px; padding: 1.5rem; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(0, 212, 255, 0.2); }
+.modal-title { font-size: 1.25rem; font-weight: 600; color: var(--primary); }
+.modal-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem; padding: 0.25rem; line-height: 1; }
+.modal-close:hover { color: var(--primary); }
+.modal-body { }
+.modal-footer { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(0, 212, 255, 0.2); }
+.modal-footer .btn { width: auto; }
+.toast-container { position: fixed; top: 1rem; right: 1rem; z-index: 3000; display: flex; flex-direction: column; gap: 0.75rem; }
+.toast { background: var(--bg-card); border: var(--border); border-radius: 8px; padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; animation: slideIn 0.3s ease; max-width: 400px; }
+.toast.success { border-color: var(--success); }
+.toast.warning { border-color: var(--warning); }
+.toast.error { border-color: var(--error); }
+.toast.info { border-color: var(--primary); }
+.toast-icon { font-size: 1.25rem; }
+.toast-message { font-size: 0.85rem; color: #fff; }
+.toast-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem; padding: 0.25rem; line-height: 1; margin-left: auto; }
+.toast-close:hover { color: #fff; }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@media (min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } .preview-card { width: calc(33.33% - 0.5rem); } .result-content { grid-template-columns: repeat(4, 1fr); } .strategy-grid { grid-template-columns: repeat(4, 1fr); } .form-row { flex-direction: row; } }
+@media (min-width: 768px) { .container { padding: 0 2rem; } .nav-toggle { display: none; } .nav-links { display: flex; } .nav-menu { display: none; } .language-toggle { margin-left: 1rem; } .stats-grid { grid-template-columns: repeat(4, 1fr); } .preview-card { width: calc(25% - 0.5rem); } .result-content { grid-template-columns: repeat(4, 1fr); } .strategy-grid { grid-template-columns: repeat(4, 1fr); } .upload-section { padding: 2.5rem; } .page-title { font-size: 2rem; } }
+@media (min-width: 1024px) { .auth-buttons { margin-left: 1rem; } }
+@media print { body { background: #fff; color: #000; } header, .nav-toggle, .nav-menu, .language-toggle, .btn, .upload-section { display: none; } .result-card, .card { break-inside: avoid; } }
 </style>
 </head>
 <body>
@@ -85,338 +169,934 @@ footer { background: #050508; border-top: 1px solid rgba(0,212,255,0.3); padding
 <div class="header-content">
 <a href="/" class="logo">KCo ML</a>
 <button class="nav-toggle" onclick="toggleNav()">☰</button>
-<nav class="nav-menu" id="navMenu">
+<nav class="nav-links" id="navLinks">
 <a href="#upload">Upload</a>
-<a href="#results">Resultados</a>
-<a href="#history">Historico</a>
-<a href="#settings">Configuracoes</a>
+<a href="#results">Results</a>
+<a href="#history">History</a>
+<a href="#reports">Reports</a>
+<a href="#strategy">Strategy</a>
 </nav>
 <div class="language-toggle">
 <button class="language-btn active" onclick="changeLanguage('pt')">PT</button>
 <button class="language-btn" onclick="changeLanguage('es')">ES</button>
 </div>
+<div class="auth-buttons">
+<button class="auth-btn login" onclick="showLoginModal()">Login</button>
+<button class="auth-btn" onclick="showRegisterModal()">Register</button>
+<div class="user-menu" id="userMenu" style="display: none;">
+<div class="user-avatar" onclick="toggleUserMenu()">K</div>
+<div class="user-dropdown" id="userDropdown">
+<a href="#" onclick="showProfileModal()">Profile</a>
+<a href="#" onclick="showSettingsModal()">Settings</a>
+<a href="#" onclick="logout()">Logout</a>
+</div>
+</div>
 </div>
 </header>
+
 <main>
-<section class="container">
-<h1>Processamento de Imagens ML</h1>
-<p style="text-align: center; color: #a0a0b0;">Analise de veiculos com inteligencia artificial em tempo real</p>
+<!-- Login Modal -->
+<div class="modal-overlay" id="loginModal">
+<div class="modal">
+<div class="modal-header">
+<div class="modal-title">Login to KCo ML</div>
+<button class="modal-close" onclick="closeLoginModal()">&times;</button>
+</div>
+<div class="modal-body">
+<div class="alert alert-info" id="loginInfo">
+<div class="alert-icon">ℹ️</div>
+<div class="alert-content">
+<div class="alert-title">Demo Credentials</div>
+<div class="alert-message">Email: demo@kco.ai | Password: demo123</div>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Email</label>
+<input type="email" class="form-input" id="loginEmail" placeholder="Enter your email">
+</div>
+<div class="form-group">
+<label class="form-label">Password</label>
+<input type="password" class="form-input" id="loginPassword" placeholder="Enter your password">
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" onclick="closeLoginModal()">Cancel</button>
+<button class="btn" onclick="login()">Login</button>
+</div>
+</div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal-overlay" id="registerModal">
+<div class="modal">
+<div class="modal-header">
+<div class="modal-title">Create Account</div>
+<button class="modal-close" onclick="closeRegisterModal()">&times;</button>
+</div>
+<div class="modal-body">
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">First Name</label>
+<input type="text" class="form-input" id="registerFirstName" placeholder="First name">
+</div>
+<div class="form-group">
+<label class="form-label">Last Name</label>
+<input type="text" class="form-input" id="registerLastName" placeholder="Last name">
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Email</label>
+<input type="email" class="form-input" id="registerEmail" placeholder="Enter your email">
+</div>
+<div class="form-group">
+<label class="form-label">Company (Optional)</label>
+<input type="text" class="form-input" id="registerCompany" placeholder="Company name">
+</div>
+<div class="form-group">
+<label class="form-label">Country</label>
+<select class="form-select" id="registerCountry">
+<option value="br">Brazil</option>
+<option value="mx">Mexico</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">Password</label>
+<input type="password" class="form-input" id="registerPassword" placeholder="Create password">
+</div>
+<div class="form-group">
+<label class="form-label">Confirm Password</label>
+<input type="password" class="form-input" id="registerConfirmPassword" placeholder="Confirm password">
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" onclick="closeRegisterModal()">Cancel</button>
+<button class="btn" onclick="register()">Create Account</button>
+</div>
+</div>
+</div>
+
+<!-- Profile Modal -->
+<div class="modal-overlay" id="profileModal">
+<div class="modal">
+<div class="modal-header">
+<div class="modal-title">User Profile</div>
+<button class="modal-close" onclick="closeProfileModal()">&times;</button>
+</div>
+<div class="modal-body" id="profileContent">
+</div>
+<div class="modal-footer">
+<button class="btn" onclick="closeProfileModal()">Close</button>
+</div>
+</div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal">
+<div class="modal">
+<div class="modal-header">
+<div class="modal-title">Settings</div>
+<button class="modal-close" onclick="closeSettingsModal()">&times;</button>
+</div>
+<div class="modal-body">
+<div class="form-group">
+<label class="form-label">API Base URL</label>
+<input type="url" class="form-input" id="apiBaseUrl" placeholder="http://localhost:8000">
+</div>
+<div class="form-group">
+<label class="form-label">Default Vehicle ID</label>
+<input type="text" class="form-input" id="defaultVehicleId" placeholder="BR-001, MX-001, etc.">
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" onclick="closeSettingsModal()">Cancel</button>
+<button class="btn" onclick="saveSettings()">Save</button>
+</div>
+</div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="container">
+
+<div class="page-header">
+<h1 class="page-title">KCo ML - Image Processing</h1>
+<p class="page-subtitle">Old But Gold TR8 IVSTO | Pre-Seed: $30M+ USD | Fleet Intelligence Platform</p>
+</div>
+
+<section id="stats">
 <div class="stats-grid">
-<div class="stat-card"><div class="stat-value" id="totalImages">0</div><div class="stat-label">Imagens Analisadas</div></div>
-<div class="stat-card"><div class="stat-value" id="totalVehicles">0</div><div class="stat-label">Veiculos Processados</div></div>
-<div class="stat-card"><div class="stat-value" id="avgConfidence">0%</div><div class="stat-label">Precisao Media</div></div>
-<div class="stat-card"><div class="stat-value" id="avgTime">0ms</div><div class="stat-label">Tempo Medio</div></div>
+<div class="stat-card">
+<div class="stat-value" id="totalImages">0</div>
+<div class="stat-label">Images Analyzed</div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="totalVehicles">0</div>
+<div class="stat-label">Vehicles Processed</div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="avgConfidence">0%</div>
+<div class="stat-label">Average Confidence</div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="avgTime">0ms</div>
+<div class="stat-label">Avg Processing Time</div>
+</div>
 </div>
 </section>
-<section class="container" id="upload">
-<h2>Upload de Imagens</h2>
+
+<section id="upload">
+<h2 class="card-title">Upload Images</h2>
+<div class="card">
 <div class="tabs">
 <button class="tab active" onclick="switchTab('camera')">Camera</button>
-<button class="tab" onclick="switchTab('gallery')">Galeria</button>
+<button class="tab" onclick="switchTab('gallery')">Gallery</button>
 <button class="tab" onclick="switchTab('url')">URL</button>
 </div>
+
 <div class="tab-content active" id="cameraTab">
-<div class="upload-section" onclick="openCamera()">
-<div style="font-size: 2.5rem; color: #00d4ff; margin-bottom: 0.5rem;">📷</div>
-<div>Tirar Foto</div>
-<div style="color: #606070; font-size: 0.8rem;">Use a camera do dispositivo</div>
+<div class="upload-section" onclick="openCamera()" id="cameraUpload">
+<div class="upload-icon">📷</div>
+<div class="upload-text">Take Photo</div>
+<div class="upload-hint">Use device camera</div>
 </div>
 </div>
+
 <div class="tab-content" id="galleryTab">
-<div class="upload-section">
+<div class="upload-section" id="galleryUpload">
 <input type="file" id="fileInput" class="file-input" accept="image/*" multiple onchange="handleFileSelect(event)">
-<div style="font-size: 2.5rem; color: #00d4ff; margin-bottom: 0.5rem;">📁</div>
-<div>Selecionar Imagens</div>
-<div style="color: #606070; font-size: 0.8rem;">PNG, JPG, WEBP ate 10MB</div>
+<div class="upload-icon">📁</div>
+<div class="upload-text">Select Images</div>
+<div class="upload-hint">PNG, JPG, WEBP up to 10MB</div>
 </div>
 </div>
+
 <div class="tab-content" id="urlTab">
 <div class="form-group">
-<label class="form-label">URL da Imagem</label>
-<input type="url" id="imageUrl" class="form-input" placeholder="https://exemplo.com/imagem.jpg">
+<label class="form-label">Image URL</label>
+<input type="url" id="imageUrl" class="form-input" placeholder="https://example.com/image.jpg">
 </div>
-<button class="btn" onclick="loadFromUrl()">Carregar Imagem</button>
+<button class="btn btn-secondary" onclick="loadFromUrl()">Load Image</button>
 </div>
+
 <div class="preview-container" id="previewContainer"></div>
-<button class="btn" onclick="processImages()" id="processBtn" disabled>Processar Imagens</button>
-</section>
-<section class="container" id="results">
-<h2>Resultados da Analise</h2>
-<div id="resultsContainer"></div>
-</section>
-<section class="container" id="history">
-<h2>Historico de Analises</h2>
-<div id="historyContainer"></div>
-</section>
-<section class="container" id="settings">
-<h2>Configuracoes</h2>
-<div class="card">
-<h3 style="color: #00d4ff; margin-bottom: 1rem;">Modelo de Analise</h3>
+
 <div class="form-group">
-<label class="form-label">Selecione o Modelo</label>
-<select class="form-select" id="modelSelect">
-<option value="full">Analise Completa</option>
-<option value="damage">Detectar Danos</option>
-<option value="parts">Identificar Pecas</option>
-<option value="exterior">Analise Externa</option>
-</select>
-</div>
-</div>
-<div class="card">
-<h3 style="color: #00d4ff; margin-bottom: 1rem;">Configuracoes de Qualidade</h3>
-<div class="form-group">
-<label class="form-label">Resolucao</label>
-<select class="form-select" id="resolutionSelect">
-<option value="high">Alta (4K)</option>
-<option value="medium" selected>Media (1080p)</option>
-<option value="low">Baixa (720p)</option>
-</select>
-</div>
-</div>
-<div class="card">
-<h3 style="color: #00d4ff; margin-bottom: 1rem;">Veiculo</h3>
-<div class="form-group">
-<label class="form-label">ID do Veiculo (Opcional)</label>
+<label class="form-label">Vehicle ID (Optional)</label>
 <input type="text" class="form-input" id="vehicleId" placeholder="BR-001, MX-002, etc.">
 </div>
+
+<button class="btn" onclick="processImages()" id="processBtn" disabled>
+<span class="btn-text">Process Images</span>
+<span class="spinner" id="processSpinner" style="display: none;"></span>
+</button>
 </div>
-<button class="btn" onclick="saveSettings()">Salvar Configuracoes</button>
 </section>
-</main>
+
+<section id="results">
+<h2 class="card-title">Analysis Results</h2>
+<div id="resultsContainer">
+<div class="alert alert-info">
+<div class="alert-icon">ℹ️</div>
+<div class="alert-content">
+<div class="alert-title">No images processed yet</div>
+<div class="alert-message">Upload and process images to see results</div>
+</div>
+</div>
+</section>
+
+<section id="history">
+<h2 class="card-title">Analysis History</h2>
+<div id="historyContainer">
+<div class="alert alert-info">
+<div class="alert-icon">ℹ️</div>
+<div class="alert-content">
+<div class="alert-title">No history yet</div>
+<div class="alert-message">Your processed images will appear here</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="reports">
+<h2 class="card-title">Generate Reports</h2>
+<div class="card">
+<div class="form-group">
+<label class="form-label">Select Vehicle for Report</label>
+<select class="form-select" id="reportVehicleId">
+<option value="">Select a vehicle</option>
+</select>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">Start Date</label>
+<input type="date" class="form-input" id="reportStartDate">
+</div>
+<div class="form-group">
+<label class="form-label">End Date</label>
+<input type="date" class="form-input" id="reportEndDate">
+</div>
+</div>
+<div class="btn-group">
+<button class="btn" onclick="generatePDFReport()">Generate PDF Report</button>
+<button class="btn btn-secondary" onclick="exportAnalysis()">Export Analysis Data</button>
+</div>
+<div id="reportPreview"></div>
+</div>
+</section>
+
+<section id="strategy">
+<h2 class="card-title">Business Strategy</h2>
+<div class="strategy-section">
+<div class="strategy-title">Brazil & Mexico Operations</div>
+<div class="strategy-grid">
+<div class="strategy-card">
+<div class="strategy-card-title">Pre-Seed Target</div>
+<div class="strategy-card-value">$30M+ USD</div>
+<div class="strategy-card-label">Initial Funding Goal</div>
+</div>
+<div class="strategy-card">
+<div class="strategy-card-title">24-Month Projection</div>
+<div class="strategy-card-value">$36M+ USD</div>
+<div class="strategy-card-label">Total Revenue</div>
+</div>
+<div class="strategy-card">
+<div class="strategy-card-title">Fleet Target</div>
+<div class="strategy-card-value">1000+</div>
+<div class="strategy-card-label">Vehicles</div>
+</div>
+<div class="strategy-card">
+<div class="strategy-card-title">ROI Target</div>
+<div class="strategy-card-value">350%</div>
+<div class="strategy-card-label">Return on Investment</div>
+</div>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+<h3 class="card-title">LOWDATAESC Integration</h3>
+<p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+<b>Why use LOWDATAESC?</b><br><br>
+LOWDATAESC provides cross-sector data sharing and anomaly correlation, enabling real-time anomaly correlation across automotive, insurance, transportation, manufacturing, energy, and smart cities sectors. This enhances predictive capabilities, reduces false positives, improves fleet management, and reduces costs through shared infrastructure.
+<br><br>
+<b>Data Types Shared:</b> Vehicle telemetry, anomaly patterns, image analysis results, maintenance records, environmental conditions.
+</p>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+<h3 class="card-title">Old But Gold TR8 IVSTO Infrastructure</h3>
+<p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+<b>Production-Ready Architecture:</b><br><br>
+Backend: FastAPI with PostgreSQL 15+, Redis 7+ caching. ML Models: PyTorch/TensorFlow with OpenCV 4.8.1. Cloud Integration: Firebase, Supabase, AWS S3, MongoDB Atlas. Authentication: JWT with HS256. Containerization: Docker 24+ with Docker Compose. Monitoring: Prometheus + Grafana.
+<br><br>
+<b>Key Features:</b> 99.9% uptime, real-time processing, offline capability, multi-language support (PT/ES).
+</p>
+</div>
+</div>
+</section>
+</div>
+
 <footer>
-<div class="footer-logo">KCo ML</div>
-<div class="footer-text">Old But Gold TR8 IVSTO | Pre-Seed: $30M+ USD</div>
+<div class="footer-content">
+<div class="footer-logo">KCo by Cília | Fleet Intelligence</div>
+<div class="footer-text">Old But Gold TR8 IVSTO | Pre-Seed Target: $30M+ USD | Brazil & Mexico Operations</div>
+<div class="footer-links">
+<a href="#">Privacy Policy</a>
+<a href="#">Terms of Service</a>
+<a href="#">Contact</a>
+</div>
+</div>
 </footer>
+</main>
+
 <script>
+// Configuration
+const config = {
+    apiBaseUrl: localStorage.getItem('apiBaseUrl') || 'http://localhost:8000',
+    defaultVehicleId: localStorage.getItem('defaultVehicleId') || '',
+    language: localStorage.getItem('mlLanguage') || 'pt',
+    token: localStorage.getItem('jwtToken') || null,
+    user: JSON.parse(localStorage.getItem('userData') || 'null')
+};
+
+// State
 let selectedFiles = [];
 let analysisHistory = JSON.parse(localStorage.getItem('mlHistory') || '[]');
 let stats = JSON.parse(localStorage.getItem('mlStats') || '{"totalImages":0,"totalVehicles":0,"avgConfidence":0,"avgTime":0}');
+
+// DOM Elements
 const previewContainer = document.getElementById('previewContainer');
 const resultsContainer = document.getElementById('resultsContainer');
 const historyContainer = document.getElementById('historyContainer');
 const processBtn = document.getElementById('processBtn');
 const fileInput = document.getElementById('fileInput');
+const toastContainer = document.getElementById('toastContainer');
 
-updateStats();
-updateHistory();
-
-function switchTab(tabName) {
-document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-document.getElementById(tabName + 'Tab').classList.add('active');
-event.target.classList.add('active');
-if (tabName !== 'gallery') { selectedFiles = []; updatePreview(); }
+// Initialize
+function init() {
+    updateStats();
+    updateHistory();
+    loadSettings();
+    updateAuthUI();
+    setupDragAndDrop();
+    setupNavigation();
+    setupLanguage();
+    loadVehicleList();
 }
 
-function toggleNav() {
-document.getElementById('navMenu').classList.toggle('active');
+// Setup Language
+function setupLanguage() {
+    const savedLang = localStorage.getItem('mlLanguage') || 'pt';
+    document.querySelectorAll('.language-btn').forEach(btn => {
+        if (btn.textContent === savedLang.toUpperCase()) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
 }
 
+// Change Language
 function changeLanguage(lang) {
-document.querySelectorAll('.language-btn').forEach(btn => btn.classList.remove('active'));
-event.target.classList.add('active');
-localStorage.setItem('mlLanguage', lang);
+    config.language = lang;
+    localStorage.setItem('mlLanguage', lang);
+    document.querySelectorAll('.language-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent === lang.toUpperCase()) {
+            btn.classList.add('active');
+        }
+    });
+    showToast(`Language changed to ${lang.toUpperCase()}`, 'info');
 }
 
-const savedLang = localStorage.getItem('mlLanguage') || 'pt';
-document.querySelectorAll('.language-btn').forEach(btn => {
-if (btn.textContent === savedLang.toUpperCase()) btn.classList.add('active');
-});
-
-function handleFileSelect(event) {
-selectedFiles = [...selectedFiles, ...Array.from(event.target.files)];
-updatePreview();
+// Setup Navigation
+function setupNavigation() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.getElementById('navMenu').classList.remove('active');
+            }
+        });
+    });
 }
 
+// Toggle Navigation
+function toggleNav() {
+    document.getElementById('navMenu').classList.toggle('active');
+}
+
+// Setup Drag and Drop
+function setupDragAndDrop() {
+    const uploadSection = document.getElementById('galleryUpload');
+    
+    uploadSection.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadSection.classList.add('dragover');
+    });
+    
+    uploadSection.addEventListener('dragleave', () => {
+        uploadSection.classList.remove('dragover');
+    });
+    
+    uploadSection.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadSection.classList.remove('dragover');
+        const files = Array.from(e.dataTransfer.files);
+        selectedFiles = [...selectedFiles, ...files];
+        updatePreview();
+    });
+}
+
+// Switch Tab
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(tabName + 'Tab').classList.add('active');
+    event.target.classList.add('active');
+    if (tabName !== 'gallery') { 
+        selectedFiles = []; 
+        updatePreview(); 
+    }
+}
+
+// Open Camera
 function openCamera() {
-const input = document.createElement('input');
-input.type = 'file';
-input.accept = 'image/*';
-input.capture = 'environment';
-input.onchange = (e) => { selectedFiles = [...selectedFiles, ...Array.from(e.target.files)]; updatePreview(); };
-input.click();
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.capture = 'environment';
+    input.onchange = (e) => { 
+        selectedFiles = [...selectedFiles, ...Array.from(e.target.files)]; 
+        updatePreview(); 
+    };
+    input.click();
 }
 
+// Handle File Select
+function handleFileSelect(event) {
+    selectedFiles = [...selectedFiles, ...Array.from(event.target.files)];
+    updatePreview();
+}
+
+// Load from URL
 function loadFromUrl() {
-const url = document.getElementById('imageUrl').value;
-if (!url) return;
-selectedFiles.push({ url, name: url.split('/').pop() });
-updatePreview();
-document.getElementById('imageUrl').value = '';
+    const url = document.getElementById('imageUrl').value;
+    if (!url) return;
+    selectedFiles.push({ url, name: url.split('/').pop() });
+    updatePreview();
+    document.getElementById('imageUrl').value = '';
 }
 
+// Update Preview
 function updatePreview() {
-previewContainer.innerHTML = '';
-selectedFiles.forEach((file, index) => {
-const card = document.createElement('div');
-card.className = 'preview-card';
-const img = document.createElement('img');
-img.src = file instanceof File ? URL.createObjectURL(file) : file.url;
-const info = document.createElement('div');
-info.className = 'preview-info';
-const name = document.createElement('div');
-name.className = 'preview-name';
-name.textContent = file.name || file.url.split('/').pop();
-const remove = document.createElement('button');
-remove.className = 'remove-preview';
-remove.innerHTML = '×';
-remove.onclick = () => { selectedFiles.splice(index, 1); updatePreview(); };
-info.appendChild(name);
-card.appendChild(img);
-card.appendChild(info);
-card.appendChild(remove);
-previewContainer.appendChild(card);
-});
-processBtn.disabled = selectedFiles.length === 0;
+    previewContainer.innerHTML = '';
+    selectedFiles.forEach((file, index) => {
+        const card = document.createElement('div');
+        card.className = 'preview-card';
+        const img = document.createElement('img');
+        img.src = file instanceof File ? URL.createObjectURL(file) : file.url;
+        const info = document.createElement('div');
+        info.className = 'preview-info';
+        const name = document.createElement('div');
+        name.className = 'preview-name';
+        name.textContent = file.name || file.url.split('/').pop();
+        const remove = document.createElement('button');
+        remove.className = 'remove-preview';
+        remove.innerHTML = '×';
+        remove.onclick = () => { 
+            selectedFiles.splice(index, 1); 
+            updatePreview(); 
+        };
+        info.appendChild(name);
+        card.appendChild(img);
+        card.appendChild(info);
+        card.appendChild(remove);
+        previewContainer.appendChild(card);
+    });
+    processBtn.disabled = selectedFiles.length === 0;
 }
 
-async function processImages() {
-if (selectedFiles.length === 0) return;
-const originalText = processBtn.textContent;
-processBtn.disabled = true;
-processBtn.textContent = 'Processando...';
-resultsContainer.innerHTML = '<div class="result-card"><div class="result-header"><div class="result-title">Processando Imagens</div><div class="result-status processing">Aguarde...</div></div><div class="progress-container"><div class="progress-bar" id="progressBar"></div></div><div class="spinner"></div></div>';
-const results = [];
-for (const file of selectedFiles) {
-const progress = Math.round((results.length + 1) / selectedFiles.length * 100);
-document.getElementById('progressBar').style.width = progress + '%';
-await new Promise(resolve => setTimeout(resolve, 1000));
-results.push(generateMockResult(file));
-}
-displayResults(results);
-stats.totalImages += selectedFiles.length;
-stats.avgConfidence = ((stats.avgConfidence * (stats.totalImages - selectedFiles.length)) + results.reduce((sum, r) => sum + parseFloat(r.confidence), 0)) / stats.totalImages;
-stats.avgTime = ((stats.avgTime * (stats.totalImages - selectedFiles.length)) + results.reduce((sum, r) => sum + parseInt(r.processingTime), 0)) / stats.totalImages;
-results.forEach(result => {
-analysisHistory.unshift({ id: Date.now().toString(), timestamp: new Date().toISOString(), ...result });
-});
-localStorage.setItem('mlHistory', JSON.stringify(analysisHistory.slice(0, 50)));
-localStorage.setItem('mlStats', JSON.stringify(stats));
-updateStats();
-updateHistory();
-processBtn.disabled = false;
-processBtn.textContent = originalText;
-selectedFiles = [];
-updatePreview();
+// Load Settings
+function loadSettings() {
+    const apiBaseUrl = localStorage.getItem('apiBaseUrl') || 'http://localhost:8000';
+    const defaultVehicleId = localStorage.getItem('defaultVehicleId') || '';
+    const language = localStorage.getItem('mlLanguage') || 'pt';
+    
+    document.getElementById('apiBaseUrl').value = apiBaseUrl;
+    document.getElementById('defaultVehicleId').value = defaultVehicleId;
+    document.getElementById('vehicleId').value = defaultVehicleId;
+    
+    config.apiBaseUrl = apiBaseUrl;
+    config.defaultVehicleId = defaultVehicleId;
+    config.language = language;
 }
 
-function generateMockResult(file) {
-const anomalies = ['Amassado', 'Arranhao', 'Ferrugem', 'Rachadura', 'Peca Faltando'];
-const severities = ['Baixo', 'Medio', 'Alto', 'Critico'];
-const parts = ['Porta', 'Capo', 'Porta-malas', 'Para-choque', 'Farois', 'Pneus', 'Espelhos'];
-return {
-id: Date.now().toString(),
-fileName: file.name || file.url.split('/').pop(),
-fileSize: file instanceof File ? file.size : 0,
-timestamp: new Date().toISOString(),
-vehicleId: document.getElementById('vehicleId').value || 'N/A',
-confidence: (Math.random() * 30 + 70).toFixed(2) + '%',
-processingTime: Math.floor(Math.random() * 200 + 50) + 'ms',
-anomalies: Array.from({ length: Math.floor(Math.random() * 3) + 1 }, () => ({
-type: anomalies[Math.floor(Math.random() * anomalies.length)],
-severity: severities[Math.floor(Math.random() * severities.length)],
-location: parts[Math.floor(Math.random() * parts.length)],
-repairCost: 'R$ ' + (Math.random() * 2000 + 500).toFixed(2)
-})),
-detectedObjects: Array.from({ length: Math.floor(Math.random() * 5) + 3 }, () => ({
-type: parts[Math.floor(Math.random() * parts.length)],
-confidence: (Math.random() * 30 + 70).toFixed(2) + '%'
-})),
-damageScore: (Math.random() * 100).toFixed(1) + '%',
-modelVersion: 'v2.1.0'
-};
-}
-
-function displayResults(results) {
-resultsContainer.innerHTML = '';
-results.forEach(result => {
-const severity = result.anomalies.reduce((max, a) => {
-const order = { 'Baixo': 1, 'Medio': 2, 'Alto': 3, 'Critico': 4 };
-return order[a.severity] > order[max] ? a.severity : max;
-}, 'Baixo');
-const statusClass = severity === 'Critico' ? 'error' : severity === 'Alto' ? 'warning' : 'success';
-const card = document.createElement('div');
-card.className = 'result-card';
-card.innerHTML = '<div class="result-header"><div class="result-title">' + result.fileName + '</div><div class="result-status ' + statusClass + '">' + severity + '</div></div>' +
-'<div class="result-content">' +
-'<div class="result-item"><div class="result-label">Confianca</div><div class="result-value">' + result.confidence + '</div></div>' +
-'<div class="result-item"><div class="result-label">Tempo</div><div class="result-value">' + result.processingTime + '</div></div>' +
-'<div class="result-item"><div class="result-label">Score de Dano</div><div class="result-value">' + result.damageScore + '</div></div>' +
-'<div class="result-item"><div class="result-label">Modelo</div><div class="result-value">' + result.modelVersion + '</div></div>' +
-'</div>' +
-'<div style="margin-top: 0.5rem;"><strong>Anomalias Detectadas:</strong>' +
-result.anomalies.map(a => '<div class="list-item"><div class="list-icon">⚠️</div><div class="list-content"><div class="list-title">' + a.type + ' - ' + a.severity + '</div><div class="list-subtitle">' + a.location + ' | ' + a.repairCost + '</div></div></div>').join('') +
-'</div>' +
-'<div style="margin-top: 0.5rem;"><strong>Objetos Detectados:</strong>' +
-result.detectedObjects.map(o => '<div class="list-item"><div class="list-icon">🔍</div><div class="list-content"><div class="list-title">' + o.type + '</div><div class="list-subtitle">Confianca: ' + o.confidence + '</div></div></div>').join('') +
-'</div>';
-resultsContainer.appendChild(card);
-});
-}
-
-function updateStats() {
-document.getElementById('totalImages').textContent = stats.totalImages;
-document.getElementById('totalVehicles').textContent = stats.totalVehicles;
-document.getElementById('avgConfidence').textContent = stats.avgConfidence.toFixed(1) + '%';
-document.getElementById('avgTime').textContent = stats.avgTime.toFixed(0) + 'ms';
-}
-
-function updateHistory() {
-historyContainer.innerHTML = '';
-if (analysisHistory.length === 0) {
-historyContainer.innerHTML = '<p style="text-align: center; color: #a0a0b0;">Nenhuma analise realizada ainda</p>';
-return;
-}
-analysisHistory.slice(0, 10).forEach(result => {
-const card = document.createElement('div');
-card.className = 'result-card';
-card.onclick = () => viewResult(result);
-const date = new Date(result.timestamp);
-const dateStr = date.toLocaleDateString('pt-BR') + ' ' + date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-card.innerHTML = '<div class="result-header"><div class="result-title">' + result.fileName + '</div><div class="result-status">' + dateStr + '</div></div>' +
-'<div class="result-content">' +
-'<div class="result-item"><div class="result-label">Confianca</div><div class="result-value">' + result.confidence + '</div></div>' +
-'<div class="result-item"><div class="result-label">Anomalias</div><div class="result-value">' + result.anomalies.length + '</div></div>' +
-'<div class="result-item"><div class="result-label">Dano</div><div class="result-value">' + result.damageScore + '</div></div>' +
-'<div class="result-item"><div class="result-label">Veiculo</div><div class="result-value">' + (result.vehicleId || 'N/A') + '</div></div>' +
-'</div>';
-historyContainer.appendChild(card);
-});
-}
-
-function viewResult(result) {
-resultsContainer.scrollIntoView({ behavior: 'smooth' });
-displayResults([result]);
-}
-
+// Save Settings
 function saveSettings() {
-const settings = {
-model: document.getElementById('modelSelect').value,
-resolution: document.getElementById('resolutionSelect').value,
-vehicleId: document.getElementById('vehicleId').value
-};
-localStorage.setItem('mlSettings', JSON.stringify(settings));
-alert('Configuracoes salvas com sucesso!');
+    const apiBaseUrl = document.getElementById('apiBaseUrl').value;
+    const defaultVehicleId = document.getElementById('defaultVehicleId').value;
+    
+    localStorage.setItem('apiBaseUrl', apiBaseUrl);
+    localStorage.setItem('defaultVehicleId', defaultVehicleId);
+    
+    config.apiBaseUrl = apiBaseUrl;
+    config.defaultVehicleId = defaultVehicleId;
+    
+    showToast('Settings saved successfully', 'success');
+    closeSettingsModal();
 }
 
-const savedSettings = JSON.parse(localStorage.getItem('mlSettings') || '{}');
-if (savedSettings.model) document.getElementById('modelSelect').value = savedSettings.model;
-if (savedSettings.resolution) document.getElementById('resolutionSelect').value = savedSettings.resolution;
-if (savedSettings.vehicleId) document.getElementById('vehicleId').value = savedSettings.vehicleId;
-
-previewContainer.addEventListener('dragover', (e) => { e.preventDefault(); previewContainer.style.borderColor = '#00d4ff'; });
-previewContainer.addEventListener('dragleave', () => { previewContainer.style.borderColor = 'rgba(0, 212, 255, 0.3)'; });
-previewContainer.addEventListener('drop', (e) => { e.preventDefault(); previewContainer.style.borderColor = 'rgba(0, 212, 255, 0.3)'; const files = Array.from(e.dataTransfer.files); selectedFiles = [...selectedFiles, ...files]; updatePreview(); });
-
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-anchor.addEventListener('click', function(e) {
-e.preventDefault();
-const target = document.querySelector(this.getAttribute('href'));
-if (target) {
-target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-document.getElementById('navMenu').classList.remove('active');
+// Show Toast
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const iconMap = {
+        success: '✓',
+        warning: '⚠',
+        error: '✗',
+        info: 'ℹ️'
+    };
+    
+    toast.innerHTML = `
+        <div class="toast-icon">${iconMap[type] || 'ℹ️'}</div>
+        <div class="toast-message">${message}</div>
+        <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+    `;
+    
+    toastContainer.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 5000);
 }
+
+// Modal Functions
+function showLoginModal() {
+    document.getElementById('loginModal').classList.add('active');
+}
+
+function closeLoginModal() {
+    document.getElementById('loginModal').classList.remove('active');
+}
+
+function showRegisterModal() {
+    document.getElementById('registerModal').classList.add('active');
+}
+
+function closeRegisterModal() {
+    document.getElementById('registerModal').classList.remove('active');
+}
+
+function showProfileModal() {
+    if (!config.user) return;
+    
+    const profileContent = document.getElementById('profileContent');
+    profileContent.innerHTML = `
+        <div class="form-group">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-input" value="${config.user.name || 'N/A'}" readonly>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" value="${config.user.email || 'N/A'}" readonly>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Company</label>
+            <input type="text" class="form-input" value="${config.user.company || 'N/A'}" readonly>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Country</label>
+            <input type="text" class="form-input" value="${config.user.country ? config.user.country.toUpperCase() : 'N/A'}" readonly>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Role</label>
+            <input type="text" class="form-input" value="${config.user.role || 'user'}" readonly>
+        </div>
+    `;
+    
+    document.getElementById('profileModal').classList.add('active');
+}
+
+function closeProfileModal() {
+    document.getElementById('profileModal').classList.remove('active');
+}
+
+function showSettingsModal() {
+    document.getElementById('settingsModal').classList.add('active');
+}
+
+function closeSettingsModal() {
+    document.getElementById('settingsModal').classList.remove('active');
+}
+
+function toggleUserMenu() {
+    document.getElementById('userDropdown').classList.toggle('active');
+}
+
+// Update Auth UI
+function updateAuthUI() {
+    const authButtons = document.querySelector('.auth-buttons');
+    const userMenu = document.getElementById('userMenu');
+    
+    if (config.token && config.user) {
+        authButtons.style.display = 'none';
+        userMenu.style.display = 'flex';
+    } else {
+        authButtons.style.display = 'flex';
+        userMenu.style.display = 'none';
+    }
+}
+
+// Authentication Functions
+async function login() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    if (!email || !password) {
+        showToast('Please enter email and password', 'error');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${config.apiBaseUrl}/api/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Login failed');
+        }
+        
+        const data = await response.json();
+        
+        config.token = data.access_token;
+        config.user = data.user;
+        
+        localStorage.setItem('jwtToken', data.access_token);
+        localStorage.setItem('userData', JSON.stringify(data.user));
+        localStorage.setItem('refreshToken', data.refresh_token || '');
+        
+        showToast(`Welcome back, ${data.user.name || data.user.email}!`, 'success');
+        
+        updateAuthUI();
+        closeLoginModal();
+        
+    } catch (error) {
+        console.error('Login error:', error);
+        showToast(error.message || 'Login failed. Please check your credentials.', 'error');
+    }
+}
+
+async function register() {
+    const firstName = document.getElementById('registerFirstName').value;
+    const lastName = document.getElementById('registerLastName').value;
+    const email = document.getElementById('registerEmail').value;
+    const company = document.getElementById('registerCompany').value;
+    const country = document.getElementById('registerCountry').value;
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('registerConfirmPassword').value;
+    
+    if (!firstName || !lastName || !email || !password) {
+        showToast('Please fill in all required fields', 'error');
+        return;
+    }
+    
+    if (password !== confirmPassword) {
+        showToast('Passwords do not match', 'error');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${config.apiBaseUrl}/api/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                company: company,
+                country: country,
+                password: password
+            })
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Registration failed');
+        }
+        
+        const data = await response.json();
+        
+        showToast('Registration successful! Please login.', 'success');
+        closeRegisterModal();
+        showLoginModal();
+        
+    } catch (error) {
+        console.error('Registration error:', error);
+        showToast(error.message || 'Registration failed. Please try again.', 'error');
+    }
+}
+
+function logout() {
+    config.token = null;
+    config.user = null;
+    
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('userData');
+    localStorage.removeItem('refreshToken');
+    
+    showToast('You have been logged out', 'info');
+    updateAuthUI();
+    
+    document.getElementById('userDropdown').classList.remove('active');
+}
+
+// Cloud Database Functions
+async function saveToCloudDatabase(vehicleId, result) {
+    try {
+        const response = await fetch(`${config.apiBaseUrl}/api/cloud/save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${config.token}`
+            },
+            body: JSON.stringify({
+                vehicle_id: vehicleId,
+                analysis_id: result.id,
+                data: result,
+                timestamp: new Date().toISOString()
+            })
+        });
+        
+        if (!response.ok) {
+            console.error('Failed to save to cloud database');
+        } else {
+            console.log('Successfully saved to cloud database');
+        }
+    } catch (error) {
+        console.error('Error saving to cloud database:', error);
+    }
+}
+
+async function loadVehicleList() {
+    try {
+        if (!config.token) return;
+        
+        const response = await fetch(`${config.apiBaseUrl}/api/fleet/vehicles`, {
+            headers: {
+                'Authorization': `Bearer ${config.token}`
+            }
+        });
+        
+        if (!response.ok) return;
+        
+        const vehicles = await response.json();
+        const select = document.getElementById('reportVehicleId');
+        
+        select.innerHTML = '<option value="">Select a vehicle</option>';
+        vehicles.forEach(vehicle => {
+            const option = document.createElement('option');
+            option.value = vehicle.id;
+            option.textContent = `${vehicle.license_plate || vehicle.id} - ${vehicle.make || ''} ${vehicle.model || ''}`;
+            select.appendChild(option);
+        });
+        
+    } catch (error) {
+        console.error('Error loading vehicle list:', error);
+    }
+}
+
+// PDF Export Functions
+async function generatePDFReport() {
+    const vehicleId = document.getElementById('reportVehicleId').value;
+    const startDate = document.getElementById('reportStartDate').value;
+    const endDate = document.getElementById('reportEndDate').value;
+    
+    if (!vehicleId) {
+        showToast('Please select a vehicle', 'error');
+        return;
+    }
+    
+    try {
+        const queryParams = new URLSearchParams({ vehicle_id: vehicleId });
+        
+        if (startDate) queryParams.append('start_date', startDate);
+        if (endDate) queryParams.append('end_date', endDate);
+        
+        const response = await fetch(`${config.apiBaseUrl}/api/reports/pdf?${queryParams}`, {
+            headers: {
+                'Authorization': `Bearer ${config.token}`
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to generate PDF');
+        }
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `vehicle_report_${vehicleId}_${new Date().toISOString().split('T')[0]}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        showToast('PDF report generated successfully', 'success');
+        
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        showToast('Failed to generate PDF report', 'error');
+    }
+}
+
+async function exportSingleResult(analysisId) {
+    try {
+        const response = await fetch(`${config.apiBaseUrl}/api/reports/analysis/${analysisId}/pdf`, {
+            headers: {
+                'Authorization': `Bearer ${config.token}`
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to export result');
+        }
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `analysis_${analysisId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        showToast('Result exported successfully', 'success');
+        
+    } catch (error) {
+        console.error('Error exporting result:', error);
+        showToast('Failed to export result', 'error');
+    }
+}
+
+async function exportAnalysis() {
+    try {
+        const response = await fetch(`${config.apiBaseUrl}/api/reports/export`, {
+            headers: {
+                'Authorization': `Bearer ${config.token}`
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to export analysis');
+        }
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `analysis_export_${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        showToast('Analysis data exported successfully', 'success');
+        
+    } catch (error) {
+        console.error('Error exporting analysis:', error);
+        showToast('Failed to export analysis data', 'error');
+    }
+}
+
+// Initialize on page load
+window.addEventListener('DOMContentLoaded', init);
+
+// Close dropdowns on outside click
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.user-menu')) {
+        document.getElementById('userDropdown').classList.remove('active');
+    }
+    if (!e.target.closest('.nav-menu') && !e.target.closest('.nav-toggle')) {
+        document.getElementById('navMenu').classList.remove('active');
+    }
 });
+
+// Handle keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeLoginModal();
+        closeRegisterModal();
+        closeProfileModal();
+        closeSettingsModal();
+    }
 });
 </script>
 </body>

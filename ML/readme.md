@@ -1,8 +1,8 @@
-# Machine Learning & Image Processing - KCo Fleet Intelligence
+# Machine Learning & Image Processing - KCo by Cília | Fleet Intelligence
 
 > **AI-Powered Fleet Intelligence | Old But Gold TR8 IVSTO**
 
-Este diretorio contem todos os modelos de Machine Learning e processamento de imagens da plataforma KCo. Nossa abordagem combina **detectacao de anomalias em tempo real** com **processamento de imagens avancado** para criar um sistema completo de inteligencia de frota.
+Este diretorio contem todos os modelos de Machine Learning e processamento de imagens da plataforma KCo by Cília Nossa abordagem combina **detectacao de anomalias em tempo real** com **processamento de imagens avancado** para criar um sistema completo de inteligencia de frota.
 
 ---
 
@@ -545,6 +545,40 @@ print(outputs)
 
 ---
 
+## Roadmap de Desenvolvimento
+
+### v1.0 (Atual)
+- Frontend mobile-first
+- Upload de imagens
+- Processamento de imagens (mock)
+- Historico de analises
+- Configuracoes
+- PWA support
+- Offline mode
+
+### v1.1
+- Integracao real com API backend
+- Autenticacao de usuarios
+- Notificacoes push
+- Compartilhamento de resultados
+- Exportacao de relatorios (PDF)
+
+### v1.2
+- Reconhecimento de placas
+- Comparacao de imagens
+- Timeline de danos
+- Integracao com cameras de veiculos
+- Streaming de video
+
+### v2.0
+- App nativo (React Native)
+- Realidade aumentada
+- 3D vehicle reconstruction
+- Predictive maintenance
+- Fleet management integration
+
+---
+
 ## Contribuindo
 
 1. Fork o repositorio
@@ -565,6 +599,6 @@ print(outputs)
 
 ---
 
-> **© 2024-2026 KCo Fleet Intelligence | Todos os direitos reservados**
+> **© 2024-2026 KCo by Cília | Laboratory of K and RockNewVenture | Todos os direitos reservados**
 > 
-> **Machine Learning Team | Old But Gold TR8 IVSTO**
+> **Machine Learning Team | Old But Gold TR8 IVSTO | Pre-Seed Target: $30M+ USD**

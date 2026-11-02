@@ -1,4 +1,4 @@
-# KCo Fleet Intelligence Platform
+# KCo by Cília | Fleet Intelligence Platform
 
 > **Old But Gold TR8 IVSTO | Pre-Seed Target: $30M+ USD**
 
@@ -22,8 +22,7 @@ KCo transforma a aquisicao de veiculos em leiloes em um **Living Lab as a Servic
 ### Estrutura Corporativa
 
 ```
-KCo
-├── HoldCo (Propriedade de veiculos e contratos)
+KCo by Cília├── HoldCo (Propriedade de veiculos e contratos)
 ├── OpCo (Gestao de frota e assinaturas)
 ├── WarrantyCo (Laudos tecnicos e garantias)
 ├── DataCo (Procesamento de telemetria e anonimizacao)
@@ -435,9 +434,8 @@ CREATE TABLE image_analysis (
 
 ```bash
 # Clone repository
-git clone https://github.com/kauecodify/KCo.git
-cd KCo
-
+git clone https://github.com/kauecodify/KCo by Cíliagit
+cd KCo by Cília
 # Setup backend
 cd backend
 pip install -r requirements.txt
@@ -570,10 +568,10 @@ Este projeto e propriedade de **Cilia Tecnologia** e esta sujeito a acuerdos de 
 
 - **Email**: contato@kco.ai
 - **Website**: https://kco.ai (em breve)
-- **Landing Page**: https://kauecodify.github.io/KCo/
+- **Landing Page**: https://kauecodify.github.io/KCo by Cília
 
 ---
 
-> **© 2024-2026 KCo Fleet Intelligence | Todos os direitos reservados**
+> **© 2024-2026 KCo by Cília | Fleet Intelligence | Todos os direitos reservados**
 > 
 > **Pre-Seed Target: $30M+ USD | Old But Gold TR8 IVSTO**

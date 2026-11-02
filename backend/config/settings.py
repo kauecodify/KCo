@@ -1,13 +1,25 @@
 """
+KCo by Cília | Laboratory of K and RockNewVenture
+Old But Gold TR8 IVSTO | Pre-Seed Target: $30M+ USD
+
 KCo Configuration Settings - Old But Gold TR8 IVSTO Infrastructure
 Environment: Production/Development for Brazil & Mexico Operations
 """
+KCo by Cília | Laboratory of K and RockNewVenture
+Old But Gold TR8 IVSTO | Pre-Seed Target: $30M+ USD
+
 
 import os
 from typing import Dict, Any
 
 class Settings:
-    """Core Configuration for KCo Backend"""
+    """
+KCo by Cília | Laboratory of K and RockNewVenture
+Old But Gold TR8 IVSTO | Pre-Seed Target: $30M+ USD
+Core Configuration for KCo Backend"""
+KCo by Cília | Laboratory of K and RockNewVenture
+Old But Gold TR8 IVSTO | Pre-Seed Target: $30M+ USD
+
     
     # Environment
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
@@ -49,7 +61,7 @@ class Settings:
     IMAGE_FORMATS: list = ["jpg", "jpeg", "png", "webp"]
     
     # AI/ML Configuration
-    ML_MODELS_PATH: str = "/workspace/github__kauecodify__KCo/ML/models"
+    ML_MODELS_PATH: str = "/workspace/github__kauecodify__KCo by CíliaML/models"
     ML_INFERENCE_TIMEOUT: int = 60
     
     # Financial Projections (24 Months)

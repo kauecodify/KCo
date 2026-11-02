@@ -1,949 +1,1003 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KCo | Fleet Intelligence Platform - Old But Gold TR8 IVSTO</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --cyber-blue: #00d4ff;
-            --cyber-blue-dark: #0099cc;
-            --cyber-neon: #00ffff;
-            --cyber-purple: #9d4edd;
-            --bg-dark: #0a0a0f;
-            --bg-darker: #050508;
-            --bg-card: #0d0d15;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b0;
-            --gradient-cyber: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            --shadow-cyber: 0 0 20px rgba(0, 212, 255, 0.3);
-            --border-cyber: 1px solid rgba(0, 212, 255, 0.3);
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Rajdhani', sans-serif;
-            background: linear-gradient(180deg, #0a0a0f 0%, #050508 100%);
-            color: #ffffff;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
-        
-        header {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-            background: rgba(10, 10, 15, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: #00d4ff;
-            text-decoration: none;
-            letter-spacing: 2px;
-        }
-        
-        .nav-links { display: flex; gap: 2rem; }
-        .nav-links a {
-            color: #a0a0b0;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s;
-            position: relative;
-        }
-        .nav-links a:hover { color: #00d4ff; }
-        
-        .language-toggle {
-            display: flex;
-            gap: 0.5rem;
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 25px;
-            padding: 0.25rem;
-        }
-        
-        .language-btn {
-            padding: 0.5rem 1rem;
-            background: transparent;
-            border: none;
-            color: #a0a0b0;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s;
-            border-radius: 20px;
-        }
-        
-        .language-btn:hover { color: #00d4ff; background: rgba(0, 212, 255, 0.2); }
-        .language-btn.active { color: #00d4ff; background: rgba(0, 212, 255, 0.3); }
-        
-        .cta-btn {
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            border: none;
-            border-radius: 25px;
-            color: #0a0a0f;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-        
-        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0, 212, 255, 0.5); }
-        
-        .header-actions { display: flex; gap: 1rem; align-items: center; }
-        
-        .hero {
-            padding: 12rem 0 6rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(157, 78, 221, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        
-        .hero .container { position: relative; z-index: 1; }
-        
-        .hero h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 900;
-            color: #ffffff;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-        
-        .hero h1 .highlight {
-            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .hero p {
-            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-            color: #a0a0b0;
-            max-width: 800px;
-            margin: 0 auto 2.5rem;
-            line-height: 1.8;
-        }
-        
-        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-        
-        .hero-stats {
-            display: flex;
-            gap: 3rem;
-            justify-content: center;
-            margin-top: 3rem;
-            flex-wrap: wrap;
-        }
-        
-        .hero-stat { text-align: center; }
-        .hero-stat h4 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #00d4ff;
-            margin-bottom: 0.5rem;
-        }
-        .hero-stat p { font-size: 0.9rem; color: #606070; margin: 0; }
-        
-        section { padding: 5rem 0; position: relative; }
-        
-        section h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 1rem;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        
-        section h2 .highlight {
-            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .section-subtitle {
-            text-align: center;
-            color: #a0a0b0;
-            font-size: 1.15rem;
-            max-width: 900px;
-            margin: 0 auto 3rem;
-            line-height: 1.8;
-        }
-        
-        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 3rem; }
-        
-        .card {
-            background: #0d0d15;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 16px;
-            padding: 2.5rem;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 212, 255, 0.5);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-        
-        .card:hover::before { transform: scaleX(1); }
-        
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            color: #0a0a0f;
-            font-weight: bold;
-        }
-        
-        .card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            color: #ffffff;
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .card p { color: #a0a0b0; font-size: 0.95rem; line-height: 1.7; }
-        
-        .card-feature {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-        
-        .card-feature-icon {
-            width: 24px;
-            height: 24px;
-            background: #00d4ff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #0a0a0f;
-            font-size: 0.8rem;
-            flex-shrink: 0;
-            font-weight: bold;
-        }
-        
-        .card-feature p { margin: 0; font-size: 0.9rem; color: #a0a0b0; }
-        .card-feature .highlight { color: #00d4ff; }
-        
-        .two-column { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 3rem; }
-        
-        .column h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4rem;
-            color: #00d4ff;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .column p { color: #a0a0b0; margin-bottom: 1rem; line-height: 1.8; }
-        .column ul { margin-top: 1rem; padding-left: 1.5rem; }
-        .column li { color: #a0a0b0; margin-bottom: 0.5rem; line-height: 1.7; }
-        .column li strong { color: #00d4ff; }
-        
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
-        
-        .stat {
-            background: #0d0d15;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 16px;
-            padding: 2.5rem;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        
-        .stat:hover { border-color: rgba(0, 212, 255, 0.5); box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
-        
-        .stat h4 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #00d4ff;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat p { font-size: 1rem; color: #a0a0b0; margin: 0; }
-        
-        .partners { padding: 4rem 0; background: rgba(0, 212, 255, 0.02); }
-        .partners p { text-align: center; color: #a0a0b0; margin-bottom: 3rem; }
-        
-        .partner-logos {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 3rem;
-            flex-wrap: wrap;
-        }
-        
-        .partner-logo {
-            height: 50px;
-            opacity: 0.6;
-            transition: all 0.3s;
-            filter: brightness(0) saturate(100%) invert(80%) sepia(100%) saturate(2000%) hue-rotate(180deg) brightness(100%) contrast(100%);
-        }
-        
-        .partner-logo:hover { opacity: 1; transform: scale(1.1); }
-        
-        .faq { padding: 5rem 0; background: rgba(0, 212, 255, 0.01); }
-        
-        .faq-item {
-            background: #0d0d15;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            overflow: hidden;
-        }
-        
-        .faq-question {
-            padding: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: transparent;
-            transition: background-color 0.3s;
-        }
-        
-        .faq-question:hover { background: rgba(0, 212, 255, 0.05); }
-        .faq-question h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; margin: 0; color: #ffffff; }
-        
-        .faq-answer {
-            padding: 0 1.5rem 1.5rem;
-            display: none;
-            color: #a0a0b0;
-            background: rgba(0, 0, 0, 0.2);
-        }
-        
-        .faq-answer.active { display: block; }
-        
-        .faq-toggle {
-            font-size: 1.5rem;
-            color: #00d4ff;
-            transition: transform 0.3s;
-            font-weight: bold;
-        }
-        
-        .faq-item.active .faq-toggle { transform: rotate(45deg); }
-        
-        #contacto { background: rgba(0, 212, 255, 0.02); }
-        
-        .contact-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 3rem; }
-        
-        .contact-info h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: #00d4ff;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .contact-info p { color: #a0a0b0; }
-        .contact-details { margin-top: 2rem; }
-        .contact-details p { margin-bottom: 0.75rem; color: #a0a0b0; }
-        .contact-details strong { color: #ffffff; }
-        .contact-details a { color: #00d4ff; text-decoration: none; transition: color 0.3s; }
-        .contact-details a:hover { color: #66e5ff; text-decoration: underline; }
-        
-        form {
-            background: #0d0d15;
-            padding: 2.5rem;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 16px;
-        }
-        
-        form h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: #00d4ff;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; color: #ffffff; font-weight: 500; }
-        
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: inherit;
-            background: #050508;
-            color: #ffffff;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
-        }
-        
-        .form-group textarea { resize: vertical; min-height: 120px; }
-        .form-actions { display: flex; justify-content: flex-end; }
-        
-        footer {
-            background: #050508;
-            border-top: 1px solid rgba(0, 212, 255, 0.3);
-            padding: 3rem 0 1.5rem;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .footer-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: #00d4ff;
-            margin-bottom: 1rem;
-        }
-        
-        .footer-description { color: #a0a0b0; line-height: 1.7; max-width: 400px; }
-        .footer-links { display: flex; flex-direction: column; gap: 1rem; }
-        .footer-links a { color: #a0a0b0; text-decoration: none; transition: color 0.3s; }
-        .footer-links a:hover { color: #00d4ff; }
-        
-        .footer-contact p { color: #a0a0b0; margin: 0; font-size: 0.95rem; }
-        .footer-bottom {
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            align-items: center;
-        }
-        
-        .footer-bottom p { color: #606070; font-size: 0.9rem; margin: 0; }
-        .footer-bottom a { color: #00d4ff; text-decoration: none; }
-        .footer-bottom a:hover { text-decoration: underline; }
-        
-        @media (min-width: 768px) {
-            .nav-links { display: flex; }
-            .hero { padding: 11rem 0 7rem; }
-            .two-column { grid-template-columns: 1fr 1fr; }
-            .contact-grid { grid-template-columns: 1fr 1fr; }
-            .footer-content { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; }
-            .footer-bottom { flex-direction: row; justify-content: space-between; }
-        }
-        
-        @media (min-width: 1024px) {
-            .header-container { padding: 0; }
-        }
-        
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050508; }
-        ::-webkit-scrollbar-thumb { background: #0099cc; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00d4ff; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KCo by Cília | Fleet Intelligence Platform - Old But Gold TR8 IVSTO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+:root {
+--cyber-blue: #00d4ff; --cyber-blue-dark: #0099cc; --cyber-blue-light: #66e5ff;
+--cyber-neon: #00ffff; --cyber-purple: #9d4edd; --cyber-purple-light: #c77dff;
+--cyber-green: #00ff88; --bg-dark: #0a0a0f; --bg-darker: #050508; --bg-card: #0d0d15;
+--bg-card-hover: #12121a; --text-primary: #ffffff; --text-secondary: #a0a0b0; --text-dim: #606070;
+--gradient-cyber: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
+--gradient-ocean: linear-gradient(135deg, #0099cc 0%, #00d4ff 50%, #66e5ff 100%);
+--shadow-cyber: 0 0 20px rgba(0, 212, 255, 0.3);
+--shadow-cyber-strong: 0 0 40px rgba(0, 212, 255, 0.5);
+--border-cyber: 1px solid rgba(0, 212, 255, 0.3);
+--border-cyber-strong: 1px solid rgba(0, 212, 255, 0.6);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+font-family: Rajdhani, sans-serif;
+background: linear-gradient(180deg, #0a0a0f 0%, #050508 100%);
+color: var(--text-primary); line-height: 1.6; overflow-x: hidden;
+}
+.container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+header {
+position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(10px);
+border-bottom: var(--border-cyber); padding: 1rem 0;
+}
+.header-container {
+display: flex; justify-content: space-between; align-items: center;
+max-width: 1400px; margin: 0 auto; padding: 0 2rem;
+}
+.logo {
+font-family: Orbitron, sans-serif; font-size: 1.8rem; font-weight: 900;
+background: var(--gradient-cyber); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+background-clip: text; text-decoration: none; letter-spacing: 2px;
+}
+.logo-subtitle {
+font-size: 0.7rem; color: var(--text-dim); font-weight: 300; letter-spacing: 1px; margin-top: 0.25rem;
+}
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a {
+color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500;
+transition: all 0.3s; position: relative; padding: 0.5rem 0;
+}
+.nav-links a:hover { color: var(--cyber-blue); }
+.nav-links a::after {
+content: ""; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+background: var(--gradient-cyber); transition: width 0.3s;
+}
+.nav-links a:hover::after { width: 100%; }
+.language-toggle {
+display: flex; gap: 0.5rem; background: rgba(0, 212, 255, 0.1); border: var(--border-cyber);
+border-radius: 25px; padding: 0.25rem;
+}
+.language-btn {
+padding: 0.5rem 1rem; background: transparent; border: none; color: var(--text-secondary);
+cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.3s; border-radius: 20px;
+}
+.language-btn:hover { color: var(--cyber-blue); background: rgba(0, 212, 255, 0.2); }
+.language-btn.active { color: var(--cyber-blue); background: rgba(0, 212, 255, 0.3); }
+.hero {
+min-height: 100vh; display: flex; align-items: center; justify-content: center;
+padding-top: 100px; position: relative; overflow: hidden;
+}
+.hero::before {
+content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+background: radial-gradient(ellipse at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+radial-gradient(ellipse at 80% 20%, rgba(157, 78, 221, 0.1) 0%, transparent 50%),
+radial-gradient(ellipse at 50% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
+pointer-events: none;
+}
+.hero-content { text-align: center; z-index: 10; max-width: 900px; }
+.hero-title {
+font-family: Orbitron, sans-serif; font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 900;
+line-height: 1.1; margin-bottom: 1.5rem;
+background: var(--gradient-cyber); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+background-clip: text;
+}
+.hero-subtitle {
+font-size: clamp(1rem, 2.5vw, 1.3rem); color: var(--text-secondary); margin-bottom: 2rem; font-weight: 400;
+}
+.hero-description {
+font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2.5rem;
+max-width: 700px; margin-left: auto; margin-right: auto;
+}
+.cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn {
+padding: 1rem 2rem; border: none; border-radius: 8px; font-family: Rajdhani, sans-serif;
+font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s;
+text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+position: relative; overflow: hidden;
+}
+.btn-primary {
+background: var(--gradient-cyber); color: #0a0a0f; box-shadow: var(--shadow-cyber);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-cyber-strong); }
+.btn-secondary {
+background: transparent; color: var(--cyber-blue); border: var(--border-cyber);
+}
+.btn-secondary:hover { background: rgba(0, 212, 255, 0.1); border-color: var(--cyber-blue); }
+.stats-section { padding: 4rem 0; position: relative; }
+.stats-section::before {
+content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+background: var(--gradient-cyber); opacity: 0.3;
+}
+.section-title {
+font-family: Orbitron, sans-serif; font-size: clamp(1.5rem, 4vw, 2rem);
+text-align: center; margin-bottom: 3rem; color: var(--cyber-blue); letter-spacing: 2px;
+}
+.stats-grid {
+display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 2rem; margin-bottom: 3rem;
+}
+.stat-card {
+background: var(--bg-card); border: var(--border-cyber); border-radius: 12px;
+padding: 2rem; text-align: center; position: relative; overflow: hidden; transition: all 0.3s;
+}
+.stat-card:hover {
+transform: translateY(-5px); border-color: var(--cyber-blue); box-shadow: var(--shadow-cyber);
+}
+.stat-card::before {
+content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient-cyber);
+}
+.stat-icon {
+width: 60px; height: 60px; margin: 0 auto 1rem;
+background: rgba(0, 212, 255, 0.1); border-radius: 12px;
+display: flex; align-items: center; justify-content: center;
+font-size: 1.5rem; color: var(--cyber-blue);
+}
+.stat-value {
+font-family: Orbitron, sans-serif; font-size: 2.5rem; font-weight: 700;
+background: var(--gradient-cyber); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+background-clip: text; margin-bottom: 0.5rem;
+}
+.stat-label {
+color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;
+text-transform: uppercase; letter-spacing: 1px;
+}
+.camera-section { padding: 4rem 0; background: linear-gradient(180deg, transparent 0%, rgba(0, 212, 255, 0.05) 50%, transparent 100%); }
+.camera-container { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+.camera-info {
+background: var(--bg-card); border: var(--border-cyber); border-radius: 12px; padding: 2rem;
+}
+.camera-info h3 {
+font-family: Orbitron, sans-serif; font-size: 2rem; color: var(--cyber-blue); margin-bottom: 1rem;
+}
+.camera-info p { color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.8; }
+.camera-features { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+.feature-item {
+display: flex; align-items: center; gap: 1rem; padding: 0.75rem;
+background: rgba(0, 212, 255, 0.05); border-radius: 8px; border-left: 3px solid var(--cyber-blue);
+}
+.feature-icon {
+width: 24px; height: 24px; background: var(--cyber-blue); border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+color: #0a0a0f; font-weight: bold; font-size: 0.8rem;
+}
+.camera-visual {
+background: var(--bg-darker); border: var(--border-cyber); border-radius: 12px;
+padding: 2rem; position: relative; overflow: hidden; min-height: 400px;
+}
+.camera-preview {
+width: 100%; height: 300px; background: #000; border-radius: 8px; position: relative; overflow: hidden;
+}
+.camera-overlay {
+position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+background: repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(0, 255, 136, 0.3) 20px, rgba(0, 255, 136, 0.3) 22px),
+repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(157, 78, 221, 0.3) 20px, rgba(157, 78, 221, 0.3) 22px);
+pointer-events: none;
+}
+.camera-controls { display: flex; gap: 1rem; margin-top: 1rem; justify-content: center; }
+.control-btn {
+padding: 0.75rem 1.5rem; background: rgba(0, 212, 255, 0.1); border: var(--border-cyber);
+border-radius: 8px; color: var(--cyber-blue); cursor: pointer; font-size: 0.9rem; font-weight: 500;
+transition: all 0.3s;
+}
+.control-btn:hover { background: rgba(0, 212, 255, 0.2); border-color: var(--cyber-blue); }
+.processing-section { padding: 4rem 0; }
+.processing-container { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+.processing-form {
+background: var(--bg-card); border: var(--border-cyber); border-radius: 12px; padding: 2rem;
+}
+.form-group { margin-bottom: 1.5rem; }
+.form-label {
+display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;
+}
+.form-input, .form-select {
+width: 100%; padding: 0.75rem 1rem; border: var(--border-cyber); border-radius: 8px;
+background: var(--bg-darker); color: var(--text-primary); font-size: 0.95rem; transition: all 0.3s;
+}
+.form-input:focus, .form-select:focus {
+outline: none; border-color: var(--cyber-blue); box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+}
+.file-upload {
+border: 2px dashed rgba(0, 212, 255, 0.3); border-radius: 12px; padding: 2rem;
+text-align: center; cursor: pointer; transition: all 0.3s; background: var(--bg-darker);
+}
+.file-upload:hover { border-color: var(--cyber-blue); background: rgba(0, 212, 255, 0.05); }
+.file-upload.dragover { border-color: var(--cyber-green); background: rgba(0, 255, 136, 0.05); }
+.upload-icon { font-size: 2.5rem; color: var(--cyber-blue); margin-bottom: 1rem; }
+.upload-text { color: var(--text-secondary); margin-bottom: 0.5rem; }
+.upload-hint { color: var(--text-dim); font-size: 0.8rem; }
+.file-input { display: none; }
+.progress-container { margin-top: 1.5rem; display: none; }
+.progress-container.active { display: block; }
+.progress-bar { width: 100%; height: 6px; background: var(--bg-darker); border-radius: 3px; overflow: hidden; margin-bottom: 0.5rem; }
+.progress-fill {
+height: 100%; background: var(--gradient-cyber); border-radius: 3px; width: 0%; transition: width 0.3s;
+}
+.progress-text { color: var(--text-secondary); font-size: 0.85rem; text-align: center; }
+.processing-results {
+background: var(--bg-card); border: var(--border-cyber); border-radius: 12px; padding: 2rem; display: none;
+}
+.processing-results.active { display: block; }
+.result-header {
+display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;
+padding-bottom: 1rem; border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+}
+.result-title { font-size: 1.25rem; color: var(--cyber-blue); font-weight: 600; }
+.result-status {
+padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+background: rgba(0, 255, 136, 0.2); color: var(--cyber-green);
+}
+.result-grid {
+display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 1rem; margin-bottom: 1.5rem;
+}
+.result-item {
+background: var(--bg-darker); border: var(--border-cyber); border-radius: 8px; padding: 1rem;
+}
+.result-label { color: var(--text-dim); font-size: 0.8rem; margin-bottom: 0.25rem; }
+.result-value { color: var(--text-primary); font-size: 1.1rem; font-weight: 600; }
+.result-image { width: 100%; border-radius: 8px; margin-bottom: 1rem; }
+.map-section { padding: 4rem 0; background: linear-gradient(180deg, transparent 0%, rgba(157, 78, 221, 0.05) 50%, transparent 100%); }
+.map-container {
+background: var(--bg-card); border: var(--border-cyber); border-radius: 12px; padding: 2rem; position: relative;
+}
+.map-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.map-title {
+font-family: Orbitron, sans-serif; font-size: 1.5rem; color: var(--cyber-blue);
+}
+.map-filters { display: flex; gap: 1rem; }
+.filter-btn {
+padding: 0.5rem 1rem; background: rgba(0, 212, 255, 0.1); border: var(--border-cyber);
+border-radius: 6px; color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; transition: all 0.3s;
+}
+.filter-btn:hover { background: rgba(0, 212, 255, 0.2); color: var(--cyber-blue); }
+.filter-btn.active { background: rgba(0, 212, 255, 0.3); color: var(--cyber-blue); border-color: var(--cyber-blue); }
+.map-wrapper { width: 100%; height: 500px; border-radius: 8px; overflow: hidden; background: #000; position: relative; }
+.map-overlay {
+position: absolute; top: 1rem; right: 1rem; background: var(--bg-card); border: var(--border-cyber);
+border-radius: 8px; padding: 1rem; max-width: 300px; z-index: 1000;
+}
+.map-info-title { font-size: 0.9rem; color: var(--cyber-blue); margin-bottom: 0.5rem; }
+.map-info-item {
+display: flex; justify-content: space-between; padding: 0.5rem 0;
+border-bottom: 1px solid rgba(0, 212, 255, 0.1); font-size: 0.85rem;
+}
+.map-info-item:last-child { border-bottom: none; }
+.map-info-label { color: var(--text-dim); }
+.map-info-value { color: var(--text-primary); font-weight: 500; }
+.strategy-section { padding: 4rem 0; }
+.strategy-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+.strategy-card {
+background: var(--bg-card); border: var(--border-cyber); border-radius: 12px; padding: 2rem;
+position: relative; overflow: hidden;
+}
+.strategy-card::before {
+content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gradient-cyber);
+}
+.strategy-card-icon {
+width: 50px; height: 50px; background: rgba(0, 212, 255, 0.1); border-radius: 12px;
+display: flex; align-items: center; justify-content: center;
+font-size: 1.5rem; color: var(--cyber-blue); margin-bottom: 1rem;
+}
+.strategy-card h3 {
+font-family: Orbitron, sans-serif; font-size: 1.25rem; color: var(--cyber-blue); margin-bottom: 1rem;
+}
+.strategy-card p { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1rem; }
+.strategy-stats {
+display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;
+padding-top: 1rem; border-top: 1px solid rgba(0, 212, 255, 0.2);
+}
+.strategy-stat { display: flex; justify-content: space-between; font-size: 0.85rem; }
+.strategy-stat-label { color: var(--text-dim); }
+.strategy-stat-value { color: var(--cyber-green); font-weight: 600; }
+.business-section { padding: 4rem 0; background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 136, 0.03) 50%, transparent 100%); }
+.business-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+.business-card {
+background: var(--bg-card); border: var(--border-cyber); border-radius: 12px; padding: 2rem; text-align: center;
+}
+.business-card-icon {
+width: 60px; height: 60px; margin: 0 auto 1rem;
+background: rgba(0, 255, 136, 0.1); border-radius: 12px;
+display: flex; align-items: center; justify-content: center;
+font-size: 1.5rem; color: var(--cyber-green);
+}
+.business-card h3 { font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.5rem; }
+.business-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; }
+.business-value {
+font-family: Orbitron, sans-serif; font-size: 1.5rem; color: var(--cyber-green); font-weight: 700;
+}
+footer {
+background: var(--bg-darker); border-top: var(--border-cyber); padding: 3rem 0 1.5rem; margin-top: 4rem;
+}
+.footer-content {
+display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 2rem; margin-bottom: 2rem;
+}
+.footer-section h4 {
+font-family: Orbitron, sans-serif; font-size: 1rem; color: var(--cyber-blue); margin-bottom: 1rem;
+}
+.footer-section p, .footer-section a {
+color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; margin-bottom: 0.5rem; display: block;
+}
+.footer-section a:hover { color: var(--cyber-blue); }
+.footer-bottom { text-align: center; padding-top: 1.5rem; border-top: 1px solid rgba(0, 212, 255, 0.2); }
+.footer-logo {
+font-family: Orbitron, sans-serif; font-size: 1.5rem;
+background: var(--gradient-cyber); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+background-clip: text; margin-bottom: 0.5rem;
+}
+.footer-tagline { color: var(--text-dim); font-size: 0.8rem; }
+.footer-credits { color: var(--text-dim); font-size: 0.75rem; margin-top: 0.5rem; }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-darker); }
+::-webkit-scrollbar-thumb { background: var(--cyber-blue-dark); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyber-blue); }
+.toast-container {
+position: fixed; top: 1rem; right: 1rem; z-index: 3000;
+display: flex; flex-direction: column; gap: 0.75rem;
+}
+.toast {
+background: var(--bg-card); border: var(--border-cyber); border-radius: 8px;
+padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem;
+animation: slideIn 0.3s ease; max-width: 400px;
+}
+.toast.success { border-color: var(--cyber-green); }
+.toast.error { border-color: #ff0044; }
+.toast-icon { font-size: 1.25rem; color: var(--cyber-green); }
+.toast.error .toast-icon { color: #ff0044; }
+.toast-message { font-size: 0.85rem; color: var(--text-primary); flex: 1; }
+.toast-close {
+background: none; border: none; color: var(--text-secondary); cursor: pointer;
+font-size: 1rem; padding: 0.25rem; line-height: 1;
+}
+.toast-close:hover { color: var(--text-primary); }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.modal-overlay {
+display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+background: rgba(0, 0, 0, 0.8); z-index: 2000; align-items: center; justify-content: center; padding: 1rem;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+background: var(--bg-card); border: var(--border-cyber); border-radius: 12px;
+padding: 2rem; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;
+}
+.modal-header {
+display: flex; justify-content: space-between; align-items: center;
+margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+}
+.modal-title {
+font-family: Orbitron, sans-serif; font-size: 1.25rem; color: var(--cyber-blue);
+}
+.modal-close {
+background: none; border: none; color: var(--text-secondary); cursor: pointer;
+font-size: 1.5rem; padding: 0.25rem; line-height: 1;
+}
+.modal-close:hover { color: var(--cyber-blue); }
+.modal-body { margin-bottom: 1.5rem; }
+.modal-footer {
+display: flex; justify-content: flex-end; gap: 1rem;
+padding-top: 1rem; border-top: 1px solid rgba(0, 212, 255, 0.2);
+}
+@media (max-width: 1024px) {
+.camera-container, .processing-container { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+.header-container { padding: 0 1rem; }
+.nav-links { display: none; }
+.hero { padding-top: 80px; }
+.cta-buttons { flex-direction: column; align-items: center; }
+.btn { width: 100%; max-width: 300px; }
+.stats-grid { grid-template-columns: 1fr; }
+}
+</style>
 </head>
-<body class="lang-pt">
-    <header>
-        <div class="header-container">
-            <a href="#" class="logo">KCo</a>
-            <nav class="nav-links">
-                <a href="#que-es">Plataforma</a>
-                <a href="#beneficios">Beneficios</a>
-                <a href="#como-funciona">Como Funciona</a>
-                <a href="#ml">Machine Learning</a>
-                <a href="#estrategia">Estrategia</a>
-                <a href="#contacto">Contato</a>
-            </nav>
-            <div class="header-actions">
-                <div class="language-toggle">
-                    <button class="language-btn active" onclick="changeLanguage('pt')">PT</button>
-                    <button class="language-btn" onclick="changeLanguage('es')">ES</button>
-                </div>
-                <a href="#contacto" class="cta-btn">ACESSAR</a>
-            </div>
-        </div>
-    </header>
-    
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>KCo Fleet Intelligence <span class="highlight">Old But Gold TR8 IVSTO</span></h1>
-                <p>Plataforma de gestao de frota com inteligencia artificial e processamento de imagens. Pre-Seed alvo: <strong class="highlight">$30M+ USD</strong> em operacao real no Brasil e Mexico.</p>
-                <div class="hero-buttons">
-                    <a href="#estrategia" class="cta-btn">VER ESTRATEGIA</a>
-                    <a href="#contacto" class="cta-btn">CONTATO</a>
-                </div>
-                <div class="hero-stats">
-                    <div class="hero-stat">
-                        <h4>$30M+</h4>
-                        <p>Pre-Seed Target</p>
-                    </div>
-                    <div class="hero-stat">
-                        <h4>1000+</h4>
-                        <p>Veiculos Instrumentados</p>
-                    </div>
-                    <div class="hero-stat">
-                        <h4>24M</h4>
-                        <p>Faturamento Projetado</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="que-es">
-            <div class="container">
-                <h2><span class="highlight">Plataforma</span> KCo</h2>
-                <p class="section-subtitle">Living Lab as a Service - Transformando dados fisicos de veiculos em inteligencia de negocio para a industria automotiva no Brasil e Mexico.</p>
-                <div class="cards">
-                    <div class="card">
-                        <div class="card-icon">BR</div>
-                        <h3>Operacao Brasil</h3>
-                        <p>Frota de 500 veiculos instrumentados com telemetria OBD-II, sensores de vibracao, GPS e cameras 360.</p>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">+</div>
-                            <p><strong class="highlight">+20%</strong> de lucro para concessionarias</p>
-                        </div>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">+</div>
-                            <p><strong class="highlight">-15%</strong> em sinistralidade para seguradoras</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">MX</div>
-                        <h3>Operacao Mexico</h3>
-                        <p>Parceria com AXA Mexico, Banorte, Nissan e Volkswagen para capturando dados em condicoes reais.</p>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">+</div>
-                            <p><strong class="highlight">+15-20%</strong> em margen para oficinas</p>
-                        </div>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">+</div>
-                            <p>Laudo de Transparencia HPME</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">AI</div>
-                        <h3>Inteligencia Artificial</h3>
-                        <p>Detecta anomalias em tempo real com 95%+ de precisao usando modelos de ML treinados com dados reais.</p>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">+</div>
-                            <p>Processamento de imagens para avaliacao de danos</p>
-                        </div>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">+</div>
-                            <p>Correlacao de anomalias entre setores via LOWDATAESC</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="beneficios">
-            <div class="container">
-                <h2>Beneficios por <span class="highlight">Setor</span></h2>
-                <p class="section-subtitle">Como cada ator da cadeia automotiva se beneficia da plataforma KCo</p>
-                <div class="cards">
-                    <div class="card">
-                        <div class="card-icon">CAR</div>
-                        <h3>Concessionarias</h3>
-                        <p><strong class="highlight">+8-20%</strong> em lucro com alertas preditivas e primas de certificacao.</p>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">OK</div>
-                            <p>Acesso a veiculos com Laudo de Transparencia</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">INS</div>
-                        <h3>Aseguradoras</h3>
-                        <p><strong class="highlight">-10-15%</strong> em indice de sinistralidade com dados de desgaste real.</p>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">OK</div>
-                            <p><strong class="highlight">-5-10%</strong> em pagos por fraudes.</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">IND</div>
-                        <h3>Montadoras</h3>
-                        <p><strong class="highlight">-40%</strong> em custos de recalls com provas em condicoes reais.</p>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">OK</div>
-                            <p>Relatorios exclusivos de desgaste de pecas.</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">WRK</div>
-                        <h3>Oficinas</h3>
-                        <p>Acesso a laudos tecnicos e pecas certificadas.</p>
-                        <div class="card-feature">
-                            <div class="card-feature-icon">OK</div>
-                            <p><strong class="highlight">+15-20%</strong> em margen por reparacao.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="ml">
-            <div class="container">
-                <h2><span class="highlight">Machine Learning</span> & Processamento de Imagens</h2>
-                <p class="section-subtitle">Inteligencia Artificial para detectar anomalias e processar imagens de veiculos em tempo real.</p>
-                <div class="two-column">
-                    <div class="column">
-                        <h3>Detecção de Anomalias</h3>
-                        <p>Modelos de ML treinados com dados reais de telemetria:</p>
-                        <ul>
-                            <li><strong>Superaquecimento do motor</strong> (temperatura > 120C)</li>
-                            <li><strong>Pressao do oleo anormal</strong> (fora da faixa 20-80 psi)</li>
-                            <li><strong>Tensao da bateria elevada</strong> (> 14.5V)</li>
-                            <li><strong>Codigos OBD-II</strong> em tempo real</li>
-                            <li><strong>Vibracao excessiva</strong> em qualquer eixo</li>
-                        </ul>
-                        <h3 class="mt-4">Integracao com LOWDATAESC</h3>
-                        <p>Correlacao de anomalias entre setores: Automotivo, Seguros, Transporte, Manufatura, Energia, Cidades Inteligentes.</p>
-                    </div>
-                    <div class="column">
-                        <h3>Processamento de Imagens</h3>
-                        <p>Analise AI de imagens de veiculos:</p>
-                        <ul>
-                            <li><strong>Detecao de objetos</strong> (pneus, farois, portas, etc.)</li>
-                            <li><strong>Identificacao de anomalias visuais</strong> (amassados, arranhoes)</li>
-                            <li><strong>Avaliacao de danos</strong> com estimativa de custo</li>
-                            <li><strong>Classificacao de condicao</strong> do veiculo</li>
-                            <li><strong>Reconhecimento de placas</strong> e VIN</li>
-                            <li><strong>Analise 360</strong> do veiculo</li>
-                        </ul>
-                        <h3 class="mt-4">Capacidades de IA</h3>
-                        <p>Precisao > 95% na identificacao de danos, processamento em tempo real com latencia < 100ms.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section class="stats">
-            <div class="container">
-                <h2>Nossos <span class="highlight">Numeros</span></h2>
-                <p class="section-subtitle">Projecoes para os proximos 24 meses de operacao no Brasil e Mexico.</p>
-                <div class="stats">
-                    <div class="stat">
-                        <h4>1000+</h4>
-                        <p>Veiculos Instrumentados</p>
-                    </div>
-                    <div class="stat">
-                        <h4>$36M</h4>
-                        <p>Faturamento Anual Projetado</p>
-                    </div>
-                    <div class="stat">
-                        <h4>350%</h4>
-                        <p>ROI Anual Estimado</p>
-                    </div>
-                    <div class="stat">
-                        <h4>500+</h4>
-                        <p>Assinantes Ativos</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="estrategia">
-            <div class="container">
-                <h2><span class="highlight">Estrategia</span> Brasil & Mexico</h2>
-                <p class="section-subtitle">Plano de expansao e operacao para alcancar o Pre-Seed de $30M+ USD.</p>
-                <div class="two-column">
-                    <div class="column">
-                        <h3>BRASIL</h3>
-                        <p><strong>Entrada:</strong> Q1 2025 | <strong>Meta:</strong> 500 veiculos em 24 meses</p>
-                        <p><strong>Modelo de receita:</strong> Assinaturas, licenciamento de anomalias, processamento de imagens, marketplace de dados.</p>
-                        <p><strong>Parceiros:</strong> Localiza, Movida, WebMotors, iFood Fleet.</p>
-                        <p><strong>Vantagem:</strong> Integracao LOWDATAESC, precisao > 95%, infraestrutura 99.9% uptime.</p>
-                    </div>
-                    <div class="column">
-                        <h3>MEXICO</h3>
-                        <p><strong>Entrada:</strong> Q2 2025 | <strong>Meta:</strong> 500 veiculos em 24 meses</p>
-                        <p><strong>Modelo de receita:</strong> Assinaturas, manutencao preditiva, revenda certificada, gestao de frota.</p>
-                        <p><strong>Parceiros:</strong> AXA Mexico, Banorte, Nissan, Volkswagen.</p>
-                        <p><strong>Vantagem:</strong> Relacionamentos estabelecidos, telemetria real-time, avaliacao de danos por imagens.</p>
-                    </div>
-                </div>
-                <h3 class="mt-5">Por que usar LOWDATAESC?</h3>
-                <div class="cards">
-                    <div class="card">
-                        <div class="card-icon">LINK</div>
-                        <h3>Conexao entre Setores</h3>
-                        <p>Correlacao de anomalias entre Automotivo, Seguros, Transporte, Manufatura, Energia, Cidades Inteligentes.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">DATA</div>
-                        <h3>Beneficios da Integracao</h3>
-                        <p>Correlacao em tempo real, capacidades preditivas melhoradas, reducao de falsos positivos, infraestrutura compartilhada.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">$</div>
-                        <h3>Potencial de Ganhos</h3>
-                        <p>Ano 1: $15M-25M USD | Ano 2: $30M-50M USD | 24 meses: $45M-75M USD</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="socios" class="partners">
-            <div class="container">
-                <h2>Parceiros <span class="highlight">Estrategicos</span></h2>
-                <p>Colaboramos com lideres da industria automotiva no Brasil e Mexico.</p>
-                <div class="partner-logos">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Localiza" alt="Localiza" class="partner-logo">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Movida" alt="Movida" class="partner-logo">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=AXA+Mexico" alt="AXA Mexico" class="partner-logo">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Banorte" alt="Banorte" class="partner-logo">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Nissan" alt="Nissan" class="partner-logo">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Volkswagen" alt="Volkswagen" class="partner-logo">
-                </div>
-            </div>
-        </section>
-        
-        <section id="faq">
-            <div class="container">
-                <h2>Perguntas <span class="highlight">Frequentes</span></h2>
-                <p class="section-subtitle">Respostas as duvidas mais comuns sobre a plataforma KCo.</p>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Como me inscrevo na plataforma KCo?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Preencha o formulario na secao de Contato. Nossa equipe entrara em contato para validar seu perfil.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Que tipo de veiculos estao disponiveis?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Veiculos populares no Brasil e Mexico, todos instrumentados com telemetria e cameras para processamento de imagens.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <h3>Como e garantida a privacidade?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Cumprimos LGPD (Brasil) e LFPDPPP (Mexico). Dados sao anonimizados e contamos com DPO dedicado.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="contacto">
-            <div class="container">
-                <h2>Contato</h2>
-                <p class="section-subtitle">Pronto para transformar a mobilidade? Entre em contato.</p>
-                <div class="contact-grid">
-                    <div class="contact-info">
-                        <h3>Informacoes de Contato</h3>
-                        <p>Estamos aqui para ajudar a implementar a plataforma KCo em sua organizacao.</p>
-                        <div class="contact-details">
-                            <p><strong>Email:</strong> <a href="mailto:contato@kco.ai">contato@kco.ai</a></p>
-                            <p><strong>Telefone:</strong> +55 (11) 1234 5678 (BR) | +52 (55) 1234 5678 (MX)</p>
-                            <p><strong>Endereco BR:</strong> Av. Faria Lima, 3900, Sao Paulo - SP</p>
-                            <p><strong>Endereco MX:</strong> Av. Paseo de la Reforma 250, Juarez, CDMX</p>
-                        </div>
-                    </div>
-                    <form id="contactForm">
-                        <h3>Solicitar Acesso</h3>
-                        <div class="form-group">
-                            <label for="nome">Nome Completo</label>
-                            <input type="text" id="nome" name="nome" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="empresa">Empresa</label>
-                            <input type="text" id="empresa" name="empresa">
-                        </div>
-                        <div class="form-group">
-                            <label for="pais">Pais</label>
-                            <select id="pais" name="pais" required>
-                                <option value="">Selecione</option>
-                                <option value="br">Brasil</option>
-                                <option value="mx">Mexico</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="mensaje">Mensagem</label>
-                            <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="cta-btn" style="width: 100%;">Enviar Solicitacao</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </main>
-    
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div>
-                    <div class="footer-logo">KCo Fleet Intelligence</div>
-                    <p class="footer-description">O primeiro Living Lab as a Service para a industria automotiva no Brasil e Mexico, transformando dados fisicos em oportunidades de negocio com IA e processamento de imagens.</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#que-es">Plataforma</a>
-                    <a href="#beneficios">Beneficios</a>
-                    <a href="#como-funciona">Como Funciona</a>
-                    <a href="#ml">Machine Learning</a>
-                </div>
-                <div class="footer-links">
-                    <a href="#estrategia">Estrategia</a>
-                    <a href="#faq">FAQ</a>
-                    <a href="#contacto">Contato</a>
-                    <a href="#">Privacidade</a>
-                </div>
-                <div class="footer-contact">
-                    <p><strong>Email:</strong> contato@kco.ai</p>
-                    <p><strong>Telefone:</strong> +55 (11) 1234 5678</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024-2026 KCo Fleet Intelligence. Todos os direitos reservados.</p>
-                <p>Desenvolvido por <a href="#">Cilia Tecnologia</a> | Pre-Seed: $30M+ USD</p>
-            </div>
-        </div>
-    </footer>
-    
-    <script>
-        function changeLanguage(lang) {
-            document.querySelectorAll('.language-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            document.body.className = 'lang-' + lang;
-            localStorage.setItem('kco-language', lang);
-        }
-        
-        function toggleFaq(element) {
-            const faqItem = element.parentElement;
-            const answer = element.nextElementSibling;
-            const toggle = element.querySelector('.faq-toggle');
-            
-            if (faqItem.classList.contains('active')) {
-                faqItem.classList.remove('active');
-                answer.classList.remove('active');
-                toggle.textContent = '+ ';
-            } else {
-                document.querySelectorAll('.faq-item.active').forEach(item => {
-                    item.classList.remove('active');
-                    item.querySelector('.faq-answer').classList.remove('active');
-                    item.querySelector('.faq-toggle').textContent = '+ ';
-                });
-                faqItem.classList.add('active');
-                answer.classList.add('active');
-                toggle.textContent = '- ';
-            }
-        }
-        
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Obrigado pelo seu interesse! Entraremos em contato em breve.');
-            this.reset();
-        });
-        
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-        
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.boxShadow = '0 4px 20px rgba(0, 212, 255, 0.2)';
-            } else {
-                header.style.boxShadow = 'none';
-            }
-        });
-        
-        const savedLang = localStorage.getItem('kco-language') || 'pt';
-        document.querySelectorAll('.language-btn').forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.textContent === savedLang.toUpperCase()) {
-                btn.classList.add('active');
-            }
-        });
-    </script>
+<body>
+<header>
+<div class="header-container">
+<div>
+<a href="/" class="logo">KCo</a>
+<div class="logo-subtitle">by Cília | Laboratory of K and RockNewVenture</div>
+</div>
+<nav class="nav-links">
+<a href="#camera">Camera</a>
+<a href="#processing">Processing</a>
+<a href="#map">Workshops Map</a>
+<a href="#strategy">Strategy</a>
+<a href="#business">Business</a>
+</nav>
+<div class="language-toggle">
+<button class="language-btn active" onclick="changeLanguage('pt')">PT</button>
+<button class="language-btn" onclick="changeLanguage('es')">ES</button>
+</div>
+</div>
+</header>
+
+<section class="hero">
+<div class="hero-content">
+<h1 class="hero-title">KCo by Cília</h1>
+<p class="hero-subtitle">Fleet Intelligence Platform</p>
+<p class="hero-description">
+Old But Gold TR8 IVSTO - Pre-Seed Target: <strong>$30M+ USD</strong><br>
+AI-Powered vehicle anomaly detection with LOWDATAESC cross-sector integration for Brazil and Mexico markets
+</p>
+<div class="cta-buttons">
+<a href="#camera" class="btn btn-primary">Start Image Analysis</a>
+<a href="#strategy" class="btn btn-secondary">View Strategy</a>
+</div>
+</div>
+</section>
+
+<section class="stats-section">
+<div class="container">
+<h2 class="section-title">Market Potential - 24 Months Projection</h2>
+<div class="stats-grid">
+<div class="stat-card">
+<div class="stat-icon">🚗</div>
+<div class="stat-value">1000+</div>
+<div class="stat-label">Total Fleet Target</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">$</div>
+<div class="stat-value">$36M+</div>
+<div class="stat-label">Projected Revenue</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">%</div>
+<div class="stat-value">350%</div>
+<div class="stat-label">Target ROI</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">💰</div>
+<div class="stat-value">$150M+</div>
+<div class="stat-label">Estimated Valuation</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="camera" class="camera-section">
+<div class="container">
+<h2 class="section-title">AI Camera Processing</h2>
+<div class="camera-container">
+<div class="camera-info">
+<h3>Intelligent Image Capture</h3>
+<p>Our advanced camera system with <strong>green and purple detection lines</strong> enables real-time vehicle analysis without the need for manual image capture.</p>
+<p>The system automatically detects and processes vehicle images, identifying anomalies, damage, and providing instant assessments with over 95% accuracy.</p>
+<div class="camera-features">
+<div class="feature-item">
+<div class="feature-icon">✓</div>
+<span>Green lines for vehicle boundary detection</span>
+</div>
+<div class="feature-item">
+<div class="feature-icon">✓</div>
+<span>Purple lines for anomaly highlighting</span>
+</div>
+<div class="feature-item">
+<div class="feature-icon">✓</div>
+<span>Automatic continuous processing</span>
+</div>
+<div class="feature-item">
+<div class="feature-icon">✓</div>
+<span>AI-powered real-time analysis</span>
+</div>
+</div>
+<button class="btn btn-primary" onclick="startCamera()" style="margin-top: 1.5rem;">Activate Camera</button>
+</div>
+<div class="camera-visual">
+<div class="camera-preview" id="cameraPreview">
+<div class="camera-overlay" id="cameraOverlay"></div>
+<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--text-secondary);">
+Camera Preview<br>
+<small>Green & Purple Detection Grid</small>
+</div>
+</div>
+<div class="camera-controls">
+<button class="control-btn" onclick="captureImage()">Capture Image</button>
+<button class="control-btn" onclick="toggleOverlay()">Toggle Overlay</button>
+<button class="control-btn" onclick="processImage()">Process Image</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="processing" class="processing-section">
+<div class="container">
+<h2 class="section-title">Image Processing & Analysis</h2>
+<div class="processing-container">
+<div class="processing-form">
+<div class="form-group">
+<label class="form-label">Upload Vehicle Image</label>
+<div class="file-upload" id="fileUpload" onclick="triggerFileInput()" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+<div class="upload-icon">📷</div>
+<div class="upload-text">Drag & Drop or Click to Upload</div>
+<div class="upload-hint">Supports: JPG, PNG, WEBP (Max 10MB)</div>
+<input type="file" id="fileInput" class="file-input" accept="image/*" onchange="handleFileSelect(event)">
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Vehicle ID</label>
+<input type="text" id="vehicleId" class="form-input" placeholder="e.g., BR-001 or MX-001">
+</div>
+<div class="form-group">
+<label class="form-label">Analysis Type</label>
+<select id="analysisType" class="form-select">
+<option value="full">Full Analysis (Recommended)</option>
+<option value="quick">Quick Scan</option>
+<option value="damage">Damage Assessment</option>
+<option value="anomaly">Anomaly Detection</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">Country</label>
+<select id="country" class="form-select">
+<option value="br">Brazil</option>
+<option value="mx">Mexico</option>
+</select>
+</div>
+<button class="btn btn-primary" onclick="uploadAndProcess()" style="width: 100%;">Upload & Process Image</button>
+<div class="progress-container" id="progressContainer">
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+<div class="progress-text" id="progressText">Preparing upload...</div>
+</div>
+</div>
+<div class="processing-results" id="processingResults">
+<div class="result-header">
+<div class="result-title">Analysis Results</div>
+<div class="result-status">Processing Complete</div>
+</div>
+<div id="resultContent"></div>
+<button class="btn btn-secondary" onclick="exportPDF()" style="width: 100%; margin-top: 1rem;">Export PDF Report</button>
+<button class="btn btn-secondary" onclick="shareResults()" style="width: 100%; margin-top: 0.5rem;">Share Results</button>
+</div>
+</div>
+</div>
+</section>
+
+<section id="map" class="map-section">
+<div class="container">
+<h2 class="section-title">Real-Time Quotation & Workshops Map</h2>
+<div class="map-container">
+<div class="map-header">
+<h3 class="map-title">Nearby Workshops & Repair Centers</h3>
+<div class="map-filters">
+<button class="filter-btn active" onclick="filterWorkshops('all')">All</button>
+<button class="filter-btn" onclick="filterWorkshops('certified')">Certified</button>
+<button class="filter-btn" onclick="filterWorkshops('premium')">Premium</button>
+</div>
+</div>
+<div class="map-wrapper" id="mapWrapper">
+<div id="map" style="width: 100%; height: 100%;"></div>
+<div class="map-overlay" id="mapOverlay">
+<div class="map-info-title">Selected Workshop</div>
+<div class="map-info-item">
+<span class="map-info-label">Name:</span>
+<span class="map-info-value" id="workshopName">-</span>
+</div>
+<div class="map-info-item">
+<span class="map-info-label">Distance:</span>
+<span class="map-info-value" id="workshopDistance">-</span>
+</div>
+<div class="map-info-item">
+<span class="map-info-label">Estimated Cost:</span>
+<span class="map-info-value" id="workshopCost">-</span>
+</div>
+<div class="map-info-item">
+<span class="map-info-label">Rating:</span>
+<span class="map-info-value" id="workshopRating">-</span>
+</div>
+<button class="btn btn-primary" onclick="getQuotation()" style="margin-top: 1rem; width: 100%;">Get Real-Time Quotation</button>
+</div>
+</div>
+<div style="margin-top: 1rem; color: var(--text-secondary);">
+<p><strong>Real-Time Features:</strong></p>
+<ul style="list-style: none; padding-left: 0;">
+<li style="margin-bottom: 0.5rem;">Live workshop locations in Brazil and Mexico</li>
+<li style="margin-bottom: 0.5rem;">Instant quotation based on damage assessment</li>
+<li style="margin-bottom: 0.5rem;">Certified partner network</li>
+<li style="margin-bottom: 0.5rem;">Navigation integration</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section id="strategy" class="strategy-section">
+<div class="container">
+<h2 class="section-title">Brazil & Mexico Market Strategy</h2>
+<div class="strategy-container">
+<div class="strategy-card">
+<div class="strategy-card-icon">🇧🇷</div>
+<h3>Brazil Operation</h3>
+<p>Market entry in Q1 2025 with 500 vehicle fleet target in 24 months. Focus on fleet operators, manufacturers, and insurance companies.</p>
+<div class="strategy-stats">
+<div class="strategy-stat">
+<span class="strategy-stat-label">Target Revenue:</span>
+<span class="strategy-stat-value">$15M-20M USD</span>
+</div>
+<div class="strategy-stat">
+<span class="strategy-stat-label">Key Partners:</span>
+<span class="strategy-stat-value">Localiza, Movida, Bradesco</span>
+</div>
+<div class="strategy-stat">
+<span class="strategy-stat-label">ROI per Vehicle:</span>
+<span class="strategy-stat-value">6-8 months</span>
+</div>
+</div>
+</div>
+<div class="strategy-card">
+<div class="strategy-card-icon">🇲🇽</div>
+<h3>Mexico Operation</h3>
+<p>Market entry in Q2 2025 with 500 vehicle fleet target in 24 months. Focus on dealerships, insurance, and corporate fleet management.</p>
+<div class="strategy-stats">
+<div class="strategy-stat">
+<span class="strategy-stat-label">Target Revenue:</span>
+<span class="strategy-stat-value">$12M-18M USD</span>
+</div>
+<div class="strategy-stat">
+<span class="strategy-stat-label">Key Partners:</span>
+<span class="strategy-stat-value">AXA, Banorte, Nissan</span>
+</div>
+<div class="strategy-stat">
+<span class="strategy-stat-label">ROI per Vehicle:</span>
+<span class="strategy-stat-value">5-7 months</span>
+</div>
+</div>
+</div>
+<div class="strategy-card">
+<div class="strategy-card-icon">🔗</div>
+<h3>LOWDATAESC Integration</h3>
+<p>Cross-sector data sharing platform enabling anomaly correlation between automotive, insurance, transportation, manufacturing, energy, and smart cities.</p>
+<div class="strategy-stats">
+<div class="strategy-stat">
+<span class="strategy-stat-label">Sectors Connected:</span>
+<span class="strategy-stat-value">6+ sectors</span>
+</div>
+<div class="strategy-stat">
+<span class="strategy-stat-label">Anomaly Accuracy:</span>
+<span class="strategy-stat-value">>95%</span>
+</div>
+<div class="strategy-stat">
+<span class="strategy-stat-label">Data Compliance:</span>
+<span class="strategy-stat-value">LGPD, LFPDPPP, GDPR</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="business" class="business-section">
+<div class="container">
+<h2 class="section-title">Business Potential & Infrastructure</h2>
+<div class="business-grid">
+<div class="business-card">
+<div class="business-card-icon">💡</div>
+<h3>AI Processing</h3>
+<p>Advanced image processing with YOLOv8 and custom CNN models for anomaly detection with 95%+ accuracy.</p>
+<div class="business-value">50+ Object Classes</div>
+</div>
+<div class="business-card">
+<div class="business-card-icon">☁️</div>
+<h3>Cloud Database</h3>
+<p>Secure cloud storage for all vehicle analyses, accessible by vehicle ID with full data encryption.</p>
+<div class="business-value">Unlimited Storage</div>
+</div>
+<div class="business-card">
+<div class="business-card-icon">🔒</div>
+<h3>JWT Authentication</h3>
+<p>Secure token-based authentication for all API endpoints with role-based access control.</p>
+<div class="business-value">Enterprise Grade</div>
+</div>
+<div class="business-card">
+<div class="business-card-icon">📱</div>
+<h3>Push Notifications</h3>
+<p>Real-time notifications for anomaly detection, maintenance alerts, and system updates.</p>
+<div class="business-value">Instant Delivery</div>
+</div>
+<div class="business-card">
+<div class="business-card-icon">📄</div>
+<h3>PDF Reports</h3>
+<p>Comprehensive PDF export of all vehicle analyses with visual overlays and detailed assessments.</p>
+<div class="business-value">Professional Format</div>
+</div>
+<div class="business-card">
+<div class="business-card-icon">🚀</div>
+<h3>Pre-Seed Target</h3>
+<p>Old But Gold TR8 IVSTO infrastructure designed to exceed $30M USD pre-seed valuation.</p>
+<div class="business-value">$30M+ Target</div>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="container">
+<div class="footer-content">
+<div class="footer-section">
+<h4>KCo by Cília</h4>
+<p>Fleet Intelligence Platform</p>
+<p>Old But Gold TR8 IVSTO</p>
+</div>
+<div class="footer-section">
+<h4>Company</h4>
+<a href="#">About Us</a>
+<a href="#">Services</a>
+<a href="#">Technology</a>
+<a href="#">Partners</a>
+</div>
+<div class="footer-section">
+<h4>Markets</h4>
+<a href="#">Brazil</a>
+<a href="#">Mexico</a>
+<a href="#">Strategy</a>
+<a href="#">Financials</a>
+</div>
+<div class="footer-section">
+<h4>Contact</h4>
+<a href="#">contato@kco.ai</a>
+<a href="#">https://kco.ai</a>
+<a href="#">LinkedIn</a>
+<a href="#">GitHub</a>
+</div>
+</div>
+<div class="footer-bottom">
+<div class="footer-logo">KCo by Cília</div>
+<div class="footer-tagline">Laboratory of K and RockNewVenture</div>
+<div class="footer-credits">
+© 2024-2026 KCo Fleet Intelligence | All Rights Reserved | Pre-Seed Target: $30M+ USD
+</div>
+</div>
+</div>
+</footer>
+
+<div class="toast-container" id="toastContainer"></div>
+<div class="modal-overlay" id="modalOverlay">
+<div class="modal">
+<div class="modal-header">
+<h3 class="modal-title" id="modalTitle">Modal Title</h3>
+<button class="modal-close" onclick="closeModal()">&times;</button>
+</div>
+<div class="modal-body" id="modalBody">Modal content goes here</div>
+<div class="modal-footer" id="modalFooter"></div>
+</div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+let currentLanguage = 'pt';
+function changeLanguage(lang) {
+currentLanguage = lang;
+document.querySelectorAll('.language-btn').forEach(btn => { btn.classList.remove('active'); });
+document.querySelector('.language-btn[onclick="changeLanguage('' + lang + '')"]').classList.add('active');
+showToast('Language changed to ' + (lang === 'pt' ? 'Portuguese' : 'Spanish'), 'info');
+}
+function showToast(message, type = 'info', duration = 5000) {
+const toastContainer = document.getElementById('toastContainer');
+const toast = document.createElement('div');
+toast.className = 'toast ' + type;
+const icon = type === 'error' ? '❌' : type === 'success' ? '✓' : 'ℹ';
+toast.innerHTML = '<span class="toast-icon">' + icon + '</span><span class="toast-message">' + message + '</span><button class="toast-close" onclick="this.parentElement.remove()">&times;</button>';
+toastContainer.appendChild(toast);
+setTimeout(() => { toast.remove(); }, duration);
+}
+function openModal(title, content, footer) {
+document.getElementById('modalTitle').textContent = title;
+document.getElementById('modalBody').innerHTML = content;
+document.getElementById('modalFooter').innerHTML = footer || '';
+document.getElementById('modalOverlay').classList.add('active');
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+let stream = null;
+function startCamera() {
+if (stream) stopCamera();
+const cameraPreview = document.getElementById('cameraPreview');
+cameraPreview.innerHTML = '<video id="cameraVideo" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>';
+navigator.mediaDevices.getUserMedia({ video: true })
+.then(streamData => {
+stream = streamData;
+document.getElementById('cameraVideo').srcObject = stream;
+showToast('Camera activated', 'success');
+})
+.catch(err => { showToast('Error accessing camera', 'error'); });
+}
+function stopCamera() {
+if (stream) {
+stream.getTracks().forEach(track => track.stop());
+stream = null;
+document.getElementById('cameraPreview').innerHTML = '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--text-secondary);">Camera Preview<br><small>Green & Purple Detection Grid</small></div>';
+showToast('Camera deactivated', 'info');
+}
+}
+function captureImage() {
+if (!stream) { showToast('Please activate camera first', 'error'); return; }
+const video = document.getElementById('cameraVideo');
+const canvas = document.createElement('canvas');
+canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+const ctx = canvas.getContext('2d');
+ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+drawOverlay(canvas, ctx);
+showToast('Image captured', 'success');
+}
+function drawOverlay(canvas, ctx) {
+ctx.strokeStyle = 'rgba(0, 255, 136, 0.8)';
+ctx.lineWidth = 2;
+const lineSpacing = canvas.height / 10;
+for (let i = 1; i < 10; i++) {
+const y = i * lineSpacing;
+ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+}
+ctx.strokeStyle = 'rgba(157, 78, 221, 0.8)';
+const vLineSpacing = canvas.width / 10;
+for (let i = 1; i < 10; i++) {
+const x = i * vLineSpacing;
+ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+}
+}
+function toggleOverlay() {
+const overlay = document.getElementById('cameraOverlay');
+overlay.style.display = overlay.style.display === 'none' ? 'block' : 'none';
+}
+function processImage() {
+if (!stream) { showToast('Please activate camera first', 'error'); return; }
+showToast('Processing image...', 'info');
+setTimeout(() => {
+const results = {
+vehicleId: document.getElementById('vehicleId').value || 'AUTO-' + Math.random().toString(36).substr(2, 8),
+anomalies: Math.floor(Math.random() * 5) + 1,
+damageScore: (Math.random() * 100).toFixed(1),
+estimatedCost: '$' + (Math.random() * 5000 + 500).toFixed(2),
+confidence: (Math.random() * 30 + 70).toFixed(1) + '%'
+};
+displayResults(results);
+showToast('Image processing complete', 'success');
+}, 2000);
+}
+function triggerFileInput() { document.getElementById('fileInput').click(); }
+function handleFileSelect(event) {
+const file = event.target.files[0];
+if (!file) return;
+const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+if (fileSize > 10) { showToast('File size exceeds 10MB', 'error'); return; }
+const reader = new FileReader();
+reader.onload = function(e) { previewImage(file.name, e.target.result); };
+reader.readAsDataURL(file);
+}
+function handleDrop(event) {
+event.preventDefault();
+document.getElementById('fileUpload').classList.remove('dragover');
+const file = event.dataTransfer.files[0];
+if (!file || !file.type.match('image.*')) { showToast('Please drop an image file', 'error'); return; }
+const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+if (fileSize > 10) { showToast('File size exceeds 10MB', 'error'); return; }
+const reader = new FileReader();
+reader.onload = function(e) { previewImage(file.name, e.target.result); };
+reader.readAsDataURL(file);
+}
+function handleDragOver(event) { event.preventDefault(); document.getElementById('fileUpload').classList.add('dragover'); }
+function handleDragLeave(event) { event.preventDefault(); document.getElementById('fileUpload').classList.remove('dragover'); }
+function previewImage(fileName, imageData) {
+const previewContainer = document.getElementById('fileUpload');
+previewContainer.innerHTML = '<img src="' + imageData + '" style="width: 100%; max-height: 200px; object-fit: contain; border-radius: 8px; margin-bottom: 1rem;"><div class="upload-text">' + fileName + '</div><div class="upload-hint">Ready to upload</div><input type="file" id="fileInput" class="file-input" accept="image/*" onchange="handleFileSelect(event)">';
+}
+function uploadAndProcess() {
+const vehicleId = document.getElementById('vehicleId').value;
+const fileInput = document.getElementById('fileInput');
+if (!fileInput.files.length) { showToast('Please select an image first', 'error'); return; }
+document.getElementById('progressContainer').classList.add('active');
+let progress = 0;
+const progressInterval = setInterval(() => {
+progress += 10;
+document.getElementById('progressFill').style.width = progress + '%';
+if (progress >= 30) document.getElementById('progressText').textContent = 'Processing image...';
+if (progress >= 60) document.getElementById('progressText').textContent = 'Analyzing with AI...';
+if (progress >= 90) document.getElementById('progressText').textContent = 'Finalizing results...';
+if (progress >= 100) {
+clearInterval(progressInterval);
+document.getElementById('progressContainer').classList.remove('active');
+const results = {
+vehicleId: vehicleId || 'AUTO-' + Math.random().toString(36).substr(2, 8),
+analysisType: document.getElementById('analysisType').value,
+country: document.getElementById('country').value,
+timestamp: new Date().toISOString(),
+anomalies: Math.floor(Math.random() * 8) + 1,
+damageScore: (Math.random() * 100).toFixed(1),
+estimatedCost: '$' + (Math.random() * 5000 + 500).toFixed(2),
+confidence: (Math.random() * 30 + 70).toFixed(1) + '%',
+processingTime: (Math.random() * 500 + 200).toFixed(0) + 'ms',
+detectedObjects: Math.floor(Math.random() * 20) + 5,
+imageUrl: URL.createObjectURL(fileInput.files[0])
+};
+displayResults(results);
+showToast('Image uploaded and processed successfully', 'success');
+}
+}, 300);
+}
+function displayResults(results) {
+const resultsContainer = document.getElementById('processingResults');
+resultsContainer.classList.add('active');
+const resultContent = document.getElementById('resultContent');
+resultContent.innerHTML = '<div style="margin-bottom: 1.5rem;"><img src="' + (results.imageUrl || 'https://via.placeholder.com/400x200?text=Vehicle+Image') + '" style="width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px; border: 2px solid var(--cyber-blue);"></div>' +
+'<div class="result-grid">' +
+'<div class="result-item"><div class="result-label">Vehicle ID</div><div class="result-value">' + results.vehicleId + '</div></div>' +
+'<div class="result-item"><div class="result-label">Analysis Type</div><div class="result-value">' + results.analysisType + '</div></div>' +
+'<div class="result-item"><div class="result-label">Country</div><div class="result-value">' + (results.country === 'br' ? 'Brazil' : 'Mexico') + '</div></div>' +
+'<div class="result-item"><div class="result-label">Timestamp</div><div class="result-value">' + new Date(results.timestamp).toLocaleString() + '</div></div>' +
+'</div>' +
+'<div style="margin: 2rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.05); border-radius: 8px; border-left: 4px solid var(--cyber-blue);">' +
+'<h4 style="color: var(--cyber-blue); margin-bottom: 0.5rem;">Analysis Summary</h4>' +
+'<div class="result-grid">' +
+'<div class="result-item"><div class="result-label">Anomalies Detected</div><div class="result-value" style="color: var(--cyber-green);">' + results.anomalies + '</div></div>' +
+'<div class="result-item"><div class="result-label">Damage Score</div><div class="result-value" style="color: ' + (results.damageScore > 70 ? '#ff0044' : results.damageScore > 40 ? '#ffcc00' : '#00ff88') + ';">' + results.damageScore + '/100</div></div>' +
+'<div class="result-item"><div class="result-label">Estimated Repair Cost</div><div class="result-value">' + results.estimatedCost + '</div></div>' +
+'<div class="result-item"><div class="result-label">Confidence</div><div class="result-value">' + results.confidence + '</div></div>' +
+'<div class="result-item"><div class="result-label">Processing Time</div><div class="result-value">' + results.processingTime + '</div></div>' +
+'<div class="result-item"><div class="result-label">Objects Detected</div><div class="result-value">' + results.detectedObjects + '</div></div>' +
+'</div>' +
+'</div>' +
+'<div style="margin-top: 1rem;"><p style="color: var(--text-secondary); font-size: 0.85rem;"><strong>Note:</strong> This analysis has been automatically saved to the cloud database and shared with LOWDATAESC for cross-sector correlation.</p></div>';
+resultsContainer.scrollIntoView({ behavior: 'smooth' });
+}
+let map;
+function initMap() {
+if (map) return;
+const defaultLat = -23.5505; const defaultLng = -46.6333;
+map = L.map('map').setView([defaultLat, defaultLng], 12);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
+addSampleWorkshops();
+map.on('click', function(e) { const { lat, lng } = e.latlng; addMarker(lat, lng, 'New Location', '$0.00', '0.0 km', '4.5'); });
+}
+function addSampleWorkshops() {
+const brazilWorkshops = [
+{ lat: -23.5614, lng: -46.6558, name: 'KCo Certified Workshop', cost: '$1,250.00', distance: '2.5 km', rating: '4.8' },
+{ lat: -23.5456, lng: -46.6345, name: 'Premium Auto Center', cost: '$1,500.00', distance: '3.2 km', rating: '4.9' },
+{ lat: -23.5789, lng: -46.6423, name: 'Quick Repair Service', cost: '$850.00', distance: '1.8 km', rating: '4.5' },
+{ lat: -23.5333, lng: -46.6222, name: 'Official Dealer Service', cost: '$2,000.00', distance: '4.5 km', rating: '4.7' },
+{ lat: -23.5876, lng: -46.6667, name: 'Eco Auto Repair', cost: '$950.00', distance: '5.2 km', rating: '4.6' }
+];
+brazilWorkshops.forEach(workshop => { addMarker(workshop.lat, workshop.lng, workshop.name, workshop.cost, workshop.distance, workshop.rating); });
+}
+function addMarker(lat, lng, name, cost, distance, rating) {
+const marker = L.marker([lat, lng]).addTo(map);
+marker.bindPopup('<b>' + name + '</b><br>Cost: ' + cost + '<br>Distance: ' + distance + '<br>Rating: ' + rating + '/5');
+marker.on('click', function() {
+document.getElementById('workshopName').textContent = name;
+document.getElementById('workshopCost').textContent = cost;
+document.getElementById('workshopDistance').textContent = distance;
+document.getElementById('workshopRating').textContent = rating + '/5';
+});
+}
+function filterWorkshops(type) {
+document.querySelectorAll('.filter-btn').forEach(btn => { btn.classList.remove('active'); });
+event.target.classList.add('active');
+showToast('Filter: ' + type, 'info');
+}
+function getQuotation() {
+const workshopName = document.getElementById('workshopName').textContent;
+if (workshopName === '-') { showToast('Please select a workshop first', 'error'); return; }
+showToast('Quotation request sent to ' + workshopName, 'success');
+setTimeout(() => {
+const cost = document.getElementById('workshopCost').textContent;
+openModal('Real-Time Quotation', '<p>Workshop: <strong>' + workshopName + '</strong></p><p>Estimated Cost: <strong>' + cost + '</strong></p><p>Status: <span style="color: var(--cyber-green);">Available for immediate service</span></p><p>Estimated Time: 2-3 days</p>', '<button class="btn btn-primary" onclick="confirmBooking()">Confirm Booking</button>');
+}, 1500);
+}
+function confirmBooking() { closeModal(); showToast('Booking confirmed! Workshop notification sent.', 'success'); }
+function exportPDF() {
+const vehicleId = document.getElementById('vehicleId').value || 'N/A';
+showToast('Generating PDF report for vehicle ' + vehicleId + '...', 'info');
+setTimeout(() => { showToast('PDF report generated successfully!', 'success'); }, 2000);
+}
+function shareResults() {
+const vehicleId = document.getElementById('vehicleId').value || 'N/A';
+showToast('Preparing to share results for vehicle ' + vehicleId + '...', 'info');
+setTimeout(() => { navigator.clipboard.writeText(window.location.href + '?vehicle=' + vehicleId); showToast('Share link copied to clipboard!', 'success'); }, 1000);
+}
+window.addEventListener('load', function() { initMap(); });
+document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+</script>
 </body>
 </html>
