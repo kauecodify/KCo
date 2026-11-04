@@ -3,458 +3,544 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KCo | Fleet Intelligence Platform - Old But Gold TR8 IVSTO</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <title>KCo | Fleet Intelligence - Old But Gold TR8 IVSTO</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --cyber-blue: #00d4ff;
-            --cyber-blue-dark: #0099cc;
-            --cyber-neon: #00ffff;
-            --cyber-purple: #9d4edd;
-            --bg-dark: #0a0a0f;
-            --bg-darker: #050508;
-            --bg-card: #0d0d15;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b0;
-            --gradient-cyber: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            --shadow-cyber: 0 0 20px rgba(0, 212, 255, 0.3);
-            --border-cyber: 1px solid rgba(0, 212, 255, 0.3);
+            --green: #00ff41;
+            --green-bright: #00ff88;
+            --green-dim: #00b32e;
+            --green-dark: #003b00;
+            --green-glow: rgba(0, 255, 65, 0.4);
+            --bg: #000000;
+            --bg-panel: #050805;
+            --bg-elev: #0a0f0a;
+            --text: #b8ffb8;
+            --text-dim: #4a7a4a;
+            --text-mute: #2a4a2a;
+            --border: #1a3a1a;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         
         body {
-            font-family: 'Rajdhani', sans-serif;
-            background: linear-gradient(180deg, #0a0a0f 0%, #050508 100%);
-            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
         }
         
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        /* scanline overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.18) 0px,
+                rgba(0, 0, 0, 0.18) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.35;
+        }
         
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        
+        /* HEADER */
         header {
             position: fixed;
             top: 0; left: 0; right: 0;
             z-index: 1000;
-            background: rgba(10, 10, 15, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
         }
         
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
-            max-width: 1400px;
+            padding: 1rem 2rem;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
         }
         
         .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: #00d4ff;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            color: var(--green);
             text-decoration: none;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px var(--green-glow);
+            white-space: nowrap;
+        }
+        .logo::before { content: '> '; color: var(--green-dim); }
+        .logo::after {
+            content: '_';
+            animation: blink 1.1s step-end infinite;
+            color: var(--green);
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            50.01%, 100% { opacity: 0; }
         }
         
-        .nav-links { display: flex; gap: 2rem; }
+        .nav-links { display: none; gap: 1.4rem; }
         .nav-links a {
-            color: #a0a0b0;
+            color: var(--text-dim);
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s;
-            position: relative;
+            font-size: 0.72rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: color 0.2s;
         }
-        .nav-links a:hover { color: #00d4ff; }
+        .nav-links a::before { content: '/'; color: var(--text-mute); margin-right: 2px; }
+        .nav-links a:hover { color: var(--green); }
+        
+        .header-actions { display: flex; gap: 0.6rem; align-items: center; }
         
         .language-toggle {
             display: flex;
-            gap: 0.5rem;
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 25px;
-            padding: 0.25rem;
+            border: 1px solid var(--border);
         }
-        
         .language-btn {
-            padding: 0.5rem 1rem;
+            padding: 0.35rem 0.6rem;
             background: transparent;
             border: none;
-            color: #a0a0b0;
+            color: var(--text-mute);
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s;
-            border-radius: 20px;
+            font-family: inherit;
+            font-size: 0.68rem;
+            letter-spacing: 1px;
+            transition: all 0.2s;
         }
-        
-        .language-btn:hover { color: #00d4ff; background: rgba(0, 212, 255, 0.2); }
-        .language-btn.active { color: #00d4ff; background: rgba(0, 212, 255, 0.3); }
+        .language-btn:hover { color: var(--green); }
+        .language-btn.active { color: var(--bg); background: var(--green); }
         
         .cta-btn {
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            border: none;
-            border-radius: 25px;
-            color: #0a0a0f;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
+            display: inline-block;
+            padding: 0.55rem 1.1rem;
+            background: transparent;
+            border: 1px solid var(--green);
+            color: var(--green);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.3s;
             text-decoration: none;
+            transition: all 0.2s;
+        }
+        .cta-btn:hover {
+            background: var(--green);
+            color: var(--bg);
+            box-shadow: 0 0 15px var(--green-glow);
         }
         
-        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0, 212, 255, 0.5); }
-        
-        .header-actions { display: flex; gap: 1rem; align-items: center; }
-        
+        /* HERO */
         .hero {
-            padding: 12rem 0 6rem;
-            text-align: center;
             position: relative;
+            min-height: 92vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 0 5rem;
             overflow: hidden;
-            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+            background: var(--bg);
         }
         
-        .hero::before {
-            content: '';
+        #matrix-canvas {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(157, 78, 221, 0.1) 0%, transparent 50%);
-            pointer-events: none;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.14;
+            z-index: 0;
         }
         
         .hero .container { position: relative; z-index: 1; }
         
-        .hero h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 900;
-            color: #ffffff;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        .hero-prompt {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--green-dim);
+            font-size: 0.78rem;
+            margin-bottom: 1.25rem;
+            letter-spacing: 1px;
         }
+        .hero-prompt::before { content: '$ '; color: var(--green); }
         
-        .hero h1 .highlight {
-            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .hero h1 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: clamp(1.9rem, 4.8vw, 3.2rem);
+            font-weight: 400;
+            color: var(--green);
+            margin-bottom: 1.25rem;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            text-shadow: 0 0 20px var(--green-glow);
         }
+        .hero h1 .highlight { color: var(--green-bright); }
         
         .hero p {
-            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-            color: #a0a0b0;
-            max-width: 800px;
-            margin: 0 auto 2.5rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            max-width: 680px;
+            margin-bottom: 2.25rem;
             line-height: 1.8;
         }
+        .hero p strong { color: var(--green); font-weight: 500; }
         
-        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .hero-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
         
         .hero-stats {
-            display: flex;
-            gap: 3rem;
-            justify-content: center;
-            margin-top: 3rem;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            max-width: 620px;
         }
         
-        .hero-stat { text-align: center; }
+        .hero-stat { padding: 1.15rem; background: var(--bg); }
         .hero-stat h4 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #00d4ff;
-            margin-bottom: 0.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: var(--green);
+            margin-bottom: 0.2rem;
+            text-shadow: 0 0 10px var(--green-glow);
         }
-        .hero-stat p { font-size: 0.9rem; color: #606070; margin: 0; }
+        .hero-stat p {
+            font-size: 0.62rem;
+            color: var(--text-mute);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 0;
+        }
         
-        section { padding: 5rem 0; position: relative; }
+        /* SECTIONS */
+        section {
+            padding: 4.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
         
         section h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: clamp(1.3rem, 2.8vw, 1.85rem);
+            font-weight: 400;
+            color: var(--green);
+            margin-bottom: 0.9rem;
+            letter-spacing: -0.5px;
             text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
-        
-        section h2 .highlight {
-            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        section h2::before {
+            content: '// ';
+            color: var(--green-dim);
+            font-size: 0.75em;
         }
+        section h2 .highlight { color: var(--green-bright); }
         
         .section-subtitle {
             text-align: center;
-            color: #a0a0b0;
-            font-size: 1.15rem;
-            max-width: 900px;
-            margin: 0 auto 3rem;
-            line-height: 1.8;
+            color: var(--text-dim);
+            font-size: 0.82rem;
+            max-width: 680px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
         }
         
-        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        /* CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
         
         .card {
-            background: #0d0d15;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 16px;
-            padding: 2.5rem;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+            background: var(--bg);
+            padding: 1.75rem;
+            transition: background 0.2s;
         }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 212, 255, 0.5);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-        
-        .card:hover::before { transform: scaleX(1); }
+        .card:hover { background: var(--bg-panel); }
         
         .card-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #00d4ff 0%, #9d4edd 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            color: #0a0a0f;
-            font-weight: bold;
+            display: inline-block;
+            padding: 0.22rem 0.5rem;
+            border: 1px solid var(--green-dim);
+            color: var(--green);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 1.1rem;
         }
         
         .card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            color: #ffffff;
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--green);
+            margin-bottom: 0.7rem;
+            letter-spacing: 0.5px;
+            font-weight: 400;
         }
         
-        .card p { color: #a0a0b0; font-size: 0.95rem; line-height: 1.7; }
+        .card p {
+            color: var(--text-dim);
+            font-size: 0.78rem;
+            line-height: 1.7;
+            margin-bottom: 0.6rem;
+        }
+        .card p strong { color: var(--green); font-weight: 500; }
         
         .card-feature {
             display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            margin-top: 1rem;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 0.4rem;
+            line-height: 1.6;
         }
-        
         .card-feature-icon {
-            width: 24px;
-            height: 24px;
-            background: #00d4ff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #0a0a0f;
-            font-size: 0.8rem;
+            color: var(--green);
+            font-family: 'Share Tech Mono', monospace;
             flex-shrink: 0;
-            font-weight: bold;
+            font-size: 0.68rem;
+            padding-top: 1px;
+        }
+        .card-feature strong { color: var(--green); font-weight: 500; }
+        .card-feature p { margin: 0; font-size: inherit; color: inherit; }
+        
+        /* TWO COLUMN */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-top: 2rem;
         }
         
-        .card-feature p { margin: 0; font-size: 0.9rem; color: #a0a0b0; }
-        .card-feature .highlight { color: #00d4ff; }
-        
-        .two-column { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 3rem; }
+        .column { background: var(--bg); padding: 2rem; }
         
         .column h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4rem;
-            color: #00d4ff;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--green);
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+            font-weight: 400;
+        }
+        .column h3::before { content: '> '; color: var(--green-dim); }
+        
+        .column p, .column li {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            line-height: 1.8;
+            margin-bottom: 0.6rem;
         }
         
-        .column p { color: #a0a0b0; margin-bottom: 1rem; line-height: 1.8; }
-        .column ul { margin-top: 1rem; padding-left: 1.5rem; }
-        .column li { color: #a0a0b0; margin-bottom: 0.5rem; line-height: 1.7; }
-        .column li strong { color: #00d4ff; }
+        .column ul { list-style: none; padding-left: 0; margin-top: 0.75rem; }
+        .column li {
+            padding-left: 1.25rem;
+            position: relative;
+        }
+        .column li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--green-dim);
+        }
+        .column li strong { color: var(--green); font-weight: 500; }
         
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-top: 2rem;
+        }
         
         .stat {
-            background: #0d0d15;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 16px;
-            padding: 2.5rem;
+            background: var(--bg);
+            padding: 2rem 1.25rem;
             text-align: center;
-            transition: all 0.3s;
         }
-        
-        .stat:hover { border-color: rgba(0, 212, 255, 0.5); box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
         
         .stat h4 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #00d4ff;
-            margin-bottom: 0.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.7rem;
+            font-weight: 400;
+            color: var(--green);
+            margin-bottom: 0.4rem;
+            text-shadow: 0 0 15px var(--green-glow);
+        }
+        .stat p {
+            font-size: 0.65rem;
+            color: var(--text-mute);
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            margin: 0;
         }
         
-        .stat p { font-size: 1rem; color: #a0a0b0; margin: 0; }
-        
-        .partners { padding: 4rem 0; background: rgba(0, 212, 255, 0.02); }
-        .partners p { text-align: center; color: #a0a0b0; margin-bottom: 3rem; }
+        /* PARTNERS */
+        .partners { padding: 3.5rem 0; }
         
         .partner-logos {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 3rem;
+            gap: 2.5rem;
             flex-wrap: wrap;
         }
         
         .partner-logo {
-            height: 50px;
-            opacity: 0.6;
-            transition: all 0.3s;
-            filter: brightness(0) saturate(100%) invert(80%) sepia(100%) saturate(2000%) hue-rotate(180deg) brightness(100%) contrast(100%);
+            height: 30px;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+            filter: grayscale(1) brightness(2) sepia(1) hue-rotate(60deg) saturate(3);
         }
+        .partner-logo:hover { opacity: 0.85; }
         
-        .partner-logo:hover { opacity: 1; transform: scale(1.1); }
-        
-        .faq { padding: 5rem 0; background: rgba(0, 212, 255, 0.01); }
-        
+        /* FAQ */
         .faq-item {
-            background: #0d0d15;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            overflow: hidden;
+            border: 1px solid var(--border);
+            border-bottom: none;
         }
+        .faq-item:last-child { border-bottom: 1px solid var(--border); }
         
         .faq-question {
-            padding: 1.5rem;
+            padding: 1.15rem 1.5rem;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: transparent;
-            transition: background-color 0.3s;
+            transition: background 0.2s;
         }
+        .faq-question:hover { background: var(--bg-panel); }
+        .faq-question h3 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--text);
+            margin: 0;
+            font-weight: 400;
+        }
+        .faq-question h3::before { content: '? '; color: var(--green-dim); }
         
-        .faq-question:hover { background: rgba(0, 212, 255, 0.05); }
-        .faq-question h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; margin: 0; color: #ffffff; }
+        .faq-toggle {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--green);
+            font-size: 1rem;
+        }
         
         .faq-answer {
             padding: 0 1.5rem 1.5rem;
             display: none;
-            color: #a0a0b0;
-            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-dim);
+            font-size: 0.78rem;
+            line-height: 1.8;
+            background: var(--bg-panel);
         }
-        
         .faq-answer.active { display: block; }
         
-        .faq-toggle {
-            font-size: 1.5rem;
-            color: #00d4ff;
-            transition: transform 0.3s;
-            font-weight: bold;
+        /* CONTACT */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-top: 2rem;
         }
         
-        .faq-item.active .faq-toggle { transform: rotate(45deg); }
-        
-        #contacto { background: rgba(0, 212, 255, 0.02); }
-        
-        .contact-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-top: 3rem; }
+        .contact-info { background: var(--bg); padding: 2rem; }
         
         .contact-info h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: #00d4ff;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--green);
             margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 0.95rem;
+            font-weight: 400;
         }
+        .contact-info h3::before { content: '> '; color: var(--green-dim); }
         
-        .contact-info p { color: #a0a0b0; }
-        .contact-details { margin-top: 2rem; }
-        .contact-details p { margin-bottom: 0.75rem; color: #a0a0b0; }
-        .contact-details strong { color: #ffffff; }
-        .contact-details a { color: #00d4ff; text-decoration: none; transition: color 0.3s; }
-        .contact-details a:hover { color: #66e5ff; text-decoration: underline; }
-        
-        form {
-            background: #0d0d15;
-            padding: 2.5rem;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 16px;
+        .contact-info p {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            line-height: 1.7;
         }
+        .contact-details { margin-top: 1.5rem; }
+        .contact-details p { margin-bottom: 0.55rem; font-size: 0.78rem; }
+        .contact-details strong { color: var(--green); font-weight: 500; }
+        .contact-details a { color: var(--green); text-decoration: none; }
+        .contact-details a:hover { text-decoration: underline; }
+        
+        form { background: var(--bg-panel); padding: 2rem; }
         
         form h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: #00d4ff;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--green);
+            margin-bottom: 1.4rem;
+            font-size: 0.95rem;
+            font-weight: 400;
         }
+        form h3::before { content: '$ '; color: var(--green-dim); }
         
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; color: #ffffff; font-weight: 500; }
+        .form-group { margin-bottom: 1.1rem; }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: var(--text-mute);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
         
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: inherit;
-            background: #050508;
-            color: #ffffff;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            padding: 0.7rem 0.9rem;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--green);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
         
         .form-group input:focus,
         .form-group textarea:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+            border-color: var(--green);
+            box-shadow: 0 0 0 1px var(--green-dim);
         }
         
-        .form-group textarea { resize: vertical; min-height: 120px; }
-        .form-actions { display: flex; justify-content: flex-end; }
+        .form-group textarea { resize: vertical; min-height: 100px; }
         
+        form .cta-btn { width: 100%; }
+        
+        /* FOOTER */
         footer {
-            background: #050508;
-            border-top: 1px solid rgba(0, 212, 255, 0.3);
+            background: var(--bg);
+            border-top: 1px solid var(--border);
             padding: 3rem 0 1.5rem;
         }
         
@@ -466,59 +552,77 @@
         }
         
         .footer-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: #00d4ff;
-            margin-bottom: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--green);
+            margin-bottom: 0.7rem;
+        }
+        .footer-logo::before { content: '> '; color: var(--green-dim); }
+        
+        .footer-description {
+            color: var(--text-mute);
+            line-height: 1.7;
+            max-width: 400px;
+            font-size: 0.75rem;
         }
         
-        .footer-description { color: #a0a0b0; line-height: 1.7; max-width: 400px; }
-        .footer-links { display: flex; flex-direction: column; gap: 1rem; }
-        .footer-links a { color: #a0a0b0; text-decoration: none; transition: color 0.3s; }
-        .footer-links a:hover { color: #00d4ff; }
+        .footer-links { display: flex; flex-direction: column; gap: 0.55rem; }
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: color 0.2s;
+        }
+        .footer-links a::before { content: '/'; color: var(--text-mute); margin-right: 4px; }
+        .footer-links a:hover { color: var(--green); }
         
-        .footer-contact p { color: #a0a0b0; margin: 0; font-size: 0.95rem; }
+        .footer-contact p {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            margin-bottom: 0.4rem;
+        }
+        .footer-contact strong { color: var(--green); font-weight: 500; }
+        
         .footer-bottom {
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.6rem;
             align-items: center;
+            font-size: 0.7rem;
+            color: var(--text-mute);
         }
+        .footer-bottom a { color: var(--green-dim); text-decoration: none; }
+        .footer-bottom a:hover { color: var(--green); }
         
-        .footer-bottom p { color: #606070; font-size: 0.9rem; margin: 0; }
-        .footer-bottom a { color: #00d4ff; text-decoration: none; }
-        .footer-bottom a:hover { text-decoration: underline; }
-        
+        /* RESPONSIVE */
         @media (min-width: 768px) {
             .nav-links { display: flex; }
-            .hero { padding: 11rem 0 7rem; }
             .two-column { grid-template-columns: 1fr 1fr; }
             .contact-grid { grid-template-columns: 1fr 1fr; }
-            .footer-content { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; }
+            .footer-content { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; }
             .footer-bottom { flex-direction: row; justify-content: space-between; }
         }
         
-        @media (min-width: 1024px) {
-            .header-container { padding: 0; }
-        }
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--green-dark); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--green-dim); }
         
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050508; }
-        ::-webkit-scrollbar-thumb { background: #0099cc; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00d4ff; }
+        /* UTILITY */
+        .mt-4 { margin-top: 1.5rem; }
+        .mt-5 { margin-top: 2.5rem; }
     </style>
 </head>
-<body class="lang-pt">
+<body>
     <header>
         <div class="header-container">
             <a href="#" class="logo">KCo by Cília</a>
             <nav class="nav-links">
                 <a href="#que-es">Plataforma</a>
                 <a href="#beneficios">Beneficios</a>
-                <a href="#como-funciona">Como Funciona</a>
                 <a href="#ml">Machine Learning</a>
                 <a href="#estrategia">Estrategia</a>
                 <a href="#contacto">Contato</a>
@@ -535,12 +639,14 @@
     
     <main>
         <section class="hero">
+            <canvas id="matrix-canvas"></canvas>
             <div class="container">
-                <h1>KCo Fleet Intelligence <span class="highlight">Old But Gold TR8 IVSTO</span></h1>
-                <p>Plataforma de gestao de frota com inteligencia artificial e processamento de imagens. Pre-Seed alvo: <strong class="highlight">$30M+ USD</strong> em operacao real no Brasil e Mexico.</p>
+                <div class="hero-prompt">initializing fleet_intelligence...</div>
+                <h1>KCo Fleet Intelligence <span class="highlight">_OldButGold_TR8_IVSTO</span></h1>
+                <p>Plataforma de gestao de frota com inteligencia artificial e processamento de imagens. Pre-Seed alvo: <strong>$30M+ USD</strong> em operacao real no Brasil e Mexico.</p>
                 <div class="hero-buttons">
-                    <a href="#estrategia" class="cta-btn">VER ESTRATEGIA</a>
-                    <a href="#contacto" class="cta-btn">CONTATO</a>
+                    <a href="#estrategia" class="cta-btn">&gt; Ver Estrategia</a>
+                    <a href="#contacto" class="cta-btn">&gt; Contato</a>
                 </div>
                 <div class="hero-stats">
                     <div class="hero-stat">
@@ -549,11 +655,11 @@
                     </div>
                     <div class="hero-stat">
                         <h4>1000+</h4>
-                        <p>Veiculos Instrumentados</p>
+                        <p>Veiculos</p>
                     </div>
                     <div class="hero-stat">
                         <h4>24M</h4>
-                        <p>Faturamento Projetado</p>
+                        <p>Faturamento</p>
                     </div>
                 </div>
             </div>
@@ -562,7 +668,7 @@
         <section id="que-es">
             <div class="container">
                 <h2><span class="highlight">Plataforma</span> KCo</h2>
-                <p class="section-subtitle">Living Lab as a Service - Transformando dados fisicos de veiculos em inteligencia de negocio para a industria automotiva no Brasil e Mexico.</p>
+                <p class="section-subtitle">Living Lab as a Service — Transformando dados fisicos de veiculos em inteligencia de negocio para a industria automotiva no Brasil e Mexico.</p>
                 <div class="cards">
                     <div class="card">
                         <div class="card-icon">BR</div>
@@ -570,20 +676,20 @@
                         <p>Frota de 500 veiculos instrumentados com telemetria OBD-II, sensores de vibracao, GPS e cameras 360.</p>
                         <div class="card-feature">
                             <div class="card-feature-icon">+</div>
-                            <p><strong class="highlight">+20%</strong> de lucro para concessionarias</p>
+                            <p><strong>+20%</strong> de lucro para concessionarias</p>
                         </div>
                         <div class="card-feature">
                             <div class="card-feature-icon">+</div>
-                            <p><strong class="highlight">-15%</strong> em sinistralidade para seguradoras</p>
+                            <p><strong>-15%</strong> em sinistralidade para seguradoras</p>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-icon">MX</div>
                         <h3>Operacao Mexico</h3>
-                        <p>Parceria com AXA Mexico, Banorte, Nissan e Volkswagen para capturando dados em condicoes reais.</p>
+                        <p>Parceria com AXA Mexico, Banorte, Nissan e Volkswagen para capturar dados em condicoes reais.</p>
                         <div class="card-feature">
                             <div class="card-feature-icon">+</div>
-                            <p><strong class="highlight">+15-20%</strong> em margen para oficinas</p>
+                            <p><strong>+15-20%</strong> em margem para oficinas</p>
                         </div>
                         <div class="card-feature">
                             <div class="card-feature-icon">+</div>
@@ -600,7 +706,7 @@
                         </div>
                         <div class="card-feature">
                             <div class="card-feature-icon">+</div>
-                            <p>Correlacao de anomalias entre setores via LOWDATAESC</p>
+                            <p>Correlacao de anomalias via LOWDATAESC</p>
                         </div>
                     </div>
                 </div>
@@ -615,7 +721,7 @@
                     <div class="card">
                         <div class="card-icon">CAR</div>
                         <h3>Concessionarias</h3>
-                        <p><strong class="highlight">+8-20%</strong> em lucro com alertas preditivas e primas de certificacao.</p>
+                        <p><strong>+8-20%</strong> em lucro com alertas preditivos e primas de certificacao.</p>
                         <div class="card-feature">
                             <div class="card-feature-icon">OK</div>
                             <p>Acesso a veiculos com Laudo de Transparencia</p>
@@ -624,19 +730,19 @@
                     <div class="card">
                         <div class="card-icon">INS</div>
                         <h3>Aseguradoras</h3>
-                        <p><strong class="highlight">-10-15%</strong> em indice de sinistralidade com dados de desgaste real.</p>
+                        <p><strong>-10-15%</strong> em indice de sinistralidade com dados de desgaste real.</p>
                         <div class="card-feature">
                             <div class="card-feature-icon">OK</div>
-                            <p><strong class="highlight">-5-10%</strong> em pagos por fraudes.</p>
+                            <p><strong>-5-10%</strong> em pagos por fraudes</p>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-icon">IND</div>
                         <h3>Montadoras</h3>
-                        <p><strong class="highlight">-40%</strong> em custos de recalls com provas em condicoes reais.</p>
+                        <p><strong>-40%</strong> em custos de recalls com provas em condicoes reais.</p>
                         <div class="card-feature">
                             <div class="card-feature-icon">OK</div>
-                            <p>Relatorios exclusivos de desgaste de pecas.</p>
+                            <p>Relatorios exclusivos de desgaste de pecas</p>
                         </div>
                     </div>
                     <div class="card">
@@ -645,7 +751,7 @@
                         <p>Acesso a laudos tecnicos e pecas certificadas.</p>
                         <div class="card-feature">
                             <div class="card-feature-icon">OK</div>
-                            <p><strong class="highlight">+15-20%</strong> em margen por reparacao.</p>
+                            <p><strong>+15-20%</strong> em margem por reparacao</p>
                         </div>
                     </div>
                 </div>
@@ -654,27 +760,27 @@
         
         <section id="ml">
             <div class="container">
-                <h2><span class="highlight">Machine Learning</span> & Processamento de Imagens</h2>
+                <h2><span class="highlight">Machine Learning</span> &amp; Imagens</h2>
                 <p class="section-subtitle">Inteligencia Artificial para detectar anomalias e processar imagens de veiculos em tempo real.</p>
                 <div class="two-column">
                     <div class="column">
-                        <h3>Detecção de Anomalias</h3>
+                        <h3>Deteccao de Anomalias</h3>
                         <p>Modelos de ML treinados com dados reais de telemetria:</p>
                         <ul>
-                            <li><strong>Superaquecimento do motor</strong> (temperatura > 120C)</li>
+                            <li><strong>Superaquecimento do motor</strong> (temperatura &gt; 120°C)</li>
                             <li><strong>Pressao do oleo anormal</strong> (fora da faixa 20-80 psi)</li>
-                            <li><strong>Tensao da bateria elevada</strong> (> 14.5V)</li>
+                            <li><strong>Tensao da bateria elevada</strong> (&gt; 14.5V)</li>
                             <li><strong>Codigos OBD-II</strong> em tempo real</li>
                             <li><strong>Vibracao excessiva</strong> em qualquer eixo</li>
                         </ul>
-                        <h3 class="mt-4">Integracao com LOWDATAESC</h3>
+                        <h3 class="mt-4">Integracao LOWDATAESC</h3>
                         <p>Correlacao de anomalias entre setores: Automotivo, Seguros, Transporte, Manufatura, Energia, Cidades Inteligentes.</p>
                     </div>
                     <div class="column">
                         <h3>Processamento de Imagens</h3>
                         <p>Analise AI de imagens de veiculos:</p>
                         <ul>
-                            <li><strong>Detecao de objetos</strong> (pneus, farois, portas, etc.)</li>
+                            <li><strong>Deteccao de objetos</strong> (pneus, farois, portas)</li>
                             <li><strong>Identificacao de anomalias visuais</strong> (amassados, arranhoes)</li>
                             <li><strong>Avaliacao de danos</strong> com estimativa de custo</li>
                             <li><strong>Classificacao de condicao</strong> do veiculo</li>
@@ -682,32 +788,32 @@
                             <li><strong>Analise 360</strong> do veiculo</li>
                         </ul>
                         <h3 class="mt-4">Capacidades de IA</h3>
-                        <p>Precisao > 95% na identificacao de danos, processamento em tempo real com latencia < 100ms.</p>
+                        <p>Precisao &gt; 95% na identificacao de danos, processamento em tempo real com latencia &lt; 100ms.</p>
                     </div>
                 </div>
             </div>
         </section>
         
-        <section class="stats">
+        <section>
             <div class="container">
                 <h2>Nossos <span class="highlight">Numeros</span></h2>
                 <p class="section-subtitle">Projecoes para os proximos 24 meses de operacao no Brasil e Mexico.</p>
-                <div class="stats">
+                <div class="stats-grid">
                     <div class="stat">
                         <h4>1000+</h4>
-                        <p>Veiculos Instrumentados</p>
+                        <p>Veiculos</p>
                     </div>
                     <div class="stat">
                         <h4>$36M</h4>
-                        <p>Faturamento Anual Projetado</p>
+                        <p>Faturamento Anual</p>
                     </div>
                     <div class="stat">
                         <h4>350%</h4>
-                        <p>ROI Anual Estimado</p>
+                        <p>ROI Anual</p>
                     </div>
                     <div class="stat">
                         <h4>500+</h4>
-                        <p>Assinantes Ativos</p>
+                        <p>Assinantes</p>
                     </div>
                 </div>
             </div>
@@ -715,25 +821,25 @@
         
         <section id="estrategia">
             <div class="container">
-                <h2><span class="highlight">Estrategia</span> Brasil & Mexico</h2>
+                <h2><span class="highlight">Estrategia</span> BR &amp; MX</h2>
                 <p class="section-subtitle">Plano de expansao e operacao para alcancar o Pre-Seed de $30M+ USD.</p>
                 <div class="two-column">
                     <div class="column">
                         <h3>BRASIL</h3>
                         <p><strong>Entrada:</strong> Q1 2025 | <strong>Meta:</strong> 500 veiculos em 24 meses</p>
-                        <p><strong>Modelo de receita:</strong> Assinaturas, licenciamento de anomalias, processamento de imagens, marketplace de dados.</p>
+                        <p><strong>Receita:</strong> Assinaturas, licenciamento de anomalias, processamento de imagens, marketplace de dados.</p>
                         <p><strong>Parceiros:</strong> Localiza, Movida, WebMotors, iFood Fleet.</p>
-                        <p><strong>Vantagem:</strong> Integracao LOWDATAESC, precisao > 95%, infraestrutura 99.9% uptime.</p>
+                        <p><strong>Vantagem:</strong> Integracao LOWDATAESC, precisao &gt; 95%, uptime 99.9%.</p>
                     </div>
                     <div class="column">
                         <h3>MEXICO</h3>
                         <p><strong>Entrada:</strong> Q2 2025 | <strong>Meta:</strong> 500 veiculos em 24 meses</p>
-                        <p><strong>Modelo de receita:</strong> Assinaturas, manutencao preditiva, revenda certificada, gestao de frota.</p>
+                        <p><strong>Receita:</strong> Assinaturas, manutencao preditiva, revenda certificada, gestao de frota.</p>
                         <p><strong>Parceiros:</strong> AXA Mexico, Banorte, Nissan, Volkswagen.</p>
-                        <p><strong>Vantagem:</strong> Relacionamentos estabelecidos, telemetria real-time, avaliacao de danos por imagens.</p>
+                        <p><strong>Vantagem:</strong> Relacionamentos estabelecidos, telemetria real-time, avaliacao por imagens.</p>
                     </div>
                 </div>
-                <h3 class="mt-5">Por que usar LOWDATAESC?</h3>
+                <h3 class="mt-5" style="font-family:'Share Tech Mono',monospace;font-size:0.95rem;color:var(--green);margin-bottom:1rem;font-weight:400;">&gt; Por que usar LOWDATAESC?</h3>
                 <div class="cards">
                     <div class="card">
                         <div class="card-icon">LINK</div>
@@ -757,14 +863,14 @@
         <section id="socios" class="partners">
             <div class="container">
                 <h2>Parceiros <span class="highlight">Estrategicos</span></h2>
-                <p>Colaboramos com lideres da industria automotiva no Brasil e Mexico.</p>
+                <p class="section-subtitle">Colaboramos com lideres da industria automotiva no Brasil e Mexico.</p>
                 <div class="partner-logos">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Localiza" alt="Localiza" class="partner-logo">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Movida" alt="Movida" class="partner-logo">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=AXA+Mexico" alt="AXA Mexico" class="partner-logo">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Banorte" alt="Banorte" class="partner-logo">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Nissan" alt="Nissan" class="partner-logo">
-                    <img src="https://via.placeholder.com/150x50/00d4ff/0a0a0f?text=Volkswagen" alt="Volkswagen" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00ff41/000000?text=Localiza" alt="Localiza" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00ff41/000000?text=Movida" alt="Movida" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00ff41/000000?text=AXA+Mexico" alt="AXA Mexico" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00ff41/000000?text=Banorte" alt="Banorte" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00ff41/000000?text=Nissan" alt="Nissan" class="partner-logo">
+                    <img src="https://via.placeholder.com/150x50/00ff41/000000?text=Volkswagen" alt="Volkswagen" class="partner-logo">
                 </div>
             </div>
         </section>
@@ -809,7 +915,7 @@
                 <p class="section-subtitle">Pronto para transformar a mobilidade? Entre em contato.</p>
                 <div class="contact-grid">
                     <div class="contact-info">
-                        <h3>Informacoes de Contato</h3>
+                        <h3>Informacoes</h3>
                         <p>Estamos aqui para ajudar a implementar a plataforma KCo em sua organizacao.</p>
                         <div class="contact-details">
                             <p><strong>Email:</strong> <a href="mailto:contato@kco.ai">contato@kco.ai</a></p>
@@ -844,7 +950,7 @@
                             <label for="mensaje">Mensagem</label>
                             <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
                         </div>
-                        <button type="submit" class="cta-btn" style="width: 100%;">Enviar Solicitacao</button>
+                        <button type="submit" class="cta-btn">Enviar Solicitacao</button>
                     </form>
                 </div>
             </div>
@@ -861,11 +967,10 @@
                 <div class="footer-links">
                     <a href="#que-es">Plataforma</a>
                     <a href="#beneficios">Beneficios</a>
-                    <a href="#como-funciona">Como Funciona</a>
                     <a href="#ml">Machine Learning</a>
+                    <a href="#estrategia">Estrategia</a>
                 </div>
                 <div class="footer-links">
-                    <a href="#estrategia">Estrategia</a>
                     <a href="#faq">FAQ</a>
                     <a href="#contacto">Contato</a>
                     <a href="#">Privacidade</a>
@@ -883,6 +988,50 @@
     </footer>
     
     <script>
+        /* ============ MATRIX RAIN ============ */
+        (function matrixRain() {
+            const canvas = document.getElementById('matrix-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            function resize() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+            
+            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>{}[]/\\|=+*';
+            const fontSize = 14;
+            let columns = Math.floor(canvas.width / fontSize);
+            let drops = Array(columns).fill(1);
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00ff41';
+                ctx.font = fontSize + 'px "Share Tech Mono", monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            setInterval(draw, 55);
+            
+            // recalcular columns ao redimensionar
+            window.addEventListener('resize', () => {
+                columns = Math.floor(canvas.width / fontSize);
+                drops = Array(columns).fill(1);
+            });
+        })();
+        
+        /* ============ LANGUAGE ============ */
         function changeLanguage(lang) {
             document.querySelectorAll('.language-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -892,6 +1041,7 @@
             localStorage.setItem('kco-language', lang);
         }
         
+        /* ============ FAQ ============ */
         function toggleFaq(element) {
             const faqItem = element.parentElement;
             const answer = element.nextElementSibling;
@@ -900,48 +1050,54 @@
             if (faqItem.classList.contains('active')) {
                 faqItem.classList.remove('active');
                 answer.classList.remove('active');
-                toggle.textContent = '+ ';
+                toggle.textContent = '+';
             } else {
                 document.querySelectorAll('.faq-item.active').forEach(item => {
                     item.classList.remove('active');
                     item.querySelector('.faq-answer').classList.remove('active');
-                    item.querySelector('.faq-toggle').textContent = '+ ';
+                    item.querySelector('.faq-toggle').textContent = '+';
                 });
                 faqItem.classList.add('active');
                 answer.classList.add('active');
-                toggle.textContent = '- ';
+                toggle.textContent = '-';
             }
         }
         
+        /* ============ FORM ============ */
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Obrigado pelo seu interesse! Entraremos em contato em breve.');
             this.reset();
         });
         
+        /* ============ SMOOTH SCROLL ============ */
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                const target = document.querySelector(href);
                 if (target) {
+                    e.preventDefault();
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         });
         
+        /* ============ HEADER SHADOW ON SCROLL ============ */
         window.addEventListener('scroll', function() {
             const header = document.querySelector('header');
             if (window.scrollY > 100) {
-                header.style.boxShadow = '0 4px 20px rgba(0, 212, 255, 0.2)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 255, 65, 0.15)';
             } else {
                 header.style.boxShadow = 'none';
             }
         });
         
+        /* ============ RESTORE LANGUAGE ============ */
         const savedLang = localStorage.getItem('kco-language') || 'pt';
         document.querySelectorAll('.language-btn').forEach(btn => {
             btn.classList.remove('active');
-            if (btn.textContent === savedLang.toUpperCase()) {
+            if (btn.textContent.trim() === savedLang.toUpperCase()) {
                 btn.classList.add('active');
             }
         });
