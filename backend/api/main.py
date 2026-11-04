@@ -26,6 +26,9 @@ from backend.services.lowdataesc_integration import LOWDATAESCService
 from backend.models.fleet import Vehicle, TelemetryData, Anomaly
 from backend.models.image import ImageAnalysisResult
 
+# H Module Integration
+from backend.api.h_routes import router as h_router
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -913,10 +916,15 @@ Old But Gold TR8 IVSTO | Pre-Seed Target: $30M+ USD
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# Include H Module routes
+app.include_router(h_router)
+
+
 if __name__ == "__main__":
     logger.info(f"Starting KCo API server on {settings.API_HOST}:{settings.API_PORT}")
     logger.info(f"Environment: {settings.ENVIRONMENT}")
     logger.info(f"Pre-Seed Target: ${settings.PRE_SEED_TARGET:,.0f}")
+    logger.info("H Module Integration: Enabled")
     
     uvicorn.run(
         "backend.api.main:app",
