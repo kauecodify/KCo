@@ -1,4 +1,4 @@
-# KCo by Cília | Fleet Intelligence Platform
+# Cília | Fleet Intelligence Platform
 
 > **Old But Gold TR8 IVSTO | Pre-Seed Target: $30M+ USD**
 
