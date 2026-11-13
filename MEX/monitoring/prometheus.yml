@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: mex-api
+    metrics_path: /api/metrics/prometheus
+    static_configs:
+      - targets: ["mex-api:8000"]

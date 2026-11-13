@@ -1,0 +1,27 @@
+services:
+  mex-api:
+    build: .
+    container_name: mex-api
+    ports:
+      - "8000:8000"
+    environment:
+      MEX_JWT_SECRET: ${MEX_JWT_SECRET:-change-me-in-production-mex-secret}
+      MEX_ADMIN_USER: ${MEX_ADMIN_USER:-admin}
+      MEX_ADMIN_PASSWORD: ${MEX_ADMIN_PASSWORD:-mex-admin-2024}
+      MEX_DATABASE_URL: ${MEX_DATABASE_URL:-sqlite:////app/data/mex.db}
+      MEX_RETENTION_DAYS: ${MEX_RETENTION_DAYS:-90}
+    volumes:
+      - mex-data:/app/data
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: mex-prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+volumes:
+  mex-data:
