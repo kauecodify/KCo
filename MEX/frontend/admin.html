@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <title>MEX | Panel Administrativo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/mex.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <a class="logo" href="/admin.html">MEX | ADMIN</a>
+            <div class="conn">
+                <span id="user-label" style="color: var(--text-dim);"></span>
+                <button class="btn btn-ghost" id="logout-btn" style="padding: 0.35rem 0.7rem; font-size: 0.62rem; width: auto;">SALIR</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="login-view">
+            <p class="screen-title">mex --admin --login</p>
+            <div class="panel">
+                <h3>Acceso administrativo</h3>
+                <label>Usuario</label>
+                <input id="login-user" autocomplete="username">
+                <label>Contrasena</label>
+                <input id="login-pass" type="password" autocomplete="current-password">
+                <button class="btn btn-primary" id="login-btn">INGRESAR</button>
+                <div id="login-msg" class="msg"></div>
+            </div>
+        </div>
+
+        <div id="app-view" class="hidden">
+            <div class="tabs">
+                <button class="tab active" data-tab="pieces">Piezas</button>
+                <button class="tab" data-tab="inspections">Inspecciones</button>
+                <button class="tab" data-tab="users">Usuarios</button>
+                <button class="tab" data-tab="metrics">Metricas</button>
+                <button class="tab" data-tab="models">Modelos IA</button>
+                <button class="tab" data-tab="audit">Auditoria</button>
+            </div>
+
+            <div id="tab-pieces" class="tab-panel active">
+                <div class="panel">
+                    <h3>Cadastrar nueva pieza</h3>
+                    <div class="grid-2">
+                        <div><label>Codigo</label><input id="p-code" placeholder="ENG-ENG16-MX"></div>
+                        <div><label>Nombre</label><input id="p-name"></div>
+                        <div><label>Categoria</label><input id="p-category" value="general"></div>
+                        <div><label>Dimensiones</label><input id="p-dimensions"></div>
+                        <div><label>Tolerancias</label><input id="p-tolerances"></div>
+                        <div><label>Confianza minima (0-1)</label><input id="p-minconf" value="0.80"></div>
+                    </div>
+                    <label>Especificaciones (clave:valor, una por linea)</label>
+                    <textarea id="p-specs" rows="3" placeholder="material: ACO 1045"></textarea>
+                    <label>Criterios de aprobacion (clave:valor, una por linea)</label>
+                    <textarea id="p-criteria" rows="2" placeholder="min_confidence: 0.80"></textarea>
+                    <button class="btn" id="create-part-btn">CADASTRAR PIEZA</button>
+                    <div id="part-msg" class="msg"></div>
+                </div>
+                <div class="panel">
+                    <h3>Piezas registradas</h3>
+                    <div style="overflow-x: auto;"><table id="parts-table"></table></div>
+                </div>
+                <div class="panel hidden" id="part-detail">
+                    <h3 id="part-detail-title">Imagenes de referencia</h3>
+                    <div id="part-images" style="display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.8rem;"></div>
+                    <label>Subir nueva imagen de referencia</label>
+                    <input type="file" id="ref-file" accept="image/*">
+                    <button class="btn" id="upload-ref-btn">SUBIR IMAGEN</button>
+                </div>
+            </div>
+
+            <div id="tab-inspections" class="tab-panel">
+                <div class="panel">
+                    <h3>Consultar inspecciones</h3>
+                    <label>Estado</label>
+                    <select id="insp-status-filter">
+                        <option value="">Todos</option>
+                        <option value="GREEN">Aprobadas</option>
+                        <option value="AMBER">Revision</option>
+                        <option value="RED">Reprobadas</option>
+                        <option value="GRAY">No identificadas</option>
+                    </select>
+                    <button class="btn" id="load-inspections-btn">ACTUALIZAR</button>
+                </div>
+                <div class="panel" id="review-panel hidden">
+                    <h3>Revision humana</h3>
+                    <div id="review-target" class="empty">Seleccione una inspeccion en la tabla</div>
+                    <div id="review-form" class="hidden">
+                        <label>Nota de revision</label>
+                        <textarea id="review-note" rows="2"></textarea>
+                        <div style="display: flex; gap: 0.6rem;">
+                            <button class="btn" id="approve-btn" style="border-color: var(--ok); color: var(--ok);">APROBAR</button>
+                            <button class="btn" id="reject-btn" style="border-color: var(--fail); color: var(--fail);">RECHAZAR</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div style="overflow-x: auto;"><table id="inspections-table"></table></div>
+                </div>
+            </div>
+
+            <div id="tab-users" class="tab-panel">
+                <div class="panel">
+                    <h3>Crear usuario</h3>
+                    <div class="grid-2">
+                        <div><label>Usuario</label><input id="u-username"></div>
+                        <div><label>Contrasena</label><input id="u-password" type="password"></div>
+                        <div><label>Nombre completo</label><input id="u-fullname"></div>
+                        <div>
+                            <label>Rol</label>
+                            <select id="u-role">
+                                <option value="operator">Operador</option>
+                                <option value="supervisor">Supervisor</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn" id="create-user-btn">CREAR USUARIO</button>
+                    <div id="user-msg" class="msg"></div>
+                </div>
+                <div class="panel">
+                    <h3>Usuarios del sistema</h3>
+                    <div style="overflow-x: auto;"><table id="users-table"></table></div>
+                </div>
+            </div>
+
+            <div id="tab-metrics" class="tab-panel">
+                <div class="stat-grid" id="metrics-stats"></div>
+                <div class="panel">
+                    <h3>Latencia por etapa (ms)</h3>
+                    <div style="overflow-x: auto;"><table id="latency-table"></table></div>
+                </div>
+                <div class="panel">
+                    <h3>Metas de latencia</h3>
+                    <div class="kv"><span class="k">Inferencia p95</span><span class="v">&lt; 2000 ms</span></div>
+                    <div class="kv"><span class="k">Flujo completo p95</span><span class="v">&lt; 3000 ms</span></div>
+                    <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.6rem;">
+                        Metas validadas en ambiente controlado con pruebas reales. La latencia de extremo a extremo
+                        depende de la red movil del operador.
+                    </p>
+                </div>
+            </div>
+
+            <div id="tab-models" class="tab-panel">
+                <div class="panel">
+                    <h3>Versiones del motor de IA</h3>
+                    <div style="overflow-x: auto;"><table id="models-table"></table></div>
+                </div>
+            </div>
+
+            <div id="tab-audit" class="tab-panel">
+                <div class="panel">
+                    <h3>Registro de auditoria</h3>
+                    <div style="overflow-x: auto;"><table id="audit-table"></table></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>MEX | INTELLIGENT VISION AI - PANEL ADMINISTRATIVO</footer>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>

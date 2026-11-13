@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <title>MEX | Intelligent Vision AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/mex.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <a class="logo" href="/">MEX | VISION AI</a>
+            <div class="conn">
+                <span id="conn-dot" class="conn-dot"></span>
+                <span id="conn-label">CONECTANDO</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="login-view">
+            <p class="screen-title">mex --login operador</p>
+            <div class="panel">
+                <h3>Acceso del operador</h3>
+                <label>Usuario</label>
+                <input id="login-user" autocomplete="username" placeholder="operador">
+                <label>Contrasena</label>
+                <input id="login-pass" type="password" autocomplete="current-password" placeholder="********">
+                <button class="btn btn-primary" id="login-btn">INGRESAR</button>
+                <div id="login-msg" class="msg"></div>
+            </div>
+        </div>
+
+        <div id="app-view" class="hidden">
+            <p class="screen-title">mex --inspeccion</p>
+
+            <button class="btn btn-primary" id="scan-btn">ESCANEAR PIEZA</button>
+
+            <div id="result-panel" class="panel hidden" style="margin-top: 1.1rem;">
+                <h3>Resultado de inspeccion</h3>
+                <img id="result-photo" alt="Pieza capturada">
+                <div style="margin-bottom: 0.8rem;">
+                    <span id="result-badge" class="result-badge">--</span>
+                </div>
+                <div class="kv"><span class="k">Codigo</span><span class="v" id="r-code">--</span></div>
+                <div class="kv"><span class="k">Pieza</span><span class="v" id="r-name">--</span></div>
+                <div class="kv"><span class="k">Confianza</span><span class="v" id="r-conf">--</span></div>
+                <div class="kv"><span class="k">Fecha</span><span class="v" id="r-date">--</span></div>
+                <div class="kv"><span class="k">Inspeccion</span><span class="v" id="r-id">--</span></div>
+                <div class="kv"><span class="k">Latencia</span><span class="v" id="r-lat">--</span></div>
+                <div id="r-divergences-wrap" class="hidden" style="margin-top: 0.7rem;">
+                    <label>Divergencias</label>
+                    <ul id="r-divergences" class="divergence-list"></ul>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>Ultima inspeccion</h3>
+                <div id="last-inspection" class="empty">Sin inspecciones registradas</div>
+            </div>
+
+            <div class="panel">
+                <h3>Historico de inspecciones</h3>
+                <div id="history-list" class="empty">Cargando...</div>
+            </div>
+
+            <div id="offline-queue-info" class="panel hidden">
+                <h3>Sincronizacion pendiente</h3>
+                <div class="kv"><span class="k">En cola local</span><span class="v" id="queue-count">0</span></div>
+                <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.5rem;">
+                    Las capturas se sincronizan automaticamente al reconectar.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <div id="camera-view">
+        <video id="camera-stream" autoplay playsinline muted></video>
+        <div id="capture-status">PROCESANDO CAPTURA...</div>
+        <div class="camera-bar">
+            <button class="btn btn-primary" id="capture-btn">CAPTURAR</button>
+            <button class="btn btn-ghost" id="close-camera-btn">CERRAR</button>
+        </div>
+    </div>
+
+    <footer>MEX | INTELLIGENT VISION AI - OPERACION MEXICO</footer>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+
+</html>
