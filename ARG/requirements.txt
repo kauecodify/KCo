@@ -1,0 +1,48 @@
+# KCo/ARG - Dependencias Python
+
+# FastAPI e dependencias
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Banco de dados
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.7
+asyncpg==0.28.0
+
+# Redis
+redis==4.6.0
+aiohttp==3.8.6
+
+# Autenticacao e seguranca
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.0
+
+# Validacao e serializacao
+pydantic==2.5.2
+pydantic-settings==2.1.0
+email-validator==2.0.0
+
+# Logging e monitoramento
+structlog==23.2.0
+prometheus-client==0.19.0
+
+# Utilitarios
+python-dateutil==2.8.2
+pytz==2023.3
+httpx==0.25.1
+
+# Processamento de imagens (opcional)
+pillow==10.1.0
+opencv-python-headless==4.8.1.78
+
+# Machine Learning (opcional)
+numpy==1.26.2
+pandas==2.1.4
+scikit-learn==1.3.2
+
+# Testes
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.25.1
